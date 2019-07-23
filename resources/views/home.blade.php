@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="ui middle aligned center aligned grid">
-  <div class="ui row">
+  <div class="row">
     <div class="column">
       <h1 id="landing-page-header" class="ui icon header">
         <i class="large icons">
@@ -28,5 +28,10 @@
       </a>
     </div>
   </div>
+  @auth
+  Sesión iniciada
+  @guest
+  Sesión <span class="ui red text">NO</span> iniciada
+  @endauth
 </div>
 @endsection
