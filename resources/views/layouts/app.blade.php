@@ -18,6 +18,7 @@
   <script src="{{ asset('js/jquery.min.js') }}"></script>
   <script src="{{ asset('js/semantic.min.js') }}"></script>
   <script src="{{ asset('js/app.js') }}"></script>
+  @yield('js')
 </body>
 
 </html>
