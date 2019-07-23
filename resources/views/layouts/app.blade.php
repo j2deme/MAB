@@ -13,6 +13,10 @@
 
 <body class="ui container">
   @yield('content')
+
+  <script src="{{ asset('js/jquery.min.js') }}"></script>
+  <script src="{{ asset('js/semantic.min.js') }}"></script>
+  <script src="{{ asset('js/app.js') }}"></script>
 </body>
 
 </html>
