@@ -18,11 +18,11 @@
   </div>
   <div class="row">
     <div class="column">
-      <a href="{{ url('/login') }}" class="ui primary labeled icon button">
+      <a href="{{ url('/login') }}" class="ui primary labeled icon button" tabindex="0">
         <i class="sign in icon"></i>
-        Ingresar
+        Iniciar sesión
       </a>
-      <a href="{{ url('/register') }}" class="ui secondary labeled icon button">
+      <a href="{{ url('/register') }}" class="ui secondary labeled icon button" tabindex="0">
         <i class="id card icon"></i>
         Registro
       </a>
