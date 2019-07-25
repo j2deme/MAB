@@ -10,7 +10,7 @@
           Registro
         </div>
       </h2>
-      <form class="ui equal width form" method="POST" action="{{ url('/register') }}">
+      <form class="ui equal width form @hasError" method="POST" action="{{ route('auth.register') }}">
         @csrf
         <div class="ui segment">
           <div class="fields">
