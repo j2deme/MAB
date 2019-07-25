@@ -15,8 +15,9 @@
         <div class="ui segment">
           <div class="field">
             <div class="ui left icon input">
-              <i class="at icon"></i>
-              <input type="text" name="email" placeholder="Correo electrónico" autocomplete="email" autofocus>
+              <i class="user icon"></i>
+              <input type="text" name="email" placeholder="No. Control / Usuario" autocomplete="email" autofocus
+                autocomplete="off">
             </div>
           </div>
           <div class="field">
