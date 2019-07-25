@@ -47,13 +47,13 @@ class AppServiceProvider extends ServiceProvider
     });
 
     Blade::directive('js', function ($js) {
-      $js = str_replace(['(', ')', ' '], '', $js); # Strips ( and )
-      return "<script src='{{asset(\"js/$js\")}}'></script>";
+      $js = str_replace(['(', ')', ' ', '\''], '', $js); # Strips (' and ')
+      return "<script src='{{ asset(\"js/$js\") }}'></script>";
     });
 
     Blade::directive('css', function ($css) {
-      $css = str_replace(['(', ')', ' '], '', $css); # Strips ( and )
-      return "<link  href='{{asset(\"css/$css\")}}' rel='stylesheet'>";
+      $css = str_replace(['(', ')', ' ', '\''], '', $css); # Strips (' and ')
+      return "<link  href='{{ asset(\"css/$css\") }}' rel='stylesheet'>";
     });
 
     Blade::directive('dd', function ($value) {

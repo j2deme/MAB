@@ -65,5 +65,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/custom/register.form.js') }}"></script>
+@js('custom/register.form.js')
 @endpush

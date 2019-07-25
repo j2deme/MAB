@@ -7,17 +7,17 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>MAB</title>
-  <link rel="stylesheet" href="{{ asset('css/semantic.css') }}">
-  <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+  @css('semantic.css')
+  @css('app.css')
   @yield('css')
 </head>
 
 <body class="ui container">
   @yield('content')
 
-  <script src="{{ asset('js/jquery.min.js') }}"></script>
-  <script src="{{ asset('js/semantic.min.js') }}"></script>
-  <script src="{{ asset('js/app.js') }}"></script>
+  @js('jquery.min.js')
+  @js('semantic.min.js')
+  @js('app.js')
   @stack('scripts')
 </body>
 

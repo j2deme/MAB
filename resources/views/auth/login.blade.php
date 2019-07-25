@@ -53,5 +53,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/custom/login.form.js') }}"></script>
+@js('custom/login.form.js')
 @endpush
