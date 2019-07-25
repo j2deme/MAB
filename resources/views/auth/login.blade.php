@@ -10,7 +10,7 @@
           Inicio de sesión
         </div>
       </h2>
-      <form class="ui form" method="POST" action="{{ url('/login') }}">
+      <form class="ui form @hasError" method="POST" action="{{ url('/login') }}">
         @csrf
         <div class="ui segment">
           <div class="field">
@@ -38,9 +38,7 @@
           </button>
         </div>
 
-        <div class="ui error message">
-          {{ $errors->first() }}
-        </div>
+        @include('components.errors-message')
 
       </form>
 

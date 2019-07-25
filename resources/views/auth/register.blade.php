@@ -50,9 +50,7 @@
           </button>
         </div>
 
-        <div class="ui error message">
-          {{ $errors->first() }}
-        </div>
+        @include('components.errors-message')
 
       </form>
 
