@@ -43,10 +43,10 @@
               <input type="text" id="email" name="email" />
             </div>
           </div>
-          <div class="ui fluid primary labeled icon submit button">
+          <button type="submit" class="ui fluid primary labeled icon submit button">
             <i class="save icon"></i>
             Registrar
-          </div>
+          </button>
         </div>
 
         <div class="ui error message">

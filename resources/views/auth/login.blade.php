@@ -32,10 +32,10 @@
               <label>Recuérdame</label>
             </div>
           </div>
-          <div class="ui fluid primary labeled icon submit button">
+          <button type="submit" class="ui fluid primary labeled icon submit button">
             <i class="sign in icon"></i>
             Entrar
-          </div>
+          </button>
         </div>
 
         <div class="ui error message">
