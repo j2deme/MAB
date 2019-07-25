@@ -10,7 +10,7 @@
           Inicio de sesión
         </div>
       </h2>
-      <form class="ui form @hasError" method="POST" action="{{ url('/login') }}">
+      <form class="ui form @hasError" method="POST" action="{{ route('auth.login') }}">
         @csrf
         <div class="ui segment">
           <div class="field">
