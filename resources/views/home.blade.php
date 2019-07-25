@@ -20,7 +20,7 @@
     <div class="column">
       <a href="{{ url('/login') }}" class="ui primary labeled icon button" tabindex="0">
         <i class="sign in icon"></i>
-        Iniciar sesión
+        Inicio de sesión
       </a>
       <a href="{{ url('/register') }}" class="ui secondary labeled icon button" tabindex="0">
         <i class="id card icon"></i>

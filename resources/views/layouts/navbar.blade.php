@@ -32,7 +32,7 @@
         </div>
       </div>
       @guest
-      <a href="{{ url('/login') }}" class="item">Iniciar sesión</a>
+      <a href="{{ url('/login') }}" class="item">Inicio de sesión</a>
       <a href="{{ url('/register') }}" class="item">Registro</a>
       @endauth
     </div>
