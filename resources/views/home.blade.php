@@ -30,8 +30,8 @@
   </div>
   @auth
   Sesión iniciada
-  @guest
+  @orguest
   Sesión <span class="ui red text">NO</span> iniciada
-  @endauth
+  @end
 </div>
 @endsection

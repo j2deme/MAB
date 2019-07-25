@@ -31,10 +31,10 @@
           <a href="{{ url('/logout') }}" class="item"><i class="fa fa-btn fa-sign-out"></i>Logout</a>
         </div>
       </div>
-      @guest
+      @orguest
       <a href="{{ url('/login') }}" class="item">Inicio de sesión</a>
       <a href="{{ url('/register') }}" class="item">Registro</a>
-      @endauth
+      @end
     </div>
   </div>
 </div>
