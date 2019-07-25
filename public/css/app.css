@@ -5,3 +5,7 @@
 .main.container {
   margin-top: 7em;
 }
+
+.ui.primary.header {
+  text-transform: uppercase;
+}
