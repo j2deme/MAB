@@ -19,8 +19,8 @@
               <input type="text" id="name" name="name" autofocus />
             </div>
             <div class="field">
-              <label>Apellidos</label>
-              <input type="text" id="last-name" name="last-name" />
+              <label for="last_name">Apellidos</label>
+              <input type="text" id="last_name" name="last_name" />
             </div>
           </div>
           <div class="fields">
@@ -29,8 +29,8 @@
               <input type="password" id="password" name="password">
             </div>
             <div class="field">
-              <label for="password-confirm">Confirmación contraseña</label>
-              <input id="password-confirm" type="password" id="password-confirm" name="password-confirm">
+              <label for="password_confirm">Confirmación contraseña</label>
+              <input type="password" id="password_confirm" name="password_confirm">
             </div>
           </div>
           <div class="fields">

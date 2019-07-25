@@ -8,7 +8,6 @@ $(document).ready(function () {
         }]
       },
       last_name: {
-        identifier: 'last-name',
         rules: [{
           type: 'empty',
           prompt: 'Ingresa tus apellidos'
@@ -22,7 +21,6 @@ $(document).ready(function () {
         }]
       },
       password_confirm: {
-        identifier: 'password-confirm',
         rules: [{
             type: 'empty',
             prompt: 'Se requiere confirmación de contraseña'
@@ -34,7 +32,6 @@ $(document).ready(function () {
         ]
       },
       email: {
-        identifier: 'email',
         rules: [{
             type: 'empty',
             prompt: 'Ingresa tu correo electrónico'
@@ -46,7 +43,6 @@ $(document).ready(function () {
         ]
       },
       username: {
-        identifier: 'username',
         rules: [{
             type: 'empty',
             prompt: 'Ingresa tu número de control'
