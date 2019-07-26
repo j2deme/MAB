@@ -13,22 +13,15 @@
         <i class="home icon"></i>
       </a>
       <div class="ui simple dropdown item">
-        {{ Auth::user()->name }} <i class="dropdown icon"></i>
+        {{ Auth::user()->username }} <i class="dropdown icon"></i>
         <div class="menu">
-          <a class="item" href="#">Link Item</a>
-          <a class="item" href="#">Link Item</a>
+          <a class="item" href="#">
+            <i class="user cog icon"></i> Cuenta
+          </a>
           <div class="divider"></div>
-          <div class="header">Header Item</div>
-          <div class="item">
-            <i class="dropdown icon"></i>
-            Sub Menu
-            <div class="menu">
-              <a class="item" href="#">Link Item</a>
-              <a class="item" href="#">Link Item</a>
-            </div>
-          </div>
-          <a class="item" href="#">Link Item</a>
-          <a href="{{ route('auth.logout') }}" class="item"><i class="fa fa-btn fa-sign-out"></i>Logout</a>
+          <a href="{{ route('auth.logout') }}" class="item">
+            <i class="sign out icon"></i> Salir
+          </a>
         </div>
       </div>
       @orguest
