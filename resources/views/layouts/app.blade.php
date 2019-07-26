@@ -17,6 +17,15 @@
 
   @js('jquery.min.js')
   @js('semantic.min.js')
+  <script>
+    var config = {
+        routes: [
+          {
+            root: "{{ route('root') }}"
+          }
+        ]
+      };
+  </script>
   @js('app.js')
   @stack('scripts')
 </body>
