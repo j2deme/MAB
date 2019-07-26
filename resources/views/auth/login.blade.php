@@ -16,14 +16,15 @@
           <div class="field">
             <div class="ui left icon input">
               <i class="user icon"></i>
-              <input type="text" name="email" placeholder="No. Control / Usuario" autocomplete="email" autofocus
-                autocomplete="off">
+              <input type="text" id="username" name="username" placeholder="No. Control / Usuario"
+                autocomplete="username" autofocus autocomplete="off">
             </div>
           </div>
           <div class="field">
             <div class="ui left icon input">
               <i class="lock icon"></i>
-              <input type="password" name="password" placeholder="Contraseña" autocomplete="current-password">
+              <input type="password" id="password" name="password" placeholder="Contraseña"
+                autocomplete="current-password">
             </div>
           </div>
           <div class="inline field">

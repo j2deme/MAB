@@ -1,15 +1,11 @@
 $(document).ready(function () {
   $('.ui.form').form({
     fields: {
-      email: {
-        identifier: 'email',
+      username: {
+        identifier: 'username',
         rules: [{
             type: 'empty',
-            prompt: 'Ingresa tu correo electrónico'
-          },
-          {
-            type: 'email',
-            prompt: 'Ingresa un correo electrónico válido'
+            prompt: 'Ingresa tu usuario / no. de control'
           }
         ]
       },
