@@ -9,3 +9,7 @@
 .ui.primary.header {
   text-transform: uppercase;
 }
+
+.ui.primary.dividing.header {
+  margin-bottom: 0.7em;
+}
