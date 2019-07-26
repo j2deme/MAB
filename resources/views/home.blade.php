@@ -1,37 +1,44 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="ui middle aligned center aligned grid">
-  <div class="row">
-    <div class="column">
-      <h1 id="landing-page-header" class="ui icon header">
-        <i class="large icons">
-          <i class="blue sort up icon"></i>
-          <i class="red sort down icon"></i>
-        </i>
-        <div class="content">
-          MAB
-          <div class="sub header">Módulo de Altas y Bajas</div>
+@include('layouts.navbar')
+<div class="ui stackable grid">
+  <div class="ui stretched row">
+    <section class="ui sixteen wide mobile twelve wide computer column">
+      <article class="ui attached segment">
+        <header>
+          <h2 class="ui primary dividing header">Dashboard</h2>
+        </header>
+        <p class="ui text container">
+          Bienvenido {{ Auth::user()->username }}
+        </p>
+      </article>
+    </section>
+    <aside class="four wide computer only column">
+      <section class="ui segment">
+        <header>
+          <h2 class="ui secondary dividing header">Estadísticas</h2>
+        </header>
+        <div class="ui center aligned grid">
+          <div class="column">
+            <div class="ui stackable statistics">
+              <div class="ui statistic">
+                <div class="value">?</div>
+                <div class="blue label">Altas</div>
+              </div>
+              <div class="ui statistic">
+                <div class="value">?</div>
+                <div class="label">Bajas</div>
+              </div>
+              <a class="ui statistic" href="/">
+                <div class="value">?</div>
+                <div class="label">Atendidas</div>
+              </a>
+            </div>
+          </div>
         </div>
-      </h1>
-    </div>
+      </section>
+    </aside>
   </div>
-  <div class="row">
-    <div class="column">
-      <a href="{{ route('auth.login') }}" class="ui primary labeled icon button" tabindex="0">
-        <i class="sign in icon"></i>
-        Inicio de sesión
-      </a>
-      <a href="{{ route('auth.register') }}" class="ui secondary labeled icon button" tabindex="0">
-        <i class="id card icon"></i>
-        Registro
-      </a>
-    </div>
-  </div>
-  @auth
-  Sesión iniciada
-  @orguest
-  Sesión <span class="ui red text">NO</span> iniciada
-  @end
 </div>
 @endsection
