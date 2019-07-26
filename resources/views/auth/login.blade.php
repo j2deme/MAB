@@ -45,7 +45,7 @@
 
       <div class="ui message">
         <div class="ui center aligned grid">
-          ¿No tienes cuenta? <a href="{{ url('/register') }}">Regístrate</a>
+          ¿No tienes cuenta? <a href="{{ route('auth.register') }}">Regístrate</a>
         </div>
       </div>
     </div>
