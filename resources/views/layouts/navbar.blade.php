@@ -1,6 +1,6 @@
 <div class="ui fixed menu">
   <div class="ui container">
-    <a href="{{ route('root') }}" class="header item">
+    <a href="@auth {{route('home.index')}} @orguest {{route('root')}} @end" class="header item">
       <i class="icons">
         <i class="blue sort up icon"></i>
         <i class="red sort down icon"></i>
@@ -9,7 +9,7 @@
     </a>
     <div class="right menu">
       @auth
-      <a href="{{ route('root') }}" class="item">
+      <a href="{{ route('home.index') }}" class="item">
         <i class="home icon"></i>
       </a>
       <div class="ui simple dropdown item">
