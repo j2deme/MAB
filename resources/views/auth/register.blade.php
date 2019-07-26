@@ -30,8 +30,8 @@
               <input type="password" id="password" name="password" autocomplete="new-password">
             </div>
             <div class="field">
-              <label for="password_confirm">Confirmación contraseña</label>
-              <input type="password" id="password_confirm" name="password_confirm" autocomplete="off">
+              <label for="password_confirmation">Confirmación contraseña</label>
+              <input type="password" id="password_confirmation" name="password_confirmation" autocomplete="off">
             </div>
           </div>
           <div class="fields">

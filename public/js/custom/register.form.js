@@ -20,7 +20,7 @@ $(document).ready(function () {
           prompt: 'Ingresa tu contraseña'
         }]
       },
-      password_confirm: {
+      password_confirmation: {
         rules: [{
             type: 'empty',
             prompt: 'Se requiere confirmación de contraseña'
