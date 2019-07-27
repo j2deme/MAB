@@ -157,6 +157,7 @@ return [
     App\Providers\RouteServiceProvider::class,
     GrahamCampbell\Exceptions\ExceptionsServiceProvider::class,
     Barryvdh\Debugbar\ServiceProvider::class,
+    Spatie\Permission\PermissionServiceProvider::class
 
   ],
 
