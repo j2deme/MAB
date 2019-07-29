@@ -31,3 +31,12 @@ Route::post('password/reset', ['as' => 'auth.password.reset', 'uses' => 'Auth\Pa
 
 # CUSTOM CONTROLLERS
 Route::get('/home', 'HomeController@index')->name('home.index');
+
+# USER ROUTES -- RESOURCE
+Route::get('/users', 'UserController@index')->name('users.index');
+Route::get('/users/create', 'UserController@create')->name('users.new');
+Route::post('/users', 'UserController@store')->name('users.save');
+Route::get('/users/{user}', 'UserController@show')->name('users.show');
+Route::get('/users/{user}/edit', 'UserController@edit')->name('users.edit');
+Route::put('/users/{user}', 'UserController@update')->name('users.update');
+Route::delete('/users/{user}', 'UserController@destroy')->name('users.delete');
