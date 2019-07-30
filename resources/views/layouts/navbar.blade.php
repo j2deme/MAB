@@ -8,11 +8,16 @@
       MAB
     </a>
     @auth
-    @can('view_users')
+    @role('Admin')
     <a href="{{ route('users.index') }}" class="{{ Request::is('users*') ? 'active ' : ' ' }}item">
       <i class="users icon"></i> Usuarios
     </a>
-    @endcan
+    @endrole
+    @role('Estudiante')
+    <a href="{{ route('moves.index') }}" class="{{ Request::is('moves*') ? 'active ' : ' ' }}item">
+      <i class="sort icon"></i> Mis solicitudes
+    </a>
+    @endrole
     @end
     <div class="right menu">
       @auth
