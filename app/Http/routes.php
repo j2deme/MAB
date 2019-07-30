@@ -43,4 +43,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.'], fu
   Route::delete('/{user}', 'UserController@destroy')->name('delete');
 });
 
-Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], function () { });
+# MOVES ROUTES -- RESOURCE
+Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], function () {
+  Route::get('/', 'MovesController@index')->name('index');
+});
