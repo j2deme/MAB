@@ -15,7 +15,7 @@
     @endrole
     @role('Estudiante')
     <a href="{{ route('moves.index') }}" class="{{ Request::is('moves*') ? 'active ' : ' ' }}item">
-      <i class="sort icon"></i> Mis solicitudes
+      <i class="sort icon"></i> Solicitudes
     </a>
     @endrole
     @end
