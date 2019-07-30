@@ -13,6 +13,7 @@
 </head>
 
 <body class="ui container">
+  @include('flash::message')
   @yield('content')
 
   @js('jquery.min.js')

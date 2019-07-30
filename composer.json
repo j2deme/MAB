@@ -13,7 +13,8 @@
     "graham-campbell/exceptions": "^9.0",
     "doctrine/dbal": "^2.9",
     "barryvdh/laravel-debugbar": "~2.4",
-    "spatie/laravel-permission": "1.4.0"
+    "spatie/laravel-permission": "1.4.0",
+    "laracasts/flash": "^3.0"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

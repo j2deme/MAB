@@ -157,7 +157,8 @@ return [
     App\Providers\RouteServiceProvider::class,
     GrahamCampbell\Exceptions\ExceptionsServiceProvider::class,
     Barryvdh\Debugbar\ServiceProvider::class,
-    Spatie\Permission\PermissionServiceProvider::class
+    Spatie\Permission\PermissionServiceProvider::class,
+    Laracasts\Flash\FlashServiceProvider::class,
 
   ],
 
