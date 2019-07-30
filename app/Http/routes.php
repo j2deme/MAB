@@ -31,3 +31,16 @@ Route::post('password/reset', ['as' => 'auth.password.reset', 'uses' => 'Auth\Pa
 
 # CUSTOM CONTROLLERS
 Route::get('/home', 'HomeController@index')->name('home.index');
+
+# USER ROUTES -- RESOURCE
+Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.'], function () {
+  Route::get('/', 'UserController@index')->name('index');
+  Route::post('/', 'UserController@store')->name('save');
+  Route::get('/create', 'UserController@create')->name('new');
+  Route::get('/{user}', 'UserController@show')->name('show');
+  Route::get('/{user}/edit', 'UserController@edit')->name('edit');
+  Route::put('/{user}', 'UserController@update')->name('update');
+  Route::delete('/{user}', 'UserController@destroy')->name('delete');
+});
+
+Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], function () { });

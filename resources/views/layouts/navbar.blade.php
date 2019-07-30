@@ -7,6 +7,13 @@
       </i>
       MAB
     </a>
+    @auth
+    @can('view_users')
+    <a href="{{ route('users.index') }}" class="{{ Request::is('users*') ? 'active ' : ' ' }}item">
+      <i class="users icon"></i> Usuarios
+    </a>
+    @endcan
+    @end
     <div class="right menu">
       @auth
       <a href="{{ route('home.index') }}" class="item">
