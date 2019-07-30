@@ -25,4 +25,35 @@ class User extends Authenticatable
   protected $hidden = [
     'password', 'remember_token',
   ];
+
+  /**
+   * ACCESSORS
+   */
+  public function getFullNameAttribute()
+  {
+    return trim("{$this->name} {$this->last_name}");
+  }
+
+  /**
+   * MUTATORS
+   */
+  public function setNameAttribute($value)
+  {
+    $this->attributes['name'] = trim($value);
+  }
+
+  public function setLastNameAttribute($value)
+  {
+    $this->attributes['last_name'] = trim($value);
+  }
+
+  public function setUsernameAttribute($value)
+  {
+    $this->attributes['username'] = trim($value);
+  }
+
+  public function setPasswordAttribute($value)
+  {
+    $this->attributes['password'] = bcrypt($value);
+  }
 }
