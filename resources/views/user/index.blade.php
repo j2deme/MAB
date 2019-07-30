@@ -16,16 +16,18 @@
               <th class="ui center aligned">Nombre</th>
               <th class="ui center aligned four wide">Usuario</th>
               <th class="ui center aligned one wide">Activo</th>
+              @can('edit_users')
               <th class="ui center aligned two wide">
                 <i class="ui cog icon"></i>
               </th>
+              @endcan
             </tr>
           </thead>
           <tbody>
             @forelse ($users as $item)
             <tr>
               <td class="ui center aligned">{{ $item->id }}</td>
-              <td>{{ $item->name }}</td>
+              <td>{{ $item->full_name }}</td>
               <td>
                 <a href="{{ route('users.show', $item) }}">{{ $item->username }}</a>
               </td>
@@ -49,10 +51,12 @@
                     <i class="users icon"></i>
                     No existen usuarios registrados
                   </div>
+                  @role('Admin')
                   <a href="{{ route('users.new') }}" class="ui primary icon labeled button">
                     <i class="add icon"></i>
                     Añadir usuario
                   </a>
+                  @endrole
                 </div>
               </td>
             </tr>
@@ -61,9 +65,11 @@
           <tfoot class="full-width">
             <tr>
               <th colspan="5">
-                <div class="ui right floated small primary labeled icon button">
+                @role('Admin')
+                <a class="ui right floated small primary labeled icon button">
                   <i class="ui add icon"></i> Añadir usuario
-                </div>
+                </a>
+                @endrole
                 @include('pagination.custom', ['paginator' => $users])
               </th>
             </tr>
