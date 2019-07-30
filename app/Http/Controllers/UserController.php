@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
+use App\User;
+use App\Traits\Authorizable;
 
 class UserController extends Controller
 {
+  use Authorizable;
   /**
    * Display a listing of the resource.
    *
@@ -15,8 +17,8 @@ class UserController extends Controller
    */
   public function index()
   {
-    $result = User::latest()->paginate();
-    return view('user.index', compact('result'));
+    $users = User::latest()->paginate();
+    return view('user.index', compact('users'));
   }
 
   /**
