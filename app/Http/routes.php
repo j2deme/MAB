@@ -33,10 +33,14 @@ Route::post('password/reset', ['as' => 'auth.password.reset', 'uses' => 'Auth\Pa
 Route::get('/home', 'HomeController@index')->name('home.index');
 
 # USER ROUTES -- RESOURCE
-Route::get('/users', 'UserController@index')->name('users.index');
-Route::get('/users/create', 'UserController@create')->name('users.new');
-Route::post('/users', 'UserController@store')->name('users.save');
-Route::get('/users/{user}', 'UserController@show')->name('users.show');
-Route::get('/users/{user}/edit', 'UserController@edit')->name('users.edit');
-Route::put('/users/{user}', 'UserController@update')->name('users.update');
-Route::delete('/users/{user}', 'UserController@destroy')->name('users.delete');
+Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.'], function () {
+  Route::get('/', 'UserController@index')->name('index');
+  Route::post('/', 'UserController@store')->name('save');
+  Route::get('/create', 'UserController@create')->name('new');
+  Route::get('/{user}', 'UserController@show')->name('show');
+  Route::get('/{user}/edit', 'UserController@edit')->name('edit');
+  Route::put('/{user}', 'UserController@update')->name('update');
+  Route::delete('/{user}', 'UserController@destroy')->name('delete');
+});
+
+Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], function () { });
