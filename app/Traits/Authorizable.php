@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Traits;
 /*
  * A trait to handle authorization based on users permissions for given controller
  */
