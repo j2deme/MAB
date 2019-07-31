@@ -46,4 +46,5 @@ Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.'], fu
 # MOVES ROUTES -- RESOURCE
 Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], function () {
   Route::get('/', 'MovesController@index')->name('index');
+  Route::get('/create/{type}', 'MovesController@create')->name('new');
 });
