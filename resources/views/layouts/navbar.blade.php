@@ -9,13 +9,13 @@
     </a>
     @auth
     @role('Admin')
-    <a href="{{ route('users.index') }}" class="{{ Request::is('users*') ? 'active ' : ' ' }}item">
+    <a href="{{ route('users.index') }}" class="{{ Request::is('users*') ? 'blue active ' : ' ' }}item">
       <i class="users icon"></i> Usuarios
     </a>
     @endrole
     @role('Estudiante')
-    <a href="{{ route('moves.index') }}" class="{{ Request::is('moves*') ? 'active ' : ' ' }}item">
-      <i class="sort icon"></i> Solicitudes
+    <a href="{{ route('moves.index') }}" class="{{ Request::is('moves*') ? 'blue active ' : ' ' }}item">
+      <i class="stream icon"></i> Solicitudes
     </a>
     @endrole
     @end
