@@ -6,7 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subject extends Model
 {
-  protected $fillable = ['key', 'short_name', 'long_name', 'career_id'];
+  protected $fillable = ['key', 'short_name', 'long_name', 'career_id', 'semester', 'ht', 'hp', 'cr', 'is_active'];
+
+  /**
+   * CASTINGS
+   */
+  protected $casts = [
+    'is_active' => 'boolean'
+  ];
 
   /**
    * MUTATORS
