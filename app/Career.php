@@ -20,4 +20,12 @@ class Career extends Model
   {
     $this->attributes['name'] = trim(mb_strtoupper($value, 'UTF-8'));
   }
+
+  /**
+   * RELATIONSHIPS
+   */
+  public function subjects()
+  {
+    return $this->hasMany('App\Subject');
+  }
 }

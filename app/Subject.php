@@ -32,4 +32,11 @@ class Subject extends Model
   {
     $this->attributes['long_name'] = trim(mb_strtoupper($value, 'UTF-8'));
   }
+
+  /**
+   * RELATIONSHIPS
+   */
+  public function career(){
+    return $this->belongsTo('App\Career');
+  }
 }
