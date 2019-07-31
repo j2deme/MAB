@@ -27,6 +27,13 @@ class User extends Authenticatable
   ];
 
   /**
+   * CASTING
+   */
+  protected $casts = [
+    'is_suspended' => 'boolean'
+  ];
+
+  /**
    * ACCESSORS
    */
   public function getFullNameAttribute()
