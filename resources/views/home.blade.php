@@ -9,9 +9,9 @@
         <header>
           <h2 class="ui primary dividing header">Dashboard</h2>
         </header>
-        <p class="ui text container">
-          Bienvenido {{ Auth::user()->username }}
-        </p>
+        @role('Estudiante')
+        @include('home.student')
+        @endrole
       </article>
     </section>
     <aside class="four wide computer only column">
@@ -42,3 +42,11 @@
   </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+  $(document).ready(function () {
+    $('.ui.dropdown').dropdown();
+  });
+</script>
+@endpush

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Role;
 use App\User;
+use App\Career;
+use App\Permission;
 use App\Http\Requests;
 use App\Traits\Authorizable;
 use Illuminate\Http\Request;
@@ -55,9 +58,9 @@ class UserController extends Controller
     // Create the user
     if ($user = User::create($request->except('roles', 'permissions'))) {
       $this->syncPermissions($request, $user);
-      flash('User has been created.');
+      flash('El usuario ha sido creado');
     } else {
-      flash()->error('Unable to create user.');
+      flash()->error('No es posible crear el usuario');
     }
 
     return redirect()->route('users.index');
@@ -116,15 +119,56 @@ class UserController extends Controller
 
     // check for password change
     if ($request->get('password')) {
-      $user->password = bcrypt($request->get('password'));
+      $user->password = $request->get('password');
+    }
+
+    if ($request->get('career_id')) {
+      $user->career()->associate(Career::find($request->get('career_id')));
     }
 
     // Handle the user roles
     $this->syncPermissions($request, $user);
 
     $user->save();
-    flash()->success('User has been updated.');
+    flash()->success('Usuario actualizado');
     return redirect()->route('users.index');
+  }
+
+  /**
+   * Updates self
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function selfUpdate(Request $request, $id)
+  {
+    if (Auth::user()->id == $id) {
+      $this->validate($request, [
+        'name' => 'min:2',
+        'email' => 'email|unique:users,email,' . $id,
+        'roles' => 'min:1'
+      ]);
+
+      // Get the user
+      $user = User::findOrFail($id);
+
+      // Update user
+      $user->fill($request->except('roles', 'permissions', 'password'));
+
+      // check for password change
+      if ($request->get('password')) {
+        $user->password = $request->get('password');
+      }
+
+      if ($request->get('career_id')) {
+        $user->career()->associate(Career::find($request->get('career_id')));
+      }
+
+      $user->save();
+      flash()->success('Usuario actualizado');
+      return redirect()->back();
+    }
   }
 
   /**
@@ -136,14 +180,14 @@ class UserController extends Controller
   public function destroy($id)
   {
     if (Auth::user()->id == $id) {
-      flash()->warning('Deletion of currently logged in user is not allowed :(')->important();
+      flash()->warning('No es posible borrar al usuario activo')->important();
       return redirect()->back();
     }
 
     if (User::findOrFail($id)->delete()) {
-      flash()->success('User has been deleted');
+      flash()->success('El usuario ha sido borrado');
     } else {
-      flash()->success('User not deleted');
+      flash()->success('El usuario no ha sido borrado');
     }
 
     return redirect()->back();
