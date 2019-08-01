@@ -36,7 +36,13 @@ class Subject extends Model
   /**
    * RELATIONSHIPS
    */
-  public function career(){
+  public function career()
+  {
     return $this->belongsTo('App\Career');
+  }
+
+  public function groups()
+  {
+    return $this->hasMany('App\Group');
   }
 }
