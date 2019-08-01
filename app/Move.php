@@ -29,4 +29,22 @@ class Move extends Model
   {
     $this->attributes['answer'] = trim(mb_strtoupper($value));
   }
+
+  /**
+   * RELATIONSHIPS
+   */
+  public function user()
+  {
+    return $this->belongsTo('App\User');
+  }
+
+  public function semester()
+  {
+    return $this->belongsTo('App\Semester');
+  }
+
+  public function group()
+  {
+    return $this->belongsTo('App\Group');
+  }
 }

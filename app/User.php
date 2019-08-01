@@ -71,4 +71,9 @@ class User extends Authenticatable
   {
     return $this->belongsTo('App\Career');
   }
+
+  public function moves()
+  {
+    return $this->hasMany('App\Move');
+  }
 }
