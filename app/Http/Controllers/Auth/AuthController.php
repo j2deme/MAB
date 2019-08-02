@@ -64,10 +64,12 @@ class AuthController extends Controller
       'name.required'      => 'Ingresa tu nombre o nombres',
       'last_name.required' => 'Ingresa tus apellidos',
       'username.required'  => 'Se requiere usuario / no. de control',
+      'username.unique'    => 'El número de control ya fue registrado',
       'password.required'  => 'Ingresa tu contraseña',
       'password.confirmed' => 'Las contraseñas no coinciden',
       'email.required'     => 'Ingresa tu correo electrónico',
       'email.email'        => 'Ingresa un correo electrónico válido',
+      'email.unique'       => 'El correo electrónico ya se encuentra asociado a otra cuenta'
     ]);
   }
 
@@ -79,12 +81,15 @@ class AuthController extends Controller
    */
   protected function create(array $data)
   {
-    return User::create([
+    $user = User::create([
       'name'      => $data['name'],
       'last_name' => $data['last_name'],
       'username'  => $data['username'],
       'email'     => $data['email'],
-      'password'  => bcrypt($data['password']),
+      'password'  => $data['password'],
     ]);
+    $user->assignRole('Estudiante');
+
+    return $user;
   }
 }
