@@ -76,4 +76,22 @@ class User extends Authenticatable
   {
     return $this->hasMany('App\Move');
   }
+
+  /**
+   * CUSTOM ATTRIBUTES
+   */
+  public function getUpsAttribute()
+  {
+    return $this->moves()->where('type', 'ALTA')->count();
+  }
+
+  public function getDownsAttribute()
+  {
+    return $this->moves()->where('type', 'BAJA')->count();
+  }
+
+  public function getAttendedAttribute()
+  {
+    return $this->moves()->where('status', 'finished')->count();
+  }
 }
