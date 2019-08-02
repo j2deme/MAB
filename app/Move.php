@@ -20,14 +20,29 @@ class Move extends Model
   /**
    * MUTATORS
    */
+  public function getJustificationAttribute($value)
+  {
+    return json_decode($value, true);
+  }
+
   public function setJustificationAttribute($value)
   {
-    $this->attributes['justification'] = trim(mb_strtoupper($value));
+    $this->attributes['settings'] = json_encode($value);
+  }
+
+  public function getAnswerAttribute($value)
+  {
+    return json_decode($value, true);
   }
 
   public function setAnswerAttribute($value)
   {
-    $this->attributes['answer'] = trim(mb_strtoupper($value));
+    $this->attributes['settings'] = json_encode($value);
+  }
+
+  public function setTypeAttribute($value)
+  {
+    $this->attributes['type'] = ($value == 'up') ? 'ALTA' : 'BAJA';
   }
 
   /**
