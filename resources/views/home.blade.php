@@ -23,15 +23,15 @@
           <div class="column">
             <div class="ui stackable statistics">
               <div class="ui statistic">
-                <div class="value">?</div>
+                <div class="value">{{ $ups }}</div>
                 <div class="blue label">Altas</div>
               </div>
               <div class="ui statistic">
-                <div class="value">?</div>
+                <div class="value">{{ $downs }}</div>
                 <div class="label">Bajas</div>
               </div>
               <a class="ui statistic" href="/">
-                <div class="value">?</div>
+                <div class="value">{{ $attended }}</div>
                 <div class="label">Atendidas</div>
               </a>
             </div>
