@@ -22,7 +22,7 @@ class MovesController extends Controller
     } elseif (Auth::user()->hasRole('Coordinador')) {
       $result = Career::find(Auth::user()->career->id)->moves()->latest()->paginate();
     } else {
-      $result = Moves::all()->paginate();
+      $result = Move::paginate();
     }
     return view('moves.index', compact('result'));
   }
