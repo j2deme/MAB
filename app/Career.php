@@ -28,4 +28,9 @@ class Career extends Model
   {
     return $this->hasMany('App\Subject');
   }
+
+  public function moves()
+  {
+    return $this->hasManyThrough('App\Move', 'App\User');
+  }
 }
