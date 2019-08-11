@@ -49,3 +49,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], fu
   Route::get('/', 'MovesController@index')->name('index');
   Route::get('/create/{type}', 'MovesController@create')->name('new');
 });
+
+# SEMESTERS ROUTES -- RESOURCE
+Route::group(['middleware' => 'auth', 'prefix' => 'semesters', 'as' => 'semesters.'], function () {
+  Route::get('/', 'SemesterController@index')->name('index');
+  Route::post('/', 'SemesterController@store')->name('save');
+  Route::get('/create', 'SemesterController@create')->name('new');
+  Route::get('/{semester}', 'SemesterController@show')->name('show');
+});
