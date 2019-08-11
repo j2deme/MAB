@@ -15,6 +15,7 @@
               <th class="ui center aligned one wide">ID</th>
               <th class="ui center aligned">Nombre</th>
               <th class="ui center aligned four wide">Usuario</th>
+              <th class="ui center aligned two wide">Rol</th>
               <th class="ui center aligned one wide">Activo</th>
               @can('edit_users')
               <th class="ui center aligned two wide">
@@ -31,6 +32,7 @@
               <td>
                 <a href="{{ route('users.show', $item) }}">{{ $item->username }}</a>
               </td>
+              <td>{{ $item->roles[0]->name }}</td>
               <td class="ui center aligned">
                 <i class="ui {{ !$item->isSuspended ? 'green check' : 'red times' }} icon"></i>
               </td>
@@ -45,7 +47,7 @@
             </tr>
             @empty
             <tr>
-              <td colspan="5">
+              <td colspan="6">
                 <div class="ui placeholder segment">
                   <div class="ui icon header">
                     <i class="users icon"></i>
@@ -66,7 +68,7 @@
             <tr>
               <th colspan="5">
                 @role('Admin')
-                <a class="ui right floated small primary labeled icon button">
+                <a href="{{ route('users.new') }}" class="ui right floated small primary labeled icon button">
                   <i class="ui add icon"></i> Añadir usuario
                 </a>
                 @endrole
