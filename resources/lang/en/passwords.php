@@ -2,7 +2,7 @@
 
 return [
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Password Reset Language Lines
     |--------------------------------------------------------------------------
@@ -13,10 +13,10 @@ return [
     |
     */
 
-    'password' => 'Passwords must be at least six characters and match the confirmation.',
-    'reset' => 'Your password has been reset!',
-    'sent' => 'We have e-mailed your password reset link!',
-    'token' => 'This password reset token is invalid.',
-    'user' => "We can't find a user with that e-mail address.",
+  'password' => 'Las contraseñas deben tener al menos 6 caracteres y coincidir con la confirmación.',
+  'reset' => '¡Tu contraseña ha sido reiniciada!',
+  'sent' => '¡Acabamos de enviar un enlace para reiniciar tu contraseña a tu correo electrónico!',
+  'token' => 'El token para reinicio de contraseña es inválido.',
+  'user' => "No hemos encontrado un usuario con ese correo electrónico.",
 
 ];
