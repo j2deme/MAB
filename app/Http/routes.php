@@ -74,4 +74,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'careers', 'as' => 'careers.']
   Route::post('/', 'CareerController@store')->name('save');
   Route::get('/create', 'CareerController@create')->name('new');
   Route::get('/{career}', 'CareerController@show')->name('show');
+  Route::get('/{career}/edit', 'CareerController@edit')->name('edit');
+  Route::put('/{career}', 'CareerController@update')->name('update');
+  Route::delete('/{career}', 'CareerController@destroy')->name('delete');
 });
