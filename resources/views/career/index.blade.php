@@ -11,7 +11,7 @@
         </header>
         @can('add_careers')
         <a href="{{ route('semesters.new') }}" class="ui right floated primary labeled icon button">
-          <i class="ui add icon"></i> Añadir semestre
+          <i class="ui add icon"></i> Añadir carrera
         </a>
         @endcan
         <table class="ui celled striped compact table">
