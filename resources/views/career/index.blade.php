@@ -7,9 +7,9 @@
     <section class="fourteen wide column">
       <article class="ui attached segment">
         <header>
-          <h2 class="ui primary dividing header">Semestres</h2>
+          <h2 class="ui primary dividing header">Carreras</h2>
         </header>
-        @can('add_semesters')
+        @can('add_careers')
         <a href="{{ route('semesters.new') }}" class="ui right floated primary labeled icon button">
           <i class="ui add icon"></i> Añadir semestre
         </a>
@@ -17,12 +17,10 @@
         <table class="ui celled striped compact table">
           <thead>
             <tr>
-              <th class="ui center aligned one wide">Clave</th>
+              <th class="ui center aligned one wide">ID</th>
+              <th class="ui center aligned two wide">Clave</th>
               <th class="ui center aligned">Nombre</th>
-              <th class="ui center aligned three wide">Altas</th>
-              <th class="ui center aligned three wide">Bajas</th>
-              <th class="ui center aligned one wide">Activo</th>
-              @can('edit_semesters')
+              @can('edit_careers')
               <th class="ui center aligned two wide">
                 <i class="ui cog icon"></i>
               </th>
@@ -32,19 +30,15 @@
           <tbody>
             @forelse ($result as $item)
             <tr>
+              <td class="ui center aligned">{{ $item->id }}</td>
               <td class="ui center aligned">{{ $item->key }}</td>
               <td>
-                <a href="{{ route('semesters.show', $item) }}">{{ $item->long_name }}</a>
+                <a href="{{ route('careers.show', $item) }}">{{ $item->name }}</a>
               </td>
-              <td class="ui center aligned">{{ $item->up_range }}</td>
-              <td class="ui center aligned">{{ $item->down_range }}</td>
-              <td class="ui center aligned">
-                <i class="ui {{ $item->is_active ? 'green check' : 'red times' }} icon"></i>
-              </td>
-              @can('edit_semesters')
+              @can('edit_careers')
               <td class="ui center aligned">
                 @include('shared._actions', [
-                'entity' => 'semesters',
+                'entity' => 'careers',
                 'id' => $item->id
                 ])
               </td>
@@ -55,15 +49,9 @@
               <td colspan="6">
                 <div class="ui placeholder segment">
                   <div class="ui icon header">
-                    <i class="calendar alternate outline icon"></i>
-                    No existen semestres registrados
+                    <i class="inbox icon"></i>
+                    No existen carreras registradas
                   </div>
-                  @role('Admin')
-                  <a href="{{ route('semesters.new') }}" class="ui primary icon labeled button">
-                    <i class="add icon"></i>
-                    Añadir semestre
-                  </a>
-                  @endrole
                 </div>
               </td>
             </tr>
