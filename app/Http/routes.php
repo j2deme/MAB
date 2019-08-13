@@ -78,3 +78,15 @@ Route::group(['middleware' => 'auth', 'prefix' => 'careers', 'as' => 'careers.']
   Route::put('/{career}', 'CareerController@update')->name('update');
   Route::delete('/{career}', 'CareerController@destroy')->name('delete');
 });
+
+# SUBJECT ROUTES -- RESOURCE
+Route::group(['middleware' => 'auth', 'prefix' => 'subjects', 'as' => 'subjects.'], function () {
+  Route::get('/', 'SubjectController@index')->name('index');
+  Route::post('/', 'SubjectController@store')->name('save');
+  Route::get('/create', 'SubjectController@create')->name('new');
+  Route::get('/{subject}', 'SubjectController@show')->name('show');
+  Route::get('/{subject}/edit', 'SubjectController@edit')->name('edit');
+  Route::put('/{subject}', 'SubjectController@update')->name('update');
+  Route::delete('/{subject}', 'SubjectController@destroy')->name('delete');
+  Route::get('/load', 'SubjectController@batch')->name('batch');
+});
