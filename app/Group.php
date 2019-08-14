@@ -14,9 +14,26 @@ class Group extends Model
   protected $casts = ['is_available' => 'boolean'];
 
   /**
+   * ACCESSORS
+   */
+  public function getFullKeyAttribute()
+  {
+    return $this->subject->key . "-" . $this->name;
+  }
+
+  public function getKeyAttribute()
+  {
+    return $this->name;
+  }
+  /**
    * MUTATORS
    */
   public function setNameAttribute($value)
+  {
+    $this->attributes['name'] = trim(mb_strtoupper($value, 'UTF-8'));
+  }
+
+  public function setKeyAttribute($value)
   {
     $this->attributes['name'] = trim(mb_strtoupper($value, 'UTF-8'));
   }
