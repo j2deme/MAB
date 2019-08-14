@@ -14,4 +14,12 @@ class Semester extends Model
   protected $casts = ['is_active' => 'boolean'];
 
   protected $dates = ['created_at', 'updated_at', 'begin_up', 'end_up', 'begin_down', 'end_down'];
+
+  /**
+   * SCOPES
+   */
+  public function scopeLast($query)
+  {
+    return $query->where('is_active', true)->orderBy('key', 'desc')->first();
+  }
 }

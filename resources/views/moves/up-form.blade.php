@@ -1,12 +1,12 @@
-<form action="#" class="ui form" method="POST">
+<form action="{{ route('moves.save') }}" class="ui form" method="POST">
   @csrf
   <input type="hidden" id="type" name="type" value="{{ $type }}">
   <div class="field">
     <label for="group">Elige el grupo que estas solicitando (sólo se muestran los disponibles)</label>
     <select id="group" name="group" class="ui search selection dropdown">
       <option value="">---</option>
-      @foreach ($groups as $key => $item)
-      <option value="{{ $item->id }}">[{{ $item->key }}] {{ $item->long_name }}</option>
+      @foreach ($groups as $item)
+      <option value="{{ $item->id }}">[{{ $item->name }}] {{ $item->subject->long_name }}</option>
       @endforeach
     </select>
   </div>

@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Move;
-use App\Subject;
+use App\Group;
+use App\Semester;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
@@ -38,7 +39,9 @@ class MovesController extends Controller
       return redirect()->back();
     }
 
-    $groups = Subject::where('career_id', Auth::user()->career->id)->get();
+    $last_semester = Semester::last();
+
+    $groups = Group::where('semester_id', $last_semester->id)->where('is_available', true)->get();
     $justifications = [
       'up' => [
         'ADELANTAR MATERIA',
