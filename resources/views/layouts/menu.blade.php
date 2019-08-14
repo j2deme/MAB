@@ -1,20 +1,18 @@
 @auth
-@hasanyrole(['Estudiante','Coordinador','Jefe','Admin'])
 <a href="{{ route('moves.index') }}" class="{{ Request::is('moves*') ? 'blue active ' : ' ' }}item">
   <i class="stream icon"></i> Solicitudes
 </a>
-@endhasanyrole
 @hasanyrole(['Jefe','Admin'])
 <a href="{{ route('semesters.index') }}" class="{{ Request::is('semesters*') ? 'blue active ' : ' ' }}item">
   <i class="ui calendar alternate outline icon"></i> Semestres
 </a>
-<a href="#" class="item">
+<a href="{{ route('careers.index') }}" class="{{ Request::is('careers*') ? 'blue active ' : ' ' }}item">
   <i class="ui university icon"></i> Carreras
 </a>
-<a href="#" class="item">
+<a href="{{ route('subjects.index') }}" class="{{ Request::is('subjects*') ? 'blue active ' : ' ' }}item">
   <i class="ui project diagram icon"></i> Materias
 </a>
-<a href="#" class="item">
+<a href="{{ route('groups.index') }}" class="{{ Request::is('groups*') ? 'blue active ' : ' ' }}item">
   <i class="ui shapes icon"></i> Grupos
 </a>
 <a href="{{ route('users.index') }}" class="{{ Request::is('users*') ? 'blue active ' : ' ' }}item">
@@ -22,11 +20,8 @@
 </a>
 @endhasanyrole
 @role('Admin')
-<a href="#" class="item">
+<a href="{{ route('roles.index') }}" class="{{ Request::is('roles*') ? 'blue active ' : ' ' }}item">
   <i class="ui user tag icon"></i> Roles
-</a>
-<a href="#" class="item">
-  <i class="ui user lock icon"></i> Permisos
 </a>
 @endrole
 @end
