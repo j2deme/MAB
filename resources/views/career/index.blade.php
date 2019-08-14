@@ -7,17 +7,20 @@
     <section class="fourteen wide column">
       <article class="ui attached segment">
         <header>
-          <h2 class="ui primary dividing header">Usuarios</h2>
+          <h2 class="ui primary dividing header">Carreras</h2>
         </header>
+        @can('add_careers')
+        <a href="{{ route('semesters.new') }}" class="ui right floated primary labeled icon button">
+          <i class="ui add icon"></i> Añadir carrera
+        </a>
+        @endcan
         <table class="ui celled striped compact table">
           <thead>
             <tr>
               <th class="ui center aligned one wide">ID</th>
+              <th class="ui center aligned two wide">Clave</th>
               <th class="ui center aligned">Nombre</th>
-              <th class="ui center aligned four wide">Usuario</th>
-              <th class="ui center aligned two wide">Rol</th>
-              <th class="ui center aligned one wide">Activo</th>
-              @can('edit_users')
+              @can('edit_careers')
               <th class="ui center aligned two wide">
                 <i class="ui cog icon"></i>
               </th>
@@ -25,21 +28,17 @@
             </tr>
           </thead>
           <tbody>
-            @forelse ($users as $item)
+            @forelse ($result as $item)
             <tr>
               <td class="ui center aligned">{{ $item->id }}</td>
-              <td>{{ $item->full_name }}</td>
+              <td class="ui center aligned">{{ $item->key }}</td>
               <td>
-                <a href="{{ route('users.show', $item) }}">{{ $item->username }}</a>
+                <a href="{{ route('careers.show', $item) }}">{{ $item->name }}</a>
               </td>
-              <td>{{ $item->roles[0]->name }}</td>
-              <td class="ui center aligned">
-                <i class="ui {{ !$item->isSuspended ? 'green check' : 'red times' }} icon"></i>
-              </td>
-              @can('edit_users')
+              @can('edit_careers')
               <td class="ui center aligned">
                 @include('shared._actions', [
-                'entity' => 'users',
+                'entity' => 'careers',
                 'id' => $item->id
                 ])
               </td>
@@ -50,15 +49,9 @@
               <td colspan="6">
                 <div class="ui placeholder segment">
                   <div class="ui icon header">
-                    <i class="users icon"></i>
-                    No existen usuarios registrados
+                    <i class="inbox icon"></i>
+                    No existen carreras registradas
                   </div>
-                  @role('Admin')
-                  <a href="{{ route('users.new') }}" class="ui primary icon labeled button">
-                    <i class="add icon"></i>
-                    Añadir usuario
-                  </a>
-                  @endrole
                 </div>
               </td>
             </tr>
@@ -66,13 +59,8 @@
           </tbody>
           <tfoot class="full-width">
             <tr>
-              <th colspan="5">
-                @role('Admin')
-                <a href="{{ route('users.new') }}" class="ui right floated small primary labeled icon button">
-                  <i class="ui add icon"></i> Añadir usuario
-                </a>
-                @endrole
-                @include('pagination.custom', ['paginator' => $users])
+              <th colspan="6">
+                @include('pagination.custom', ['paginator' => $result])
               </th>
             </tr>
           </tfoot>

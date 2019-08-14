@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-use App\Role;
-use App\Permission;
+use App\Group;
+use App\Subject;
+use App\Semester;
 use App\Http\Requests;
-use App\Traits\Authorizable;
 use Illuminate\Http\Request;
 
-class RoleController extends Controller
+class GroupController extends Controller
 {
-  use Authorizable;
   /**
    * Display a listing of the resource.
    *
@@ -19,11 +17,8 @@ class RoleController extends Controller
    */
   public function index()
   {
-    $roles = Role::all();
-    $permissions = Permission::all();
-    $user = Auth::user();
-
-    return view('role.index', compact('roles', 'permissions', 'user'));
+    $result = Group::orderBy('semester_id', 'asc')->orderBy('subject_id', 'asc')->paginate(7);
+    return view('group.index', compact('result'));
   }
 
   /**
@@ -33,7 +28,10 @@ class RoleController extends Controller
    */
   public function create()
   {
-    //
+    $semesters = Semester::orderBy('key', 'desc')->pluck('long_name', 'id');
+    $subjects = Subject::orderBy('career_id', 'asc')->orderBy('semester', 'asc')->get();
+
+    return view('group.new', compact('semesters', 'subjects'));
   }
 
   /**
@@ -44,13 +42,26 @@ class RoleController extends Controller
    */
   public function store(Request $request)
   {
-    $this->validate($request, ['name' => 'required|unique:roles']);
+    $this->validate($request, [
+      'name' => 'bail|required',
+      'semester_id' => 'required',
+      'subject_id' => 'required'
+    ]);
 
-    if (Role::create($request->only('name'))) {
-      flash('Rol añadido');
+    $exists = Group::where('semester_id', $request->get('semester_id'))->where('subject_id', $request->get('subject_id'))->where('name', $request->get('name'))->count();
+    if ($exists != 0) {
+      flash()->error('Ya existe un grupo con las mismas características e identificador');
+    } else {
+      // Create the group
+      if ($group = Group::create($request->all())) {
+        flash('El grupo ha sido creado');
+      } else {
+        flash()->error('No es posible crear el grupo');
+      }
     }
 
-    return redirect()->back();
+
+    return redirect()->route('groups.index');
   }
 
   /**
@@ -84,21 +95,7 @@ class RoleController extends Controller
    */
   public function update(Request $request, $id)
   {
-    if ($role = Role::findOrFail($id)) {
-      // admin role has everything
-      if ($role->name === 'Admin') {
-        $role->syncPermissions(Permission::all());
-        return redirect()->route('roles.index');
-      }
-
-      $permissions = $request->get('permissions', []);
-      $role->syncPermissions($permissions);
-      flash('Los permisos para ' . $role->name . ' han sido  actualizados.');
-    } else {
-      flash()->error('Rol con id ' . $id . ' no encontrado.');
-    }
-
-    return redirect()->route('roles.index');
+    //
   }
 
   /**

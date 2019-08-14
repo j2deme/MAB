@@ -22,4 +22,17 @@ class Semester extends Model
   {
     return $query->where('is_active', true)->orderBy('key', 'desc')->first();
   }
+
+  /**
+   * ACCESSORS
+   */
+  public function getUpRangeAttribute()
+  {
+    return $this->begin_up->format('d/m/Y') . " - " . $this->end_up->format('d/m/Y');
+  }
+
+  public function getDownRangeAttribute()
+  {
+    return $this->begin_down->format('d/m/Y') . " - " . $this->end_down->format('d/m/Y');
+  }
 }

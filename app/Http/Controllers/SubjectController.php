@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-use App\Role;
-use App\Permission;
+use App\Career;
+use App\Subject;
 use App\Http\Requests;
-use App\Traits\Authorizable;
 use Illuminate\Http\Request;
 
-class RoleController extends Controller
+class SubjectController extends Controller
 {
-  use Authorizable;
   /**
    * Display a listing of the resource.
    *
@@ -19,11 +16,8 @@ class RoleController extends Controller
    */
   public function index()
   {
-    $roles = Role::all();
-    $permissions = Permission::all();
-    $user = Auth::user();
-
-    return view('role.index', compact('roles', 'permissions', 'user'));
+    $result = Subject::orderBy('career_id')->paginate(7);
+    return view('subject.index', compact('result'));
   }
 
   /**
@@ -33,7 +27,9 @@ class RoleController extends Controller
    */
   public function create()
   {
-    //
+    $careers = Career::pluck('name', 'id');
+
+    return view('subject.new', compact('careers'));
   }
 
   /**
@@ -44,13 +40,25 @@ class RoleController extends Controller
    */
   public function store(Request $request)
   {
-    $this->validate($request, ['name' => 'required|unique:roles']);
+    $this->validate($request, [
+      'key' => 'bail|required|min:5',
+      'short_name' => 'required',
+      'long_name' => 'required',
+      'career_id' => 'required|exists:careers,id',
+      'semester' => 'required',
+      'ht' => 'required',
+      'hp' => 'required',
+      'cr' => 'required'
+    ]);
 
-    if (Role::create($request->only('name'))) {
-      flash('Rol añadido');
+    // Create the semester
+    if ($subject = Subject::create($request->all())) {
+      flash('La materia ha sido creada');
+    } else {
+      flash()->error('No es posible crear la materia');
     }
 
-    return redirect()->back();
+    return redirect()->route('subjects.index');
   }
 
   /**
@@ -84,21 +92,7 @@ class RoleController extends Controller
    */
   public function update(Request $request, $id)
   {
-    if ($role = Role::findOrFail($id)) {
-      // admin role has everything
-      if ($role->name === 'Admin') {
-        $role->syncPermissions(Permission::all());
-        return redirect()->route('roles.index');
-      }
-
-      $permissions = $request->get('permissions', []);
-      $role->syncPermissions($permissions);
-      flash('Los permisos para ' . $role->name . ' han sido  actualizados.');
-    } else {
-      flash()->error('Rol con id ' . $id . ' no encontrado.');
-    }
-
-    return redirect()->route('roles.index');
+    //
   }
 
   /**
@@ -109,6 +103,20 @@ class RoleController extends Controller
    */
   public function destroy($id)
   {
-    //
+    if (Subject::findOrFail($id)->delete()) {
+      flash()->success('La materia ha sido borrada');
+    } else {
+      flash()->success('La materia no ha sido borrada');
+    }
+
+    return redirect()->back();
   }
+
+  /**
+   * Show the form for uploading subjects on batch.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function batch()
+  { }
 }

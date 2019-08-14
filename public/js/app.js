@@ -22,4 +22,18 @@ $(function () {
   $('.message .close').on('click', function () {
     $(this).closest('.message').transition('fade');
   });
+  $('#sidebarMenu').click(function (e) {
+    e.preventDefault();
+    $('.ui.sidebar').sidebar('toggle');
+  });
 });
+
+let calendarTextOptions = {
+  days: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+  months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+  monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+  today: 'Hoy',
+  now: 'Ahora',
+  am: 'AM',
+  pm: 'PM'
+};

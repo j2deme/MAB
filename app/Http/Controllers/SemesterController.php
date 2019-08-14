@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-use App\Role;
-use App\Permission;
+use App\Semester;
 use App\Http\Requests;
-use App\Traits\Authorizable;
 use Illuminate\Http\Request;
 
-class RoleController extends Controller
+class SemesterController extends Controller
 {
-  use Authorizable;
   /**
    * Display a listing of the resource.
    *
@@ -19,11 +15,8 @@ class RoleController extends Controller
    */
   public function index()
   {
-    $roles = Role::all();
-    $permissions = Permission::all();
-    $user = Auth::user();
-
-    return view('role.index', compact('roles', 'permissions', 'user'));
+    $result = Semester::latest()->paginate();
+    return view('semester.index', compact('result'));
   }
 
   /**
@@ -33,7 +26,7 @@ class RoleController extends Controller
    */
   public function create()
   {
-    //
+    return view('semester.new');
   }
 
   /**
@@ -44,13 +37,20 @@ class RoleController extends Controller
    */
   public function store(Request $request)
   {
-    $this->validate($request, ['name' => 'required|unique:roles']);
+    $this->validate($request, [
+      'key' => 'bail|required|min:5',
+      'short_name' => 'required|unique:semesters',
+      'long_name' => 'required|unique:semesters'
+    ]);
 
-    if (Role::create($request->only('name'))) {
-      flash('Rol añadido');
+    // Create the semester
+    if ($semester = Semester::create($request->all())) {
+      flash('El semestre ha sido creado');
+    } else {
+      flash()->error('No es posible crear el semestre');
     }
 
-    return redirect()->back();
+    return redirect()->route('semesters.index');
   }
 
   /**
@@ -84,21 +84,7 @@ class RoleController extends Controller
    */
   public function update(Request $request, $id)
   {
-    if ($role = Role::findOrFail($id)) {
-      // admin role has everything
-      if ($role->name === 'Admin') {
-        $role->syncPermissions(Permission::all());
-        return redirect()->route('roles.index');
-      }
-
-      $permissions = $request->get('permissions', []);
-      $role->syncPermissions($permissions);
-      flash('Los permisos para ' . $role->name . ' han sido  actualizados.');
-    } else {
-      flash()->error('Rol con id ' . $id . ' no encontrado.');
-    }
-
-    return redirect()->route('roles.index');
+    //
   }
 
   /**

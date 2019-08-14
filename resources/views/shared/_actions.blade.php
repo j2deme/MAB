@@ -1,4 +1,4 @@
-<div class="ui icon buttons">
+<div class="ui icon small buttons">
   @can('edit_'.$entity)
   <a href="{{ route($entity.'.edit', [str_singular($entity) => $id])  }}" class="ui blue icon button">
     <i class="ui edit icon"></i>

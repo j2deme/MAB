@@ -44,9 +44,62 @@ Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.'], fu
   Route::delete('/{user}', 'UserController@destroy')->name('delete');
 });
 
-# MOVES ROUTES -- RESOURCE
+# ROLE ROUTES -- RESOURCE
+Route::group(['middleware' => 'auth', 'prefix' => 'roles', 'as' => 'roles.'], function () {
+  Route::get('/', 'RoleController@index')->name('index');
+  Route::post('/', 'RoleController@create')->name('save');
+  Route::put('{role}', 'RoleController@update')->name('update');
+});
+
+# MOVE ROUTES -- RESOURCE
 Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], function () {
   Route::get('/', 'MovesController@index')->name('index');
   Route::post('/', 'MovesController@store')->name('save');
   Route::get('/create/{type}', 'MovesController@create')->name('new');
+});
+
+# SEMESTER ROUTES -- RESOURCE
+Route::group(['middleware' => 'auth', 'prefix' => 'semesters', 'as' => 'semesters.'], function () {
+  Route::get('/', 'SemesterController@index')->name('index');
+  Route::post('/', 'SemesterController@store')->name('save');
+  Route::get('/create', 'SemesterController@create')->name('new');
+  Route::get('/{semester}', 'SemesterController@show')->name('show');
+  Route::get('/{semester}/edit', 'SemesterController@edit')->name('edit');
+  Route::put('/{semester}', 'SemesterController@update')->name('update');
+  Route::delete('/{semester}', 'SemesterController@destroy')->name('delete');
+});
+
+# CAREER ROUTES -- RESOURCE
+Route::group(['middleware' => 'auth', 'prefix' => 'careers', 'as' => 'careers.'], function () {
+  Route::get('/', 'CareerController@index')->name('index');
+  Route::post('/', 'CareerController@store')->name('save');
+  Route::get('/create', 'CareerController@create')->name('new');
+  Route::get('/{career}', 'CareerController@show')->name('show');
+  Route::get('/{career}/edit', 'CareerController@edit')->name('edit');
+  Route::put('/{career}', 'CareerController@update')->name('update');
+  Route::delete('/{career}', 'CareerController@destroy')->name('delete');
+});
+
+# SUBJECT ROUTES -- RESOURCE
+Route::group(['middleware' => 'auth', 'prefix' => 'subjects', 'as' => 'subjects.'], function () {
+  Route::get('/', 'SubjectController@index')->name('index');
+  Route::post('/', 'SubjectController@store')->name('save');
+  Route::get('/create', 'SubjectController@create')->name('new');
+  Route::get('/{subject}', 'SubjectController@show')->name('show');
+  Route::get('/{subject}/edit', 'SubjectController@edit')->name('edit');
+  Route::put('/{subject}', 'SubjectController@update')->name('update');
+  Route::delete('/{subject}', 'SubjectController@destroy')->name('delete');
+  Route::get('/load', 'SubjectController@batch')->name('batch');
+});
+
+# GROUP ROUTES -- RESOURCE
+Route::group(['middleware' => 'auth', 'prefix' => 'groups', 'as' => 'groups.'], function () {
+  Route::get('/', 'GroupController@index')->name('index');
+  Route::post('/', 'GroupController@store')->name('save');
+  Route::get('/create', 'GroupController@create')->name('new');
+  Route::get('/{group}', 'GroupController@show')->name('show');
+  Route::get('/{group}/edit', 'GroupController@edit')->name('edit');
+  Route::put('/{group}', 'GroupController@update')->name('update');
+  Route::delete('/{group}', 'GroupController@destroy')->name('delete');
+  Route::get('/load', 'GroupController@batch')->name('batch');
 });

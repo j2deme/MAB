@@ -16,6 +16,13 @@ class Subject extends Model
   ];
 
   /**
+   * ACCESSORS
+   */
+  public function getSatcaAttribute()
+  {
+    return trim("{$this->ht}-{$this->hp}-{$this->cr}");
+  }
+  /**
    * MUTATORS
    */
   public function setKeyAttribute($value)
