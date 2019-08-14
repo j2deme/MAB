@@ -90,3 +90,15 @@ Route::group(['middleware' => 'auth', 'prefix' => 'subjects', 'as' => 'subjects.
   Route::delete('/{subject}', 'SubjectController@destroy')->name('delete');
   Route::get('/load', 'SubjectController@batch')->name('batch');
 });
+
+# GROUP ROUTES -- RESOURCE
+Route::group(['middleware' => 'auth', 'prefix' => 'groups', 'as' => 'groups.'], function () {
+  Route::get('/', 'GroupController@index')->name('index');
+  Route::post('/', 'GroupController@store')->name('save');
+  Route::get('/create', 'GroupController@create')->name('new');
+  Route::get('/{group}', 'GroupController@show')->name('show');
+  Route::get('/{group}/edit', 'GroupController@edit')->name('edit');
+  Route::put('/{group}', 'GroupController@update')->name('update');
+  Route::delete('/{group}', 'GroupController@destroy')->name('delete');
+  Route::get('/load', 'GroupController@batch')->name('batch');
+});
