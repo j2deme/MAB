@@ -18,12 +18,13 @@ class MovesController extends Controller
    */
   public function index()
   {
+    $last_semester = Semester::last();
     if (Auth::user()->hasRole('Estudiante')) {
-      $result = Auth::user()->moves()->latest()->paginate();
+      $result = Auth::user()->moves()->where('semester_id', $last_semester->id)->latest()->paginate(7);
     } elseif (Auth::user()->hasRole('Coordinador')) {
-      $result = Career::find(Auth::user()->career->id)->moves()->latest()->paginate();
+      $result = Career::find(Auth::user()->career->id)->moves()->where('semester_id', $last_semester->id)->latest()->paginate(7);
     } else {
-      $result = Move::paginate();
+      $result = Move::where('semester_id', $last_semester->id)->paginate(7);
     }
     return view('moves.index', compact('result'));
   }
