@@ -6,12 +6,12 @@
   @endcan
 
   @can('delete_'.$entity)
-  <form action="{{ route($entity.'.delete', ['user' => $id]) }}" method="post"
-    onsubmit="return confirm('¿Está seguro de eliminar el registro?');" style="display:inline;">
+  <form action="{{ route($entity.'.delete', [str_singular($entity) => $id]) }}" method="post"
+    onsubmit="return confirm('¿Está seguro de eliminar el registro?\nEsta acción no es reversible');" style="display:inline;">
     @csrf
     @method('delete')
     <button type="submit" class="ui red icon button">
-      <i class="ui trash icon"></i>
+      <i class="ui trash alternate icon"></i>
     </button>
   </form>
   @endcan
