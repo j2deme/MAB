@@ -27,7 +27,7 @@ class Move extends Model
 
   public function setJustificationAttribute($value)
   {
-    $this->attributes['settings'] = json_encode($value);
+    $this->attributes['justification'] = json_encode($value);
   }
 
   public function getAnswerAttribute($value)
@@ -37,7 +37,7 @@ class Move extends Model
 
   public function setAnswerAttribute($value)
   {
-    $this->attributes['settings'] = json_encode($value);
+    $this->attributes['answer'] = json_encode($value);
   }
 
   public function setTypeAttribute($value)
