@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  $('#group').dropdown({
+  $('#group_id').dropdown({
     ignoreDiacritics: true,
     sortSelect: true,
     fullTextSearch: true
@@ -14,7 +14,7 @@ $(document).ready(function () {
 
   $('.ui.form').form({
     fields: {
-      group: {
+      group_id: {
         rules: [{
           type: 'empty',
           prompt: 'Debes seleccionar un grupo'

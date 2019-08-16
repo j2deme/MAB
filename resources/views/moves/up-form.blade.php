@@ -2,11 +2,11 @@
   @csrf
   <input type="hidden" id="type" name="type" value="{{ $type }}">
   <div class="field">
-    <label for="group">Elige el grupo que estas solicitando (sólo se muestran los disponibles)</label>
-    <select id="group" name="group" class="ui search selection dropdown">
+    <label for="group_id">Elige el grupo que estas solicitando (sólo se muestran los disponibles)</label>
+    <select id="group_id" name="group_id" class="ui search selection dropdown">
       <option value="">---</option>
       @foreach ($groups as $item)
-      <option value="{{ $item->id }}">[{{ $item->name }}] {{ $item->subject->long_name }}</option>
+      <option value="{{ $item->id }}">[{{ $item->full_key }}] {{ $item->subject->long_name }}</option>
       @endforeach
     </select>
   </div>
