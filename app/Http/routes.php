@@ -56,6 +56,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], fu
   Route::get('/', 'MovesController@index')->name('index');
   Route::post('/', 'MovesController@store')->name('save');
   Route::get('/create/{type}', 'MovesController@create')->name('new');
+  Route::get('/{move}', 'MovesController@show')->name('show');
+  Route::get('/{move}/edit', 'MovesController@edit')->name('edit');
+  Route::put('/{move}', 'MovesController@update')->name('update');
+  Route::delete('/{move}', 'MovesController@destroy')->name('delete');
 });
 
 # SEMESTER ROUTES -- RESOURCE
