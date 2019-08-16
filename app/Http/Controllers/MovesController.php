@@ -73,7 +73,33 @@ class MovesController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    $last_semester = Semester::last();
+    $this->validate($request, [
+      'group_id' => 'required',
+      'justification' => 'required'
+    ]);
+
+    $data = [
+      'semester_id' => $last_semester->id,
+      'group_id' => $request->get('group_id'),
+      'justification' => [
+        'main' => $request->get('justification'),
+        'extra' => $request->get('motivation')
+      ],
+      'user_id' => Auth::user()->id,
+      'answer' => [],
+      'status' => '0',
+      'linked_to' => null,
+      'type' => $request->get('type')
+    ];
+
+    if ($move = Move::create($data)) {
+      flash('Solicitud registrada');
+    } else {
+      flash()->error('No fue posible registrar la solicitud');
+    }
+
+    return redirect()->route('moves.index');
   }
 
   /**
