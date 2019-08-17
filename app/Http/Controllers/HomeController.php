@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Career;
 use Auth;
+use App\Career;
+use App\Semester;
+use App\Move;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
@@ -34,13 +36,15 @@ class HomeController extends Controller
       $data['downs'] = Auth::user()->downs;
       $data['attended'] = Auth::user()->attended;
     } elseif (Auth::user()->hasRole('Coordinador')) {
-      $data['ups'] = 0;
-      $data['downs'] = 0;
-      $data['attended'] = 0;
+      $last_semester = Semester::last();
+      $data['ups'] = Career::find(Auth::user()->career->id)->moves()->where('semester_id', $last_semester->id)->where('type', 'ALTA')->count();
+      $data['downs'] = Career::find(Auth::user()->career->id)->moves()->where('semester_id', $last_semester->id)->where('type', 'BAJA')->count();
+      $data['attended'] = Career::find(Auth::user()->career->id)->moves()->where('semester_id', $last_semester->id)->whereIn('status', ['2', '3', '4', '5'])->count();
     } else {
-      $data['ups'] = 0;
-      $data['downs'] = 0;
-      $data['attended'] = 0;
+      $last_semester = Semester::last();
+      $data['ups'] = Move::where('semester_id', $last_semester->id)->where('type', 'ALTA')->count();
+      $data['downs'] = Move::where('semester_id', $last_semester->id)->where('type', 'BAJA')->count();
+      $data['attended'] = Move::where('semester_id', $last_semester->id)->whereIn('status', ['2', '3', '4', '5'])->count();
     }
     return view('home', $data);
   }
