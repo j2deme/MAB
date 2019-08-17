@@ -30,10 +30,10 @@
                 <div class="value">{{ $downs }}</div>
                 <div class="label">Bajas</div>
               </div>
-              <a class="ui statistic" href="/">
+              <div class="ui statistic">
                 <div class="value">{{ $attended }}</div>
                 <div class="label">Atendidas</div>
-              </a>
+              </div>
             </div>
           </div>
         </div>
