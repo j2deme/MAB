@@ -15,7 +15,7 @@
             @endrole
           </h2>
         </header>
-        @can('add_moves')
+        @role('Estudiante')
         <div class="ui right floated small buttons">
           <a href="{{ route('moves.new',['type' => 'up']) }}" class="ui blue icon labeled button">
             <i class="ui sort up icon"></i>
@@ -26,11 +26,11 @@
             Bajas
           </a>
         </div>
-        @endcan
+        @endrole
         <table class="ui celled striped compact table">
           <thead>
             <tr>
-              <th class="ui center aligned one wide">ID</th>
+              <th class="ui center aligned two wide">No. Control</th>
               <th class="ui center aligned">Solicitud</th>
               <th class="ui center aligned one wide">Tipo</th>
               <th class="ui center aligned one wide">Paralelo</th>
@@ -45,13 +45,17 @@
           <tbody>
             @forelse ($result as $item)
             <tr>
-              <td class="ui center aligned">{{ $item->id }}</td>
+              <td class="ui center aligned">{{ $item->user->username }}</td>
               <td>{{ $item->type }} DE {{ $item->group->subject->short_name }} ({{ $item->group->full_key }})</td>
               <td class="ui center aligned">
                 <i class="ui large {{ $item->type == 'ALTA' ? 'blue arrow up' : 'red arrow down' }} icon"></i>
               </td>
               <td class="ui center aligned">
+                @if ($item->type == 'BAJA')
+                <i class="ui large grey minus icon"></i>
+                @else
                 <i class="ui large {{ $item->is_parallel ? 'green check' : 'red times' }} icon"></i>
+                @endif
               </td>
               <td class="ui center aligned">
                 @include('shared._move_status', ['status' => $item->status])
@@ -59,13 +63,10 @@
               @can('edit_moves')
               <td class="ui center aligned">
                 @role('Estudiante')
-                @include('moves.student_actions', ['id' => $item->id])
+                @include('moves.student_actions', ['id' => $item->id, 'move' => $item])
                 @endrole
-                @hasanyrole(['Coordinador','Jefe'])
-                @include('shared._actions', [
-                'entity' => 'users',
-                'id' => $item->id
-                ])
+                @hasanyrole(['Coordinador','Jefe','Admin'])
+                @include('moves.coordinator_actions', ['id' => $item->id])
                 @endhasanyrole
               </td>
               @endcan
@@ -107,6 +108,7 @@
             </tr>
           </tfoot>
         </table>
+        @include('components.back', ['route' => route('home.index')])
       </article>
     </section>
   </div>

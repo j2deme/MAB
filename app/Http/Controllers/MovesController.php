@@ -148,6 +148,12 @@ class MovesController extends Controller
    */
   public function destroy($id)
   {
-    //
+    if (Move::findOrFail($id)->delete()) {
+      flash()->success('La solicitud ha sido cancelada');
+    } else {
+      flash()->success('La solicitud no ha sido cancelada');
+    }
+
+    return redirect()->back();
   }
 }

@@ -3,14 +3,18 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Move extends Model
 {
+  use SoftDeletes;
   protected $fillable = ['user_id', 'semester_id', 'group_id', 'type', 'justification', 'answer', 'status', 'linked_to', 'is_batch', 'is_parallel', 'is_upgraded'];
 
   /**
    * CASTING
    */
+  protected $dates = ['deleted_at'];
+
   protected $casts = [
     'is_batch'    => 'boolean',
     'is_parallel' => 'boolean',

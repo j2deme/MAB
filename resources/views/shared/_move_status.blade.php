@@ -1,28 +1,16 @@
 @php
-switch ($status) {
-case '0':
-// Registrado
-echo "<span class=\"ui olive label\">REGISTRADA</span>";
-break;
-case '1':
-// En revisión
-echo "<span class=\"ui yellow label\">REVISIÓN</span>";
-break;
-case '2':
-// Rechazada por coordinador
-echo "<span class=\"ui orange label\">RECHAZADA</span>";
-break;
-case '3':
-// Aceptada por coordinador
-case '4':
-// Aceptada por jefe
-echo "<span class=\"ui green label\">ACEPTADA</span>";
-break;
-case '5':
-// Rechazada por jefe
-echo "<span class=\"ui red label\">RECHAZADA</span>";
-break;
-default:
-echo "<span class=\"ui black label\">CANCELADA</span>";
+$statuses = [
+'0' => ['teal', 'REGISTRADA'], // Registrada
+'1' => ['yellow', 'REVISIÓN'], // En revisión
+'2' => ['orange', 'RECHAZADA'], // Rechazada por coordinador
+'3' => ['green', 'ACEPTADA'], // Aceptada por coordinador
+'4' => ['green', 'ACEPTADA'], // Aceptada por jefe / admin
+'5' => ['red', 'RECHAZADA'] // Rechazada por jefe / admin
+];
+
+if(array_key_exists($status, $statuses)){
+echo "<span class=\"ui {$statuses[$status][0]} label\" data-content=\"{$statuses[$status][1]}\">{$status}</span>";
+} else {
+echo "<span class=\"ui black label\" data-content=\"CANCELADA\">{$status}</span>";
 }
 @endphp
