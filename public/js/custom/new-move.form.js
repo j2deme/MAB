@@ -1,4 +1,10 @@
 $(document).ready(function () {
+  let _form = $('#moveForm');
+  if (_form.hasClass('closed')) {
+    _form.dimmer({
+      closable: false
+    }).dimmer('show');
+  }
   $('#group_id').dropdown({
     ignoreDiacritics: true,
     sortSelect: true,

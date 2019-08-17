@@ -1,4 +1,4 @@
-<form action="{{ route('moves.save') }}" class="ui form" method="POST">
+<form action="{{ route('moves.save') }}" class="ui form {{ (!$downs_open) ? 'closed' : null }}" method="POST" id="moveForm">
   @csrf
   <input type="hidden" id="type" name="type" value="{{ $type }}">
   <div class="field">
@@ -29,11 +29,25 @@
     <span class="ui chars"></span>
   </div>
   @include('components.back', ['route' => route('moves.index')])
+  @if ($downs_open)
   <button type="submit" class="ui green labeled icon submit button">
     <i class="send icon"></i>
     Enviar
   </button>
+  @endif
 
   @include('components.errors-message')
+
+  <div class="ui dimmer">
+    <div class="content">
+      <h2 class="ui inverted icon header">
+        <i class="red ban icon"></i>
+        El período de bajas es del {{ $last->begin_down->format('d/m/Y') }} al {{ $last->end_down->format('d/m/Y') }}
+      </h2>
+      <a href="{{ route('moves.index') }}" class="ui inverted labeled icon button">
+        <i class="chevron left icon"></i> Regresar
+      </a>
+    </div>
+  </div>
 
 </form>

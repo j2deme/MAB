@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Carbon\Carbon;
 use App\Move;
 use App\Group;
 use App\Semester;
@@ -40,9 +41,12 @@ class MovesController extends Controller
       return redirect()->back();
     }
 
-    $last_semester = Semester::last();
+    $last = Semester::last();
+    $today = Carbon::today();
+    $ups_open = ($last->begin_up <= $today and $last->end_up >= $today);
+    $downs_open = ($last->begin_down <= $today and $last->end_down >= $today);
 
-    $groups = Group::where('semester_id', $last_semester->id)->where('is_available', true)->get();
+    $groups = Group::where('semester_id', $last->id)->where('is_available', true)->get();
     $justifications = [
       'up' => [
         'ADELANTAR MATERIA',
@@ -62,7 +66,7 @@ class MovesController extends Controller
         'BAJA TEMPORAL',
       ]
     ];
-    return view('moves.new', compact(['type', 'groups', 'justifications']));
+    return view('moves.new', compact(['type', 'groups', 'justifications', 'last', 'ups_open', 'downs_open']));
   }
 
   /**
