@@ -1,4 +1,7 @@
 @auth
+<a href="{{ route('home.index') }}" class="item">
+  <i class="home icon"></i>
+</a>
 <a href="{{ route('moves.index') }}" class="{{ Request::is('moves*') ? 'blue active ' : ' ' }}item">
   <i class="stream icon"></i> Solicitudes
 </a>
