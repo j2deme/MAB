@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Semester;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -82,16 +83,19 @@ class User extends Authenticatable
    */
   public function getUpsAttribute()
   {
-    return $this->moves()->where('type', 'ALTA')->count();
+    $last_semester = Semester::last();
+    return $this->moves()->where('semester_id', $last_semester->id)->where('type', 'ALTA')->count();
   }
 
   public function getDownsAttribute()
   {
-    return $this->moves()->where('type', 'BAJA')->count();
+    $last_semester = Semester::last();
+    return $this->moves()->where('semester_id', $last_semester->id)->where('type', 'BAJA')->count();
   }
 
   public function getAttendedAttribute()
   {
-    return $this->moves()->where('status', 'finished')->count();
+    $last_semester = Semester::last();
+    return $this->moves()->where('semester_id', $last_semester->id)->whereIn('status', ['2', '3', '4', '5'])->count();
   }
 }
