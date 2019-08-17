@@ -31,11 +31,14 @@
   <div class="content">
     <div class="header">Bienvenido {{ Auth::user()->name }}</div>
     <ul class="list">
-      <li>En este módulo podrás registrar tus solicitudes de altas y bajas, cada movimiento se registra y
-        procesa de
-        manera individual, para una atención más ágil.</li>
-      <li>Una vez que registres tus solicitudes, podrás conocer su estatus en todo momento. Considera que
+      <li>En este módulo podrás registrar tus solicitudes de altas y bajas, para una atención más ágil cada movimiento
+        <span class="ui red text"><strong> se registra y procesa de manera individual</strong></span>.</li>
+      <li>Una vez que registres tus solicitudes, podrás conocer su estatus en todo momento.</li>
+      <li>Considera que
         dependiendo de la complejidad de tu solicitud, puede tomar más tiempo del que esperas.</li>
+      <li>Recuerda que si solicitas una materia en otra carrera (paralelo), será atendida hasta haber resuelto todas las
+        solicitudes de esa carrera.</li>
+      <li>Todas las solicitudes serán atendidas tomando en cuenta el cupo máximo autorizado para cada grupo.</li>
     </ul>
   </div>
 </div>
