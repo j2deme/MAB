@@ -13,6 +13,8 @@
         </header>
         @if ($type == 'up')
         @include('moves.up-form')
+        @else
+        @include('moves.down-form')
         @endif
       </article>
     </section>

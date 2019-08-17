@@ -3,7 +3,8 @@
   <input type="hidden" id="type" name="type" value="{{ $type }}">
   <div class="field">
     <span class="ui primary circular label">1</span>
-    <label for="group_id">Elige el grupo que estas solicitando (sólo se muestran los disponibles)</label>
+    <label for="group_id">Elige el grupo deseas dar de baja (asegurate que ya lo tengas registrado en tu
+      horario)</label>
     <select id="group_id" name="group_id" class="ui search selection dropdown">
       <option value="">---</option>
       @foreach ($groups as $item)
@@ -16,7 +17,7 @@
     <label for="justification">Elige el motivo que más se acerque al tuyo</label>
     <select id="justification" name="justification" class="ui search selection dropdown">
       <option value="">---</option>
-      @foreach ($justifications['up'] as $item)
+      @foreach ($justifications['down'] as $item)
       <option value="{{ $item }}">{{ $item }}</option>
       @endforeach
     </select>

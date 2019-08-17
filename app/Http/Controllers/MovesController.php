@@ -49,7 +49,6 @@ class MovesController extends Controller
         'ATRASO POR CAMBIO DE CARRERA',
         'COMPATIBILIDAD CON DOCENTE',
         'GRUPO CERRADO',
-        'NO PERMITIÓ SELECCIONAR EN EL SII',
         'SE AGOTÓ EL TIEMPO DE SELECCIÓN',
         'TOMAR MATERIA DE RECURSAMIENTO',
         'TOMAR MATERIA DE CURSO ESPECIAL',
@@ -80,6 +79,9 @@ class MovesController extends Controller
       'justification' => 'required'
     ]);
 
+    $group = Group::findOrFail([$request->get('group_id')])->first();
+    $is_parallel = ($group->subject->career->id != Auth::user()->career->id);
+
     $data = [
       'semester_id' => $last_semester->id,
       'group_id' => $request->get('group_id'),
@@ -91,7 +93,8 @@ class MovesController extends Controller
       'answer' => [],
       'status' => '0',
       'linked_to' => null,
-      'type' => $request->get('type')
+      'type' => $request->get('type'),
+      'is_parallel' => $is_parallel
     ];
 
     if ($move = Move::create($data)) {
