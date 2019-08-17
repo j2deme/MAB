@@ -18,9 +18,20 @@
 <a href="{{ route('groups.index') }}" class="{{ Request::is('groups*') ? 'blue active ' : ' ' }}item">
   <i class="ui shapes icon"></i> Grupos
 </a>
-<a href="{{ route('users.index') }}" class="{{ Request::is('users*') ? 'blue active ' : ' ' }}item">
+<div class="ui simple dropdown {{ Request::is('users*') ? 'blue ' : ' ' }} item">
   <i class="users icon"></i> Usuarios
-</a>
+  <div class="menu">
+    <a class="item" href="{{ route('users.index') }}">
+      <i class="user shield icon"></i> Superusuarios
+    </a>
+    <a href="#" class="item">
+      <i class="user check icon"></i> Coordinadores
+    </a>
+    <a href="#" class="item">
+      <i class="user graduate icon"></i> Estudiantes
+    </a>
+  </div>
+</div>
 @endhasanyrole
 @role('Admin')
 <a href="{{ route('roles.index') }}" class="{{ Request::is('roles*') ? 'blue active ' : ' ' }}item">
