@@ -26,6 +26,7 @@ $(function () {
     e.preventDefault();
     $('.ui.sidebar').sidebar('toggle');
   });
+  $('[data-content]').popup();
 });
 
 let calendarTextOptions = {
