@@ -114,7 +114,8 @@ class MovesController extends Controller
    */
   public function show($id)
   {
-    //
+    $move = Move::with(['group', 'group.subject'])->findOrFail([$id])->first();
+    return view('moves.show', compact('move'));
   }
 
   /**
