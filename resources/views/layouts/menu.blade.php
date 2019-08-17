@@ -41,9 +41,6 @@
 @end
 <div class="right menu">
   @auth
-  {{-- <a href="{{ route('home.index') }}" class="item">
-  <i class="home icon"></i>
-  </a> --}}
   <div class="ui simple dropdown item">
     {{ Auth::user()->username }} <i class="dropdown icon"></i>
     <div class="menu">

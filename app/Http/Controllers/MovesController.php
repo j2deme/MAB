@@ -125,7 +125,25 @@ class MovesController extends Controller
    */
   public function edit($id)
   {
-    //
+    $move = Move::with(['user', 'group'])->findOrFail([$id])->first();
+    if ($move->status == '0') {
+      $move->status = '1';
+      $move->save();
+    }
+    $answers = [
+      '1 EMPALME',
+      '2 EMPALMES',
+      '3+ EMPALMES',
+      'ADEUDA CORREQUISITO',
+      'ADEUDA PREREQUISITO',
+      'EXCESO DE CRÉDITOS',
+      'GRUPO A CAPACIDAD MÁXIMA',
+      'NO AUTORIZADO POR SITUACIÓN ACADÉMICA',
+      'NO EQUIVALENTE',
+      'NO SE AUTORIZAN BAJAS PARA 1ER SEMESTRE',
+      'SIN PROBLEMAS',
+    ];
+    return view('moves.check', compact('move', 'answers'));
   }
 
   /**
@@ -137,7 +155,28 @@ class MovesController extends Controller
    */
   public function update(Request $request, $id)
   {
-    //
+    $move = Move::findOrFail([$id])->first();
+    if ($request->has('acceptBtn')) {
+      // Aceptada por coordinador: 3
+      // Aceptada por jefe / admin: 4
+      $move->status = (Auth::user()->hasRole('Coordinador')) ? '3' : '4';
+    } else {
+      // Rechazada por coordinador: 2
+      // Rechazada por jefe / admin: 5
+      $move->status = (Auth::user()->hasRole('Coordinador')) ? '2' : '5';
+    }
+    $move->answer = [
+      'main' => $request->get('answer'),
+      'extra' => $request->get('extra')
+    ];
+
+    if ($move->save()) {
+      flash('Solicitud atendida');
+    } else {
+      flash()->error('Ocurrio un error al atender la solicitud');
+    }
+
+    return redirect()->route('moves.index');
   }
 
   /**
