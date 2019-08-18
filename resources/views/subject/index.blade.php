@@ -46,7 +46,9 @@
               <td class="ui center aligned">{{ $item->semester }}</td>
               <td class="ui center aligned">{{ $item->satca }}</td>
               <td class="ui center aligned">
-                <i class="ui {{ $item->is_active ? 'green check' : 'red times' }} icon"></i>
+                <a href="{{ route('subjects.toggle', $item) }}">
+                  <i class="ui {{ $item->is_active ? 'green check' : 'red times' }} icon"></i>
+                </a>
               </td>
               @can('edit_subjects')
               <td class="ui center aligned">

@@ -118,5 +118,22 @@ class SubjectController extends Controller
    * @return \Illuminate\Http\Response
    */
   public function batch()
-  { }
+  {
+    //
+  }
+
+  /**
+   * Toggle status of subject
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function toggle($id)
+  {
+    $subject = Subject::findOrFail($id);
+    $subject->is_active = !($subject->is_active);
+    $subject->save();
+
+    return redirect()->back();
+  }
 }

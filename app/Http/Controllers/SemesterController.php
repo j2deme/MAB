@@ -97,4 +97,19 @@ class SemesterController extends Controller
   {
     //
   }
+
+  /**
+   * Toggle status of semester
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function toggle($id)
+  {
+    $semester = Semester::findOrFail($id);
+    $semester->is_active = !($semester->is_active);
+    $semester->save();
+
+    return redirect()->back();
+  }
 }

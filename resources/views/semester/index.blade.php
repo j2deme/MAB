@@ -33,13 +33,15 @@
             @forelse ($result as $item)
             <tr>
               <td class="ui center aligned">{{ $item->key }}</td>
-              <td>
+              <td class="ui center aligned">
                 <a href="{{ route('semesters.show', $item) }}">{{ $item->long_name }}</a>
               </td>
               <td class="ui center aligned">{{ $item->up_range }}</td>
               <td class="ui center aligned">{{ $item->down_range }}</td>
               <td class="ui center aligned">
-                <i class="ui {{ $item->is_active ? 'green check' : 'red times' }} icon"></i>
+                <a href="{{ route('semesters.toggle', $item) }}">
+                  <i class="ui {{ $item->is_active ? 'green check' : 'red times' }} icon"></i>
+                </a>
               </td>
               @can('edit_semesters')
               <td class="ui center aligned">

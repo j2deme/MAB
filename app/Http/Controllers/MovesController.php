@@ -46,7 +46,11 @@ class MovesController extends Controller
     $ups_open = ($last->begin_up <= $today and $last->end_up >= $today);
     $downs_open = ($last->begin_down <= $today and $last->end_down >= $today);
 
-    $groups = Group::where('semester_id', $last->id)->where('is_available', true)->get();
+    if ($type == 'ALTA') {
+      $groups = Group::where('semester_id', $last->id)->where('is_available', true)->get();
+    } else {
+      $groups = Group::where('semester_id', $last->id)->get();
+    }
     $justifications = [
       'up' => [
         'ADELANTAR MATERIA',

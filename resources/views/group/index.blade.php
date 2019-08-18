@@ -45,7 +45,9 @@
               <td class="ui center aligned">{{ $item->subject->career->key }}</td>
               <td class="ui center aligned">{{ $item->subject->semester }}</td>
               <td class="ui center aligned">
-                <i class="ui {{ $item->is_available ? 'green check' : 'red times' }} icon"></i>
+                <a href="{{ route('groups.toggle', $item) }}">
+                  <i class="ui {{ $item->is_available ? 'green check' : 'red times' }} icon"></i>
+                </a>
               </td>
               <td class="ui center aligned">{{ $item->semester->short_name }}</td>
               @can('edit_groups')

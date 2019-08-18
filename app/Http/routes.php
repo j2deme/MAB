@@ -71,6 +71,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'semesters', 'as' => 'semester
   Route::get('/{semester}/edit', 'SemesterController@edit')->name('edit');
   Route::put('/{semester}', 'SemesterController@update')->name('update');
   Route::delete('/{semester}', 'SemesterController@destroy')->name('delete');
+  Route::get('/toggle/{semester}', 'SemesterController@toggle')->name('toggle');
 });
 
 # CAREER ROUTES -- RESOURCE
@@ -94,6 +95,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'subjects', 'as' => 'subjects.
   Route::put('/{subject}', 'SubjectController@update')->name('update');
   Route::delete('/{subject}', 'SubjectController@destroy')->name('delete');
   Route::get('/load', 'SubjectController@batch')->name('batch');
+  Route::get('/toggle/{subject}', 'SubjectController@toggle')->name('toggle');
 });
 
 # GROUP ROUTES -- RESOURCE
@@ -106,4 +108,5 @@ Route::group(['middleware' => 'auth', 'prefix' => 'groups', 'as' => 'groups.'], 
   Route::put('/{group}', 'GroupController@update')->name('update');
   Route::delete('/{group}', 'GroupController@destroy')->name('delete');
   Route::get('/load', 'GroupController@batch')->name('batch');
+  Route::get('/toggle/{group}', 'GroupController@toggle')->name('toggle');
 });

@@ -29,7 +29,7 @@ class GroupController extends Controller
   public function create()
   {
     $semesters = Semester::orderBy('key', 'desc')->pluck('long_name', 'id');
-    $subjects = Subject::orderBy('career_id', 'asc')->orderBy('semester', 'asc')->get();
+    $subjects = Subject::orderBy('career_id', 'asc')->orderBy('semester', 'asc')->where('is_active', true)->get();
 
     return view('group.new', compact('semesters', 'subjects'));
   }
@@ -107,5 +107,20 @@ class GroupController extends Controller
   public function destroy($id)
   {
     //
+  }
+
+  /**
+   * Toggle status of group
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function toggle($id)
+  {
+    $group = Group::findOrFail($id);
+    $group->is_available = !($group->is_available);
+    $group->save();
+
+    return redirect()->back();
   }
 }
