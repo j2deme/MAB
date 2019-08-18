@@ -1,5 +1,5 @@
 <div class="ui icon small buttons">
-  <a href="{{ route('moves.show', ['move' => $id])  }}" class="ui blue icon button">
+  <a href="{{ route('moves.show', ['move' => $id])  }}" class="ui blue icon button" data-content="Ver solicitud">
     <i class="ui eye icon"></i>
   </a>
 
