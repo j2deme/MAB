@@ -1,20 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="language" content="ES">
+  <meta name="application-name" content="MAB">
+  <!-- Theme Color for Chrome, Firefox OS and Opera -->
+  <meta name="theme-color" content="#2185D0">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="google" content="notranslate">
+  <meta name="author" content="Jaime Jesús Delgado Meraz, jesus.delgado@tecvalles.mx">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>MAB</title>
   @css('semantic.css')
+  @css('responsive-ui.css')
   @css('app.css')
   @yield('css')
 </head>
 
-<body class="ui container">
-  @include('flash::message')
-  @yield('content')
+<body class="ui grid container">
+  <div class="row">
+    <div class="column padding-reset">
+      @include('flash::message')
+      @yield('content')
+    </div>
+  </div>
 
   @js('jquery.min.js')
   @js('semantic.min.js')

@@ -22,11 +22,11 @@ $(function () {
   $('.message .close').on('click', function () {
     $(this).closest('.message').transition('fade');
   });
-  $('#sidebarMenu').click(function (e) {
-    e.preventDefault();
-    $('.ui.sidebar').sidebar('toggle');
-  });
   $('[data-content]').popup();
+  $('.right.menu.open').on("click", function (e) {
+    e.preventDefault();
+    $('.ui.vertical.menu').toggle();
+  });
 });
 
 let calendarTextOptions = {

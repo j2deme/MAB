@@ -1,5 +1,5 @@
 @auth
-<a href="{{ route('home.index') }}" class="item">
+<a href="{{ route('home.index') }}" class="mobile hidden item">
   <i class="home icon"></i>
 </a>
 <a href="{{ route('moves.index') }}" class="{{ Request::is('moves*') ? 'blue active ' : ' ' }}item">
@@ -18,7 +18,7 @@
 <a href="{{ route('groups.index') }}" class="{{ Request::is('groups*') ? 'blue active ' : ' ' }}item">
   <i class="ui shapes icon"></i> Grupos
 </a>
-<div class="ui simple dropdown {{ Request::is('users*') ? 'blue ' : ' ' }} item">
+<div class="ui simple dropdown {{ Request::is('users*') ? 'blue' : ' ' }} item">
   <i class="users icon"></i> Usuarios
   <div class="menu">
     <a class="item" href="{{ route('users.index') }}">
@@ -54,7 +54,11 @@
     </div>
   </div>
   @orguest
-  <a href="{{ route('auth.login') }}" class="item">Inicio de sesión</a>
-  <a href="{{ route('auth.register') }}" class="item">Registro</a>
+  <a href="{{ route('auth.login') }}" class="item">
+    <i class="sign in icon"></i> Inicio de sesión
+  </a>
+  <a href="{{ route('auth.register') }}" class="item">
+    <i class="id card icon"></i> Registro
+  </a>
   @end
 </div>
