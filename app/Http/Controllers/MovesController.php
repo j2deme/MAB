@@ -90,26 +90,35 @@ class MovesController extends Controller
 
     $group = Group::findOrFail([$request->get('group_id')])->first();
     $is_parallel = ($group->subject->career->id != Auth::user()->career->id);
+    $exists = Move::where('user_id', Auth::user()->id)
+      ->where('semester_id', $last_semester->id)
+      ->where('group_id', $request->get('group_id'))
+      ->where('type', ($request->get('type') == 'up') ? 'ALTA' : 'BAJA')
+      ->count();
 
-    $data = [
-      'semester_id' => $last_semester->id,
-      'group_id' => $request->get('group_id'),
-      'justification' => [
-        'main' => $request->get('justification'),
-        'extra' => $request->get('motivation')
-      ],
-      'user_id' => Auth::user()->id,
-      'answer' => [],
-      'status' => '0',
-      'linked_to' => null,
-      'type' => $request->get('type'),
-      'is_parallel' => $is_parallel
-    ];
+    if ($exists == 0) {
+      $data = [
+        'user_id' => Auth::user()->id,
+        'semester_id' => $last_semester->id,
+        'group_id' => $request->get('group_id'),
+        'type' => $request->get('type'),
+        'justification' => [
+          'main' => $request->get('justification'),
+          'extra' => $request->get('motivation')
+        ],
+        'answer' => [],
+        'status' => '0',
+        'linked_to' => null,
+        'is_parallel' => $is_parallel
+      ];
 
-    if ($move = Move::create($data)) {
-      flash('Solicitud registrada');
+      if ($move = Move::create($data)) {
+        flash()->success('Solicitud registrada');
+      } else {
+        flash()->error('No fue posible registrar la solicitud');
+      }
     } else {
-      flash()->error('No fue posible registrar la solicitud');
+      flash()->warning('Ya existe una solicitud con las mismas características');
     }
 
     return redirect()->route('moves.index');
@@ -181,7 +190,7 @@ class MovesController extends Controller
     ];
 
     if ($move->save()) {
-      flash('Solicitud atendida');
+      flash()->success('Solicitud atendida');
     } else {
       flash()->error('Ocurrio un error al atender la solicitud');
     }
@@ -200,7 +209,7 @@ class MovesController extends Controller
     if (Move::findOrFail($id)->delete()) {
       flash()->success('La solicitud ha sido cancelada');
     } else {
-      flash()->success('La solicitud no ha sido cancelada');
+      flash()->error('La solicitud no ha sido cancelada');
     }
 
     return redirect()->back();

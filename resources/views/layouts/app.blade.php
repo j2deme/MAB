@@ -14,6 +14,7 @@
   <meta name="author" content="Jaime Jesús Delgado Meraz, jesus.delgado@tecvalles.mx">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>MAB</title>
+  @js('jquery.min.js')
   @css('semantic.css')
   @css('responsive-ui.css')
   @css('app.css')
@@ -23,12 +24,9 @@
 <body class="ui grid container">
   <div class="row">
     <div class="column padding-reset">
-      @include('flash::message')
       @yield('content')
     </div>
   </div>
-
-  @js('jquery.min.js')
   @js('semantic.min.js')
   <script>
     var config = {
@@ -40,6 +38,7 @@
       };
   </script>
   @js('app.js')
+  @include('flash::message')
   @stack('scripts')
 </body>
 
