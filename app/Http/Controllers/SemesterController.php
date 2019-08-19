@@ -72,7 +72,9 @@ class SemesterController extends Controller
    */
   public function edit($id)
   {
-    //
+    $semester = Semester::findOrFail($id)->first();
+
+    return view('semester.edit', compact('semester'));
   }
 
   /**
