@@ -45,15 +45,28 @@
               <input type="text" id="email" name="email" value="{{ $user->email }}" autocomplete="email" />
             </div>
           </div>
-          <div class="field">
-            <label for="roles">Rol</label>
-            <select name="roles" id="roles" class="ui search selection dropdown">
-              <option value="">Elige un rol</option>
-              @foreach ($roles as $key => $item)
-              <option value="{{ $key }}" {{ ($user->roles->first()->id == $key) ? 'selected' : null }}>{{ $item }}
-              </option>
-              @endforeach
-            </select>
+          <div class="two fields">
+            <div class="field">
+              <label for="roles">Rol</label>
+              <select name="roles" id="roles" class="ui search selection dropdown">
+                <option value="">Elige un rol</option>
+                @foreach ($roles as $key => $item)
+                <option value="{{ $key }}" {{ ($user->roles->first()->id == $key) ? 'selected' : null }}>{{ $item }}
+                </option>
+                @endforeach
+              </select>
+            </div>
+            <div class="field">
+              <label for="career_id">Carrera</label>
+              <select name="career_id" id="career_id" class="ui search selection dropdown">
+                <option value="">Elige una carrera</option>
+                @foreach ($careers as $key => $item)
+                <option value="{{ $key }}"
+                  {{ (!is_null($user->career) and $user->career->id == $key) ? 'selected' : null }}>{{ $item }}
+                </option>
+                @endforeach
+              </select>
+            </div>
           </div>
 
           @include('components.back', ['route' => route('users.index')])

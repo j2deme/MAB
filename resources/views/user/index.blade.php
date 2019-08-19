@@ -21,6 +21,7 @@
               <th class="ui center aligned">Nombre</th>
               <th class="ui center aligned four wide">Usuario</th>
               <th class="ui center aligned two wide">Rol</th>
+              <th class="ui center aligned two wide">Carrera</th>
               <th class="ui center aligned one wide">Activo</th>
               @can('edit_users')
               <th class="ui center aligned two wide">
@@ -39,6 +40,8 @@
               </td>
               <td>{{ $item->roles[0]->name }}</td>
               <td class="ui center aligned">
+                {{ (!is_null($item->career)) ? $item->career->key : '-'}}</td>
+              <td class="ui center aligned">
                 <a href="{{ route('users.toggle', $item->id) }}">
                   <i class="ui {{ !$item->is_suspended ? 'green check' : 'red times' }} icon"></i>
                 </a>
@@ -54,7 +57,7 @@
             </tr>
             @empty
             <tr>
-              <td colspan="6">
+              <td colspan="7">
                 <div class="ui placeholder segment">
                   <div class="ui icon header">
                     <i class="users icon"></i>
@@ -73,7 +76,7 @@
           </tbody>
           <tfoot class="full-width">
             <tr>
-              <th colspan="5">
+              <th colspan="7">
                 @include('pagination.custom', ['paginator' => $users])
               </th>
             </tr>

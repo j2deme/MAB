@@ -94,8 +94,9 @@ class UserController extends Controller
     $user = User::find($id);
     $roles = Role::pluck('name', 'id');
     $permissions = Permission::all('name', 'id');
+    $careers = Career::pluck('name', 'id');
 
-    return view('user.edit', compact('user', 'roles', 'permissions'));
+    return view('user.edit', compact('user', 'roles', 'permissions', 'careers'));
   }
 
   /**
@@ -120,7 +121,7 @@ class UserController extends Controller
     $user->fill($request->except('roles', 'permissions', 'password'));
 
     // check for password change
-    if ($request->get('password')) {
+    if ($request->has('password') and !empty($request->get('password'))) {
       $user->password = $request->get('password');
     }
 

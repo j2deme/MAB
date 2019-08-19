@@ -4,6 +4,12 @@ $(document).ready(function () {
     sortSelect: true,
     fullTextSearch: true
   });
+  $('#career_id').dropdown({
+    ignoreDiacritics: true,
+    sortSelect: true,
+    fullTextSearch: true
+  });
+
   $('.ui.form').form({
     fields: {
       name: {
