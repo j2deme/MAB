@@ -1,5 +1,5 @@
-<div class="ui fixed menu">
-  <div class="ui container">
+<div class="widescreen large screen computer tablet only row">
+  <div class="ui top fixed menu navbar">
     <a href="@auth {{route('home.index')}} @orguest {{route('root')}} @end" class="header item">
       <i class="icons">
         <i class="blue sort up icon"></i>
@@ -7,27 +7,25 @@
       </i>
       MAB
     </a>
-    <div class="right menu">
-      @auth
-      <a href="{{ route('home.index') }}" class="item">
-        <i class="home icon"></i>
+    @include('layouts.menu')
+  </div>
+</div>
+<div class="mobile only narrow row">
+  <div class="ui top menu navbar">
+    <a href="@auth {{route('home.index')}} @orguest {{route('root')}} @end" class="header item">
+      <i class="icons">
+        <i class="blue sort up icon"></i>
+        <i class="red sort down icon"></i>
+      </i>
+      MAB
+    </a>
+    <div class="right menu open">
+      <a href="#" class="menu item">
+        <i class="ui bars icon"></i>
       </a>
-      <div class="ui simple dropdown item">
-        {{ Auth::user()->username }} <i class="dropdown icon"></i>
-        <div class="menu">
-          <a class="item" href="#">
-            <i class="user cog icon"></i> Cuenta
-          </a>
-          <div class="divider"></div>
-          <a href="{{ route('auth.logout') }}" class="item">
-            <i class="sign out icon"></i> Salir
-          </a>
-        </div>
-      </div>
-      @orguest
-      <a href="{{ route('auth.login') }}" class="item">Inicio de sesión</a>
-      <a href="{{ route('auth.register') }}" class="item">Registro</a>
-      @end
     </div>
+  </div>
+  <div class="ui vertical navbar menu">
+    @include('layouts.menu')
   </div>
 </div>

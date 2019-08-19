@@ -1,9 +1,9 @@
 #landing-page-header {
-  margin-top: 7em;
+  margin-top: 6em;
 }
 
 .main.container {
-  margin-top: 7em;
+  margin-top: 1em;
 }
 
 .ui.primary.header {
@@ -12,4 +12,19 @@
 
 .ui.dividing.header {
   margin-bottom: 0.7em;
+  margin-top: 0.1em;
+}
+
+.computer.row {
+  padding-bottom: 2.5em;
+}
+
+.padding-reset {
+  padding: 0px !important;
+}
+
+.ui.vertical.menu {
+  margin-top: -15px !important;
+  width: 100%;
+  display: none;
 }
