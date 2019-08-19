@@ -37,9 +37,13 @@ class HomeController extends Controller
       $data['attended'] = Auth::user()->attended;
     } elseif (Auth::user()->hasRole('Coordinador')) {
       $last_semester = Semester::last();
-      $data['ups'] = Career::find(Auth::user()->career->id)->moves()->where('semester_id', $last_semester->id)->where('type', 'ALTA')->count();
-      $data['downs'] = Career::find(Auth::user()->career->id)->moves()->where('semester_id', $last_semester->id)->where('type', 'BAJA')->count();
-      $data['attended'] = Career::find(Auth::user()->career->id)->moves()->where('semester_id', $last_semester->id)->whereIn('status', ['2', '3', '4', '5'])->count();
+      if (!is_null(Auth::user()->career)) {
+        $data['ups'] = Career::find(Auth::user()->career->id)->moves()->where('semester_id', $last_semester->id)->where('type', 'ALTA')->count();
+        $data['downs'] = Career::find(Auth::user()->career->id)->moves()->where('semester_id', $last_semester->id)->where('type', 'BAJA')->count();
+        $data['attended'] = Career::find(Auth::user()->career->id)->moves()->where('semester_id', $last_semester->id)->whereIn('status', ['2', '3', '4', '5'])->count();
+      } else {
+        $data['ups'] = $data['downs'] = $data['attended'] = 0;
+      }
     } else {
       $last_semester = Semester::last();
       $data['ups'] = Move::where('semester_id', $last_semester->id)->where('type', 'ALTA')->count();
