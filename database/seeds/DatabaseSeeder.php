@@ -66,7 +66,7 @@ class DatabaseSeeder extends Seeder
     $admin->name = "Administrador";
     $admin->username = "admin";
     $admin->email = "dep@tecvalles.mx";
-    $admin->password = bcrypt('secret');
+    $admin->password = 'secret';
     $admin->remember_token = str_random(10);
     $admin->save();
     $admin->assignRole('Admin');
@@ -76,8 +76,8 @@ class DatabaseSeeder extends Seeder
       $coord = new User([
         'name' => "Coordinador {$key}",
         'username' => str_slug("Coordinador {$key}", "_"),
-        'email' => $faker->email,
-        'password' => bcrypt(str_random(10)),
+        'email' => strtolower(str_slug("Coordinador {$key}", "_")) . "@tecvalles.mx",
+        'password' => 'temporal',
         'remember_token' => str_random(10)
       ]);
       $coord->save();
@@ -89,8 +89,8 @@ class DatabaseSeeder extends Seeder
     $jefe = new User();
     $jefe->name = 'Jefe DEP';
     $jefe->username = 'jefedep';
-    $jefe->email = $faker->email;
-    $jefe->password = bcrypt(str_random(10));
+    $jefe->email = 'dep@tecvalles.mx';
+    $jefe->password = 'secret';
     $jefe->remember_token = str_random(10);
     $jefe->save();
     $jefe->assignRole('Jefe');
