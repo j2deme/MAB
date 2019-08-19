@@ -84,6 +84,7 @@
                     @endrole
                   </div>
                   @if (!is_null(Auth::user()->career))
+                  @role('Estudiante')
                   <div class="inline">
                     <a href="{{ route('moves.new',['type' => 'up']) }}" class="ui blue icon labeled button">
                       <i class="ui sort up icon"></i>
@@ -94,6 +95,7 @@
                       Bajas
                     </a>
                   </div>
+                  @endrole
                   @endif
                 </div>
               </td>
