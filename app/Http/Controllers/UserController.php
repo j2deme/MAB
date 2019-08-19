@@ -210,10 +210,13 @@ class UserController extends Controller
       $user->permissions()->sync([]);
     } else {
       // handle permissions
-      $user->syncPermissions($permissions);
+      //$user->syncPermissions($permissions);
     }
 
-    $user->syncRoles($roles);
+    if (!$user->hasRole($roles)) {
+      $user->assignRole($roles);
+    }
+
     return $user;
   }
 

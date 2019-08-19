@@ -40,7 +40,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.'], fu
   Route::get('/{user}', 'UserController@show')->name('show');
   Route::get('/{user}/edit', 'UserController@edit')->name('edit');
   Route::put('/{user}', 'UserController@update')->name('update');
-  Route::put('/{user}', 'UserController@selfUpdate')->name('selfUpdate');
+  Route::put('/s/{user}', 'UserController@selfUpdate')->name('selfUpdate');
   Route::delete('/{user}', 'UserController@destroy')->name('delete');
   Route::get('/toggle/{user}', 'UserController@toggle')->name('toggle');
 });
