@@ -17,7 +17,7 @@ class GroupController extends Controller
    */
   public function index()
   {
-    $result = Group::orderBy('semester_id', 'asc')->orderBy('subject_id', 'asc')->paginate(7);
+    $result = Group::orderBy('semester_id', 'asc')->orderBy('subject_id', 'asc')->orderBy('name', 'asc')->paginate();
     return view('group.index', compact('result'));
   }
 
