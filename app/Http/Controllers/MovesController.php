@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use Carbon\Carbon;
 use App\Move;
 use App\Group;
+use App\Career;
 use App\Semester;
+use Carbon\Carbon;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
@@ -42,7 +43,7 @@ class MovesController extends Controller
     }
 
     $last = Semester::last();
-    $today = Carbon::today();
+    $today = Carbon::now('America/Mexico_City');
     $ups_open = ($last->begin_up <= $today and $last->end_up >= $today);
     $downs_open = ($last->begin_down <= $today and $last->end_down >= $today);
 
@@ -70,7 +71,7 @@ class MovesController extends Controller
         'BAJA TEMPORAL',
       ]
     ];
-    return view('moves.new', compact(['type', 'groups', 'justifications', 'last', 'ups_open', 'downs_open']));
+    return view('moves.new', compact(['type', 'groups', 'justifications', 'last', 'ups_open', 'downs_open', 'today']));
   }
 
   /**
