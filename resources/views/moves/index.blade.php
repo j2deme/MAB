@@ -12,6 +12,13 @@
             Mis solicitudes
             @else
             Solicitudes
+            @if (Auth::user()->career->key == 'IIA')
+            @if (isset($key) and $key == 'IAMB')
+            IAMB
+            @else
+            IIA
+            @endif
+            @endif
             @endrole
           </h2>
         </header>
@@ -26,6 +33,19 @@
             Bajas
           </a>
         </div>
+        @endrole
+        @role('Coordinador')
+        @if (Auth::user()->career->key == 'IIA')
+        @if (isset($key) and $key == 'IAMB')
+        <a href="{{ route('moves.index') }}" class="ui teal right floated icon labeled button">
+          <i class="ui stream icon"></i> IIA
+        </a>
+        @else
+        <a href="{{ route('moves.career', 'IAMB') }}" class="ui teal right floated icon labeled button">
+          <i class="ui stream icon"></i> IAMB
+        </a>
+        @endif
+        @endif
         @endrole
         <table class="ui celled striped compact table">
           <thead>

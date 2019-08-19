@@ -192,10 +192,10 @@ class MovesController extends Controller
     if ($move->save()) {
       flash()->success('Solicitud atendida');
     } else {
-      flash()->error('Ocurrio un error al atender la solicitud');
+      flash()->error('Ocurrió un error al atender la solicitud');
     }
 
-    return redirect()->route('moves.index');
+    return redirect()->back();
   }
 
   /**
@@ -213,5 +213,13 @@ class MovesController extends Controller
     }
 
     return redirect()->back();
+  }
+
+  public function byCareer($key)
+  {
+    $last_semester = Semester::last();
+    $career = Career::where('key', $key)->first();
+    $result = $career->moves()->where('semester_id', $last_semester->id)->whereIn('status', ['0', '1'])->orderBy('type', 'desc')->orderBy('is_parallel', 'asc')->paginate();
+    return view('moves.index', compact('result', 'key'));
   }
 }
