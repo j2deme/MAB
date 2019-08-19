@@ -9,6 +9,11 @@
         <header>
           <h2 class="ui primary dividing header">Usuarios</h2>
         </header>
+        @role('Admin')
+        <a href="{{ route('users.new') }}" class="ui right floated primary labeled icon button">
+          <i class="ui add icon"></i> Añadir usuario
+        </a>
+        @endrole
         <table class="ui celled striped compact table">
           <thead>
             <tr>
@@ -67,11 +72,6 @@
           <tfoot class="full-width">
             <tr>
               <th colspan="5">
-                @role('Admin')
-                <a href="{{ route('users.new') }}" class="ui right floated small primary labeled icon button">
-                  <i class="ui add icon"></i> Añadir usuario
-                </a>
-                @endrole
                 @include('pagination.custom', ['paginator' => $users])
               </th>
             </tr>

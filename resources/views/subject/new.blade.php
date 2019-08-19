@@ -63,14 +63,12 @@
               <input type="number" id="cr" name="cr" placeholder="4" min="0" max="6" autocomplete="off">
             </div>
           </div>
-          <div class="ui buttons">
-            <a href="{{ route('subjects.index') }}" class="ui button">Cancelar</a>
-            <div class="or" data-text="o"></div>
-            <button type="submit" class="ui positive right labeled icon submit button">
-              <i class="save icon"></i>
-              Guardar
-            </button>
-          </div>
+
+          @include('components.back', ['route' => route('subjects.index')])
+          <button type="submit" class="ui positive labeled icon submit button">
+            <i class="save icon"></i>
+            Guardar
+          </button>
 
           @include('components.errors-message')
 

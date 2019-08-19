@@ -10,7 +10,7 @@
           <h2 class="ui primary dividing header">Carreras</h2>
         </header>
         @can('add_careers')
-        <a href="{{ route('semesters.new') }}" class="ui right floated primary labeled icon button">
+        <a href="{{ route('careers.new') }}" class="ui right floated primary labeled icon button">
           <i class="ui add icon"></i> Añadir carrera
         </a>
         @endcan

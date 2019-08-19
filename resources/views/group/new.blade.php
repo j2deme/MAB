@@ -39,14 +39,12 @@
               <input type="text" id="name" name="name" value="{{ old('name') }}" placeholder="A" autocomplete="off">
             </div>
           </div>
-          <div class="ui buttons">
-            <a href="{{ route('groups.index') }}" class="ui button">Cancelar</a>
-            <div class="or" data-text="o"></div>
-            <button type="submit" class="ui positive right labeled icon submit button">
-              <i class="save icon"></i>
-              Guardar
-            </button>
-          </div>
+
+          @include('components.back', ['route' => route('groups.index')])
+          <button type="submit" class="ui positive labeled icon submit button">
+            <i class="save icon"></i>
+            Guardar
+          </button>
 
           @include('components.errors-message')
 
