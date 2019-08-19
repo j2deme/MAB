@@ -39,7 +39,9 @@
               </td>
               <td>{{ $item->roles[0]->name }}</td>
               <td class="ui center aligned">
-                <i class="ui {{ !$item->isSuspended ? 'green check' : 'red times' }} icon"></i>
+                <a href="{{ route('users.toggle', $item->id) }}">
+                  <i class="ui {{ !$item->is_suspended ? 'green check' : 'red times' }} icon"></i>
+                </a>
               </td>
               @can('edit_users')
               <td class="ui center aligned">

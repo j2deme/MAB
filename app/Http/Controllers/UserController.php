@@ -216,4 +216,19 @@ class UserController extends Controller
     $user->syncRoles($roles);
     return $user;
   }
+
+  /**
+   * Toggle status of user
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function toggle($id)
+  {
+    $user = User::findOrFail($id);
+    $user->is_suspended = !($user->is_suspended);
+    $user->save();
+
+    return redirect()->back();
+  }
 }
