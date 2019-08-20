@@ -52,7 +52,7 @@ return [
     |
     */
 
-  'timezone' => 'UTC',
+  'timezone' => 'America/Mexico_City',
 
   /*
     |--------------------------------------------------------------------------
@@ -65,7 +65,7 @@ return [
     |
     */
 
-  'locale' => 'en',
+  'locale' => 'es',
 
   /*
     |--------------------------------------------------------------------------
@@ -156,7 +156,7 @@ return [
     App\Providers\EventServiceProvider::class,
     App\Providers\RouteServiceProvider::class,
     GrahamCampbell\Exceptions\ExceptionsServiceProvider::class,
-    Barryvdh\Debugbar\ServiceProvider::class,
+    //Barryvdh\Debugbar\ServiceProvider::class,
     Spatie\Permission\PermissionServiceProvider::class,
     Laracasts\Flash\FlashServiceProvider::class,
 
@@ -205,7 +205,7 @@ return [
     'URL' => Illuminate\Support\Facades\URL::class,
     'Validator' => Illuminate\Support\Facades\Validator::class,
     'View' => Illuminate\Support\Facades\View::class,
-    'Debugbar' => Barryvdh\Debugbar\Facade::class,
+    //'Debugbar' => Barryvdh\Debugbar\Facade::class,
   ],
 
 ];
