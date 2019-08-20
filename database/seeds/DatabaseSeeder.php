@@ -65,7 +65,7 @@ class DatabaseSeeder extends Seeder
     $admin = new User();
     $admin->name = "Administrador";
     $admin->username = "admin";
-    $admin->email = "dep@tecvalles.mx";
+    $admin->email = "jesus.delgado@tecvalles.mx";
     $admin->password = 'secret';
     $admin->remember_token = str_random(10);
     $admin->save();
