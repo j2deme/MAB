@@ -12,13 +12,6 @@
             Mis solicitudes
             @else
             Solicitudes
-            @if (Auth::user()->career->key == 'IIA')
-            @if (isset($key) and $key == 'IAMB')
-            IAMB
-            @else
-            IIA
-            @endif
-            @endif
             @endrole
           </h2>
         </header>
@@ -35,7 +28,7 @@
         </div>
         @endrole
         @role('Coordinador')
-        @if (Auth::user()->career->key == 'IIA')
+        @if (!is_null(Auth::user()->career) and Auth::user()->career->key == 'IIA')
         @if (isset($key) and $key == 'IAMB')
         <a href="{{ route('moves.index') }}" class="ui teal right floated icon labeled button">
           <i class="ui stream icon"></i> IIA
