@@ -6,6 +6,7 @@ use Auth;
 use App\Move;
 use App\Group;
 use App\Career;
+use App\Subject;
 use App\Semester;
 use Carbon\Carbon;
 use App\Http\Requests;
@@ -225,5 +226,58 @@ class MovesController extends Controller
     $career = Career::where('key', $key)->first();
     $result = $career->moves()->where('semester_id', $last_semester->id)->unattended()->paginate();
     return view('moves.index', compact('result', 'key'));
+  }
+
+  /**
+   * Show a list of moves ordered by semesters and subject
+   */
+  public function listBySubject()
+  {
+    $last_semester = Semester::last();
+    if (!is_null(Auth::user()->career)) {
+      $result = Move::with('group.subject')->where('semester_id', $last_semester->id)->unattended()->get();
+      $result1 = $result->filter(function ($move, $key) {
+        if (Auth::user()->career->key == 'IIA') {
+          $IAMB = Career::where('key', 'IAMB')->first();
+          return (in_array($move->group->subject->career->id, [Auth::user()->career->id, $IAMB->id]));
+        } else {
+          return ($move->group->subject->career->id == Auth::user()->career->id);
+        }
+      });
+
+      $groupedBySemester = $result1->sortBy('group.subject.semester')->groupBy('group.subject.semester');
+
+      $groupedBySemester->transform(function ($item, $key) {
+        return $item->sortBy('group.subject.key')->groupBy('group.subject.key');
+      });
+    } else {
+      $result = Move::with('group.subject')->where('semester_id', $last_semester->id)->get();
+      $groupedBySemester = $result->sortBy('group.subject.semester')->groupBy('group.subject.semester');
+
+      $groupedBySemester->transform(function ($item, $key) {
+        return $item->sortBy('group.subject.key')->groupBy('group.subject.key');
+      });
+    }
+
+    $subjects = Subject::all()->pluck('short_name', 'key');
+
+    return view('moves.list-semester-subject', compact('groupedBySemester', 'subjects'));
+  }
+
+  /**
+   * Show a table with moves filtered by subject
+   */
+  public function bySubject($key)
+  {
+    $subject = Subject::where('key', $key)->first();
+    $last_semester = Semester::last();
+    $groups = Group::where('semester_id', $last_semester->id)->where('subject_id', $subject->id)->pluck('id');
+
+    $result = Move::with('group.subject', 'user')->where('semester_id', $last_semester->id)->whereIn('group_id', $groups)->unattended()->paginate();
+
+    $url = route('moves.listBySubject');
+    session(['url' => $url]);
+
+    return view('moves.index', compact('result', 'subject', 'url'));
   }
 }

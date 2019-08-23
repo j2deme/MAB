@@ -2,9 +2,37 @@
 <a href="{{ route('home.index') }}" class="mobile hidden item">
   <i class="home icon"></i>
 </a>
+@role('Estudiante')
 <a href="{{ route('moves.index') }}" class="{{ Request::is('moves*') ? 'blue active ' : ' ' }}item">
   <i class="stream icon"></i> Solicitudes
 </a>
+@else
+<div class="ui simple dropdown {{ Request::is('moves*') ? 'blue' : ' ' }} item">
+  <i class="stream icon"></i> Solicitudes
+  <div class="menu">
+    <a href="{{ route('moves.listBySubject') }}" class="item">
+      <i class="project diagram icon"></i> Ver por materia
+    </a>
+    <a href="#" class="item">
+      <i class="user graduate icon"></i> Ver por estudiante
+    </a>
+    <div class="ui simple dropdown item">
+      <i class="tasks icon"></i> Ver por estatus <i class="dropdown icon"></i>
+      <div class="menu">
+        <a href="#" class="item">
+          <i class="check icon"></i> No procesadas
+        </a>
+        <a href="#" class="item">
+          <i class="check double icon"></i> En revisión
+        </a>
+        <a href="#" class="item">
+          <i class="folder icon"></i> Finalizadas
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+@endrole
 @hasanyrole(['Jefe','Admin'])
 <a href="{{ route('semesters.index') }}" class="{{ Request::is('semesters*') ? 'blue active ' : ' ' }}item">
   <i class="ui calendar alternate outline icon"></i> Semestres

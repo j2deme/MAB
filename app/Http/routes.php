@@ -61,7 +61,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], fu
   Route::get('/{move}/edit', 'MovesController@edit')->name('edit');
   Route::put('/{move}', 'MovesController@update')->name('update');
   Route::delete('/{move}', 'MovesController@destroy')->name('delete');
-  Route::get('/c/{career}', 'MovesController@byCareer')->name('career');
+  # Filter by career
+  Route::get('/by/career/{career}', 'MovesController@byCareer')->name('byCareer');
+  # Filter by subject
+  Route::get('/by/subject', 'MovesController@listBySubject')->name('listBySubject');
+  Route::get('/by/subject/{subject}', 'MovesController@bySubject')->name('bySubject');
 });
 
 # SEMESTER ROUTES -- RESOURCE
