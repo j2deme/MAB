@@ -10,11 +10,11 @@
 <div class="ui simple dropdown {{ Request::is('moves*') ? 'blue' : ' ' }} item">
   <i class="stream icon"></i> Solicitudes
   <div class="menu">
-    <a href="{{ route('moves.listBySubject') }}" class="item">
-      <i class="project diagram icon"></i> Ver por materia
-    </a>
     <a href="{{ route('moves.listByStudent') }}" class="item">
       <i class="user graduate icon"></i> Ver por estudiante
+    </a>
+    <a href="{{ route('moves.listBySubject') }}" class="item">
+      <i class="project diagram icon"></i> Ver por materia
     </a>
     {{-- <div class="ui simple dropdown item">
       <i class="tasks icon"></i> Ver por estatus <i class="dropdown icon"></i>
