@@ -110,7 +110,11 @@
             </tr>
           </tfoot>
         </table>
-        @include('components.back', ['route' => route('home.index')])
+        @if (isset($url))
+        @include('components.back', ['route' => $url])
+        @else
+        @include('components.back')
+        @endif
       </article>
     </section>
   </div>
