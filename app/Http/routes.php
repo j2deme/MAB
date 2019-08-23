@@ -61,6 +61,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], fu
   Route::get('/{move}/edit', 'MovesController@edit')->name('edit');
   Route::put('/{move}', 'MovesController@update')->name('update');
   Route::delete('/{move}', 'MovesController@destroy')->name('delete');
+  Route::delete('/c/{move}', 'MovesController@cancel')->name('cancel');
   # Filter by career
   Route::get('/by/career/{career}', 'MovesController@byCareer')->name('byCareer');
   # Filter by subject

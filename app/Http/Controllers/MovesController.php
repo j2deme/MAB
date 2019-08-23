@@ -220,6 +220,25 @@ class MovesController extends Controller
     return redirect()->back();
   }
 
+  public function cancel($id)
+  {
+    $move = Move::findOrFail($id);
+    // Rechazada por coordinador: 2
+    // Rechazada por jefe / admin: 5
+    $move->status = (Auth::user()->hasRole('Coordinador')) ? '2' : '5';
+    $move->answer = [
+      'main' => 'MOVIMIENTO NO DISPONIBLE',
+      'extra' => ''
+    ];
+    if ($move->save()) {
+      flash()->success('La solicitud ha sido rechazada');
+    } else {
+      flash()->error('Ocurrió un error al rechazar la solicitud');
+    }
+
+    return redirect()->back();
+  }
+
   public function byCareer($key)
   {
     $last_semester = Semester::last();
