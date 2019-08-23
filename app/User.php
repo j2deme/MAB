@@ -39,7 +39,7 @@ class User extends Authenticatable
    */
   public function getFullNameAttribute()
   {
-    return trim("{$this->name} {$this->last_name}");
+    return trim(mb_strtoupper("{$this->name} {$this->last_name}", 'UTF-8'));
   }
 
   /**
