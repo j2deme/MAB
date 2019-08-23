@@ -27,6 +27,16 @@ class Move extends Model
   public function scopeUnattended($query)
   {
     return $query->whereIn('status', ['0', '1'])
+      ->where('is_parallel', false)
+      ->orderBy('user_id', 'desc')
+      ->orderBy('type', 'desc')
+      ->orderBy('is_parallel', 'asc')
+      ->orderBy('status', 'desc');
+  }
+
+  public function scopeUnattendedParallel($query)
+  {
+    return $query->whereIn('status', ['0', '1'])
       ->orderBy('user_id', 'desc')
       ->orderBy('type', 'desc')
       ->orderBy('is_parallel', 'asc')

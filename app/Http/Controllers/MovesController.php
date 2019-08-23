@@ -27,7 +27,7 @@ class MovesController extends Controller
     } elseif (Auth::user()->hasRole('Coordinador')) {
       $result = Career::find(Auth::user()->career->id)->moves()->where('semester_id', $last_semester->id)->unattended()->paginate();
     } else {
-      $result = Move::where('semester_id', $last_semester->id)->unattended()->paginate();
+      $result = Move::where('semester_id', $last_semester->id)->unattendedParallel()->paginate();
     }
     return view('moves.index', compact('result'));
   }
@@ -119,7 +119,7 @@ class MovesController extends Controller
         flash()->error('No fue posible registrar la solicitud');
       }
     } else {
-      flash()->warning('Ya existe una solicitud con las mismas características');
+      flash()->warning('Ya existe una solicitud idéntica');
     }
 
     return redirect()->route('moves.index');
@@ -251,7 +251,8 @@ class MovesController extends Controller
         return $item->sortBy('group.subject.key')->groupBy('group.subject.key');
       });
     } else {
-      $result = Move::with('group.subject')->where('semester_id', $last_semester->id)->get();
+      // Jefe / Admin
+      $result = Move::with('group.subject')->where('semester_id', $last_semester->id)->unattendedParallel()->get();
       $groupedBySemester = $result->sortBy('group.subject.semester')->groupBy('group.subject.semester');
 
       $groupedBySemester->transform(function ($item, $key) {
@@ -273,7 +274,11 @@ class MovesController extends Controller
     $last_semester = Semester::last();
     $groups = Group::where('semester_id', $last_semester->id)->where('subject_id', $subject->id)->pluck('id');
 
-    $result = Move::with('group.subject', 'user')->where('semester_id', $last_semester->id)->whereIn('group_id', $groups)->unattended()->paginate();
+    if (!is_null(Auth::user()->career)) {
+      $result = Move::with('group.subject', 'user')->where('semester_id', $last_semester->id)->whereIn('group_id', $groups)->unattended()->paginate();
+    } else {
+      $result = Move::with('group.subject', 'user')->where('semester_id', $last_semester->id)->whereIn('group_id', $groups)->unattendedParallel()->paginate();
+    }
 
     $url = route('moves.listBySubject');
     session(['url' => $url]);
