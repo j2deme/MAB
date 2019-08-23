@@ -22,6 +22,18 @@ class Move extends Model
   ];
 
   /**
+   * SCOPES
+   */
+  public function scopeUnattended($query)
+  {
+    return $query->whereIn('status', ['0', '1'])
+      ->orderBy('user_id', 'desc')
+      ->orderBy('type', 'desc')
+      ->orderBy('is_parallel', 'asc')
+      ->orderBy('status', 'desc');
+  }
+
+  /**
    * MUTATORS
    */
   public function getJustificationAttribute($value)

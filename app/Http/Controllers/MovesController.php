@@ -24,9 +24,9 @@ class MovesController extends Controller
     if (Auth::user()->hasRole('Estudiante')) {
       $result = Auth::user()->moves()->where('semester_id', $last_semester->id)->latest()->paginate();
     } elseif (Auth::user()->hasRole('Coordinador')) {
-      $result = Career::find(Auth::user()->career->id)->moves()->where('semester_id', $last_semester->id)->whereIn('status', ['0', '1'])->orderBy('type', 'desc')->orderBy('is_parallel', 'asc')->paginate();
+      $result = Career::find(Auth::user()->career->id)->moves()->where('semester_id', $last_semester->id)->unattended()->paginate();
     } else {
-      $result = Move::where('semester_id', $last_semester->id)->whereIn('status', ['0', '1', '2', '5'])->orderBy('type', 'desc')->orderBy('is_parallel', 'asc')->orderBy('status', 'asc')->paginate();
+      $result = Move::where('semester_id', $last_semester->id)->unattended()->paginate();
     }
     return view('moves.index', compact('result'));
   }
@@ -219,7 +219,7 @@ class MovesController extends Controller
   {
     $last_semester = Semester::last();
     $career = Career::where('key', $key)->first();
-    $result = $career->moves()->where('semester_id', $last_semester->id)->whereIn('status', ['0', '1'])->orderBy('type', 'desc')->orderBy('is_parallel', 'asc')->paginate();
+    $result = $career->moves()->where('semester_id', $last_semester->id)->unattended()->paginate();
     return view('moves.index', compact('result', 'key'));
   }
 }
