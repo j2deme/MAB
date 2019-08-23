@@ -15,6 +15,7 @@
         <form action="{{ route('moves.update',['move'=>$move]) }}" class="ui form" method="POST">
           @csrf
           @method('PUT')
+          <input type="hidden" name="url" id="url" value="{{ url()->previous() }}">
           <input type="hidden" id="move_id" name="move_id" value="{{ $move->id }}">
           <div class="field">
             <table class="ui celled compact table">
@@ -88,7 +89,7 @@
               <h2>Verifique que el movimiento se puede realizar en el SII, antes de presionar "ACEPTAR".</h2>
             </div>
           </div>
-          @include('components.back', ['route' => route('moves.index')])
+          @include('components.back')
           <button type="submit" class="ui red labeled icon submit button" id="denyBtn" name="denyBtn" value="0">
             <i class="times icon"></i> Rechazar
           </button>

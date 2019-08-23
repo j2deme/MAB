@@ -1,4 +1,4 @@
-<div class="ui icon small buttons">
+<div class="ui icon mini buttons">
   <a href="{{ route('moves.edit', ['move' => $id])  }}" class="ui blue icon button" data-content="Atender solicitud">
     <i class="ui eye icon"></i>
   </a>

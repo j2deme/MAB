@@ -195,7 +195,11 @@ class MovesController extends Controller
       flash()->error('Ocurrió un error al atender la solicitud');
     }
 
-    return redirect()->route('moves.index');
+    if ($request->has('url')) {
+      return redirect($request->get('url'));
+    } else {
+      return redirect()->route('home.index');
+    }
   }
 
   /**
