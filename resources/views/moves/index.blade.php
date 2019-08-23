@@ -11,7 +11,7 @@
             @role('Estudiante')
             Mis solicitudes
             @else
-            Solicitudes
+            Solicitudes {{ $subject->short_name or null }}
             @endrole
           </h2>
         </header>
@@ -26,19 +26,6 @@
             Bajas
           </a>
         </div>
-        @endrole
-        @role('Coordinador')
-        @if (!is_null(Auth::user()->career) and Auth::user()->career->key == 'IIA')
-        @if (isset($key) and $key == 'IAMB')
-        <a href="{{ route('moves.index') }}" class="ui teal right floated icon labeled button">
-          <i class="ui stream icon"></i> IIA
-        </a>
-        @else
-        <a href="{{ route('moves.career', 'IAMB') }}" class="ui teal right floated icon labeled button">
-          <i class="ui stream icon"></i> IAMB
-        </a>
-        @endif
-        @endif
         @endrole
         <table class="ui celled striped compact table">
           <thead>
@@ -61,13 +48,13 @@
               <td class="ui center aligned">{{ $item->user->username }}</td>
               <td>{{ $item->type }} DE {{ $item->group->subject->short_name }} ({{ $item->group->full_key }})</td>
               <td class="ui center aligned">
-                <i class="ui large {{ $item->type == 'ALTA' ? 'blue arrow up' : 'red arrow down' }} icon"></i>
+                <i class="ui {{ $item->type == 'ALTA' ? 'blue arrow up' : 'red arrow down' }} icon"></i>
               </td>
               <td class="ui center aligned">
                 @if ($item->type == 'BAJA')
-                <i class="ui large grey minus icon"></i>
+                <i class="ui grey minus icon"></i>
                 @else
-                <i class="ui large {{ $item->is_parallel ? 'green check' : 'red times' }} icon"></i>
+                <i class="ui {{ $item->is_parallel ? 'green check' : 'red times' }} icon"></i>
                 @endif
               </td>
               <td class="ui center aligned">
