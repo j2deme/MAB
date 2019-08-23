@@ -8,6 +8,7 @@ use App\Group;
 use App\Career;
 use App\Subject;
 use App\Semester;
+use App\User;
 use Carbon\Carbon;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -303,5 +304,73 @@ class MovesController extends Controller
     session(['url' => $url]);
 
     return view('moves.index', compact('result', 'subject', 'url'));
+  }
+
+  /**
+   * Show a list of moves ordered by generation
+   */
+  public function listByStudent()
+  {
+    $last_semester = Semester::last();
+    if (!is_null(Auth::user()->career)) {
+      $result = Move::with('user.career')->where('semester_id', $last_semester->id)->unattended()->get();
+      $result1 = $result->filter(function ($move, $key) {
+        if (Auth::user()->career->key == 'IIA') {
+          $IAMB = Career::where('key', 'IAMB')->first();
+          return (in_array($move->user->career->id, [Auth::user()->career->id, $IAMB->id]));
+        } else {
+          return ($move->user->career->id == Auth::user()->career->id);
+        }
+      });
+
+      $groupedByUser = $result1->sortBy('user.username');
+      $generations = [];
+      $students = [];
+      foreach ($groupedByUser as $move) {
+        $no_control = $move->user->username;
+        $gen = substr($no_control, 0, 2);
+        if (!array_key_exists($gen, $generations)) {
+          $generations[$gen] = [];
+        }
+
+        if (!array_key_exists($no_control, $generations[$gen])) {
+          $generations[$gen][$no_control] = [];
+        }
+
+        if (!array_key_exists($no_control, $students)) {
+          $students[$no_control] = 1;
+        } else {
+          $students[$no_control]++;
+        }
+
+        $generations[$gen][$no_control] = $move;
+      }
+      $generations = collect($generations);
+    } else {
+      // Jefe / Admin
+      $generations = collect([]);
+    }
+
+    return view('moves.list-generations', compact('generations', 'students'));
+  }
+
+  /**
+   * Show a table with moves filtered by subject
+   */
+  public function byStudent($key)
+  {
+    $user = User::where('username', $key)->first();
+    $last_semester = Semester::last();
+
+    if (!is_null(Auth::user()->career)) {
+      $result = $user->moves()->where('semester_id', $last_semester->id)->unattended()->paginate();
+    } else {
+      $result = $user->moves()->where('semester_id', $last_semester->id)->unattendedParallel()->paginate();
+    }
+
+    $url = route('moves.listByStudent');
+    session(['url' => $url]);
+
+    return view('moves.index', compact('result', 'user', 'url'));
   }
 }
