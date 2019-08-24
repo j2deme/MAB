@@ -348,7 +348,31 @@ class MovesController extends Controller
       $generations = collect($generations);
     } else {
       // Jefe / Admin
-      $generations = collect([]);
+      $result = Move::with('user.career')->where('semester_id', $last_semester->id)->unattendedParallel()->get();
+
+      $groupedByUser = $result->sortBy('user.username');
+      $generations = [];
+      $students = [];
+      foreach ($groupedByUser as $move) {
+        $no_control = $move->user->username;
+        $gen = substr($no_control, 0, 2);
+        if (!array_key_exists($gen, $generations)) {
+          $generations[$gen] = [];
+        }
+
+        if (!array_key_exists($no_control, $generations[$gen])) {
+          $generations[$gen][$no_control] = [];
+        }
+
+        if (!array_key_exists($no_control, $students)) {
+          $students[$no_control] = 1;
+        } else {
+          $students[$no_control]++;
+        }
+
+        $generations[$gen][$no_control] = $move;
+      }
+      $generations = collect($generations);
     }
 
     return view('moves.list-generations', compact('generations', 'students'));

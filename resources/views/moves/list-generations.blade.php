@@ -24,9 +24,9 @@
           </header>
           <div class="ui six cards">
             @foreach ($generation as $key => $move)
-            @if(starts_with($move->user->career->key, 'ISI'))
+            @if(starts_with($move->user->career->key, 'ISC'))
             @php ($color = 'blue')
-            @elseif(starts_with($move->user->career->key, 'IIN'))
+            @elseif(starts_with($move->user->career->key, 'II'))
             @php ($color = 'red')
             @elseif(starts_with($move->user->career->key, 'IGE'))
             @php ($color = 'teal')
@@ -42,14 +42,13 @@
                 <div class="header">
                   <h5>{{ $move->user->username }}</h5>
                 </div>
-                <div class="meta">
-                  <span class="category">{{ $students[$key] }}
-                    solicitud{{ ($students[$key] > 1) ? 'es' : null }}</span>
-                  {{-- <span class="category">Animals</span> --}}
-                </div>
                 <div class="description">
                   {{ $move->user->full_name }}
                 </div>
+              </div>
+              <div class="extra content">
+                <i class="stream icon"></i>
+                {{ $students[$key] }} solicitud{{ ($students[$key] > 1) ? 'es' : null }}
               </div>
             </a>
             @endforeach
