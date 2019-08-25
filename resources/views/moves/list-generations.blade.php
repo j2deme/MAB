@@ -37,7 +37,8 @@
             @else
             @php ($color = 'black')
             @endif
-            <a href="{{ route('moves.byStudent', $key) }}" class="ui {{ $color }} card">
+            <a href="{{ route('moves.byStudent', $key) }}"
+              class="ui {{ $color }} {{ ($move->user->is_suspended) ? 'inverted' : null }} card">
               <div class="content">
                 <div class="header">
                   <h5>{{ $move->user->username }}</h5>
