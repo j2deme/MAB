@@ -132,8 +132,11 @@ class UserController extends Controller
     // Handle the user roles
     $this->syncPermissions($request, $user);
 
-    $user->save();
-    flash()->success('Usuario actualizado');
+    if ($user->save()) {
+      flash()->success('El usuario ha sido actualizado');
+    } else {
+      flash()->error('Ocurrió un error al actualizar el usuario');
+    }
     return redirect()->route('users.index');
   }
 
@@ -168,8 +171,11 @@ class UserController extends Controller
         $user->career()->associate(Career::find($request->get('career_id')));
       }
 
-      $user->save();
-      flash()->success('Usuario actualizado');
+      if ($user->save()) {
+        flash()->success('Usuario actualizado');
+      } else {
+        flash()->error('Ocurrió un error al actualizar el usuario');
+      }
       return redirect()->back();
     }
   }
@@ -190,7 +196,7 @@ class UserController extends Controller
     if (User::findOrFail($id)->delete()) {
       flash()->success('El usuario ha sido borrado');
     } else {
-      flash()->success('El usuario no ha sido borrado');
+      flash()->success('Ocurrió un error al borrar el usuario');
     }
 
     return redirect()->back();
