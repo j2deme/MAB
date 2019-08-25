@@ -28,7 +28,7 @@ class Semester extends Model
    */
   public function getUpRangeAttribute()
   {
-    if(!is_null($this->begin_up)){
+    if (!is_null($this->begin_up)) {
       return $this->begin_up->format('d/m/Y') . " - " . $this->end_up->format('d/m/Y');
     } else {
       return '-';
@@ -37,10 +37,18 @@ class Semester extends Model
 
   public function getDownRangeAttribute()
   {
-    if(!is_null($this->begin_down)){
+    if (!is_null($this->begin_down)) {
       return $this->begin_down->format('d/m/Y') . " - " . $this->end_down->format('d/m/Y');
     } else {
       return '-';
     }
+  }
+
+  /**
+   * RELATIONSHIPS
+   */
+  public function moves()
+  {
+    return $this->hasMany('App\Move');
   }
 }
