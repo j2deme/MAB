@@ -35,7 +35,7 @@ Route::get('/home', 'HomeController@index')->name('home.index');
 # USER ROUTES -- RESOURCE
 Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.'], function () {
   Route::get('/', 'UserController@index')->name('index');
-  Route::post('/', 'UserController@store')->name('save');
+  Route::post('/save', 'UserController@store')->name('save');
   Route::get('/create', 'UserController@create')->name('new');
   Route::get('/{user}', 'UserController@show')->name('show');
   Route::get('/{user}/edit', 'UserController@edit')->name('edit');

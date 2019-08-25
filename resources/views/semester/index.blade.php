@@ -40,7 +40,7 @@
               <td class="ui center aligned">{{ $item->down_range }}</td>
               <td class="ui center aligned">
                 <a href="{{ route('semesters.toggle', $item) }}">
-                  <i class="ui {{ $item->is_active ? 'green check' : 'red times' }} icon"></i>
+                  <i class="ui {{ $item->is_active ? 'green toggle on' : 'red toggle off' }} icon"></i>
                 </a>
               </td>
               @can('edit_semesters')

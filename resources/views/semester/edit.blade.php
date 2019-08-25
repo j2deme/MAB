@@ -14,6 +14,7 @@
         <form action="{{ route('semesters.update', $semester) }}" class="ui equal width form @hasError" method="POST">
           @csrf
           @method('PUT')
+          <input type="hidden" name="id" id="id" value="{{ $semester->id }}">
           <div class="ui two fields">
             <div class="field">
               <label for="key">Clave</label>
