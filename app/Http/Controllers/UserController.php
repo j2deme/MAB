@@ -235,8 +235,8 @@ class UserController extends Controller
    */
   public function toggle($id)
   {
-    $user = User::findOrFail($id);
-    $user->is_suspended = !($user->is_suspended);
+    $user = User::find($id);
+    $user->is_suspended = ($user->is_suspended) ? false : true;
     $user->save();
 
     return redirect()->back();
