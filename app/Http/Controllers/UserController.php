@@ -60,9 +60,9 @@ class UserController extends Controller
     // Create the user
     if ($user = User::create($request->except('roles', 'permissions'))) {
       $this->syncPermissions($request, $user);
-      flash('El usuario ha sido creado');
+      flash()->success('El usuario ha sido creado');
     } else {
-      flash()->error('No es posible crear el usuario');
+      flash()->error('Ocurrió un error al crear el usuario');
     }
 
     return redirect()->route('users.index');
