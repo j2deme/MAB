@@ -215,7 +215,7 @@ class MovesController extends Controller
     if (Move::findOrFail($id)->delete()) {
       flash()->success('La solicitud ha sido cancelada');
     } else {
-      flash()->error('La solicitud no ha sido cancelada');
+      flash()->error('Ocurrió un error al cancelar la solicitud');
     }
 
     return redirect()->back();
