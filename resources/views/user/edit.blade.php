@@ -51,7 +51,9 @@
               <select name="roles" id="roles" class="ui search selection dropdown">
                 <option value="">Elige un rol</option>
                 @foreach ($roles as $key => $item)
-                <option value="{{ $key }}" {{ ($user->roles->first()->id == $key) ? 'selected' : null }}>{{ $item }}
+                <option value="{{ $key }}"
+                  {{ (!is_null($user->roles->first()) and $user->roles->first()->id == $key) ? 'selected' : null }}>
+                  {{ $item }}
                 </option>
                 @endforeach
               </select>
