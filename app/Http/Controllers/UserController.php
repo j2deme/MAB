@@ -21,7 +21,8 @@ class UserController extends Controller
    */
   public function index()
   {
-    $users = User::latest()->paginate();
+    $_users = User::count();
+    $users = User::orderBy('is_suspended')->orderBy('username', 'asc')->paginate($_users);
     return view('user.index', compact('users'));
   }
 
@@ -49,7 +50,7 @@ class UserController extends Controller
       'email' => 'required|email|unique:users',
       'username' => 'required|unique:users',
       'password' => 'required|min:6',
-      'roles' => 'required|min:1'
+      //'roles' => 'required|min:1'
     ]);
 
     // hash password
