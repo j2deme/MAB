@@ -70,6 +70,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], fu
   # Filter by generation
   Route::get('/by/student', 'MovesController@listByStudent')->name('listByStudent');
   Route::get('/by/student/{student}', 'MovesController@byStudent')->name('byStudent');
+  # Filter by status
+  Route::get('/by/status/attended', 'MovesController@byTypeAttended')->name('listAttended');
 });
 
 # SEMESTER ROUTES -- RESOURCE

@@ -16,20 +16,20 @@
     <a href="{{ route('moves.listBySubject') }}" class="item">
       <i class="project diagram icon"></i> Ver por materia
     </a>
-    {{-- <div class="ui simple dropdown item">
+    <div class="ui simple dropdown item">
       <i class="tasks icon"></i> Ver por estatus <i class="dropdown icon"></i>
       <div class="menu">
-        <a href="#" class="item">
+        {{-- <a href="#" class="item">
           <i class="check icon"></i> No procesadas
         </a>
         <a href="#" class="item">
           <i class="check double icon"></i> En revisión
-        </a>
-        <a href="#" class="item">
+        </a> --}}
+        <a href="{{ route('moves.listAttended') }}" class="item">
           <i class="folder icon"></i> Finalizadas
         </a>
       </div>
-    </div> --}}
+    </div>
   </div>
 </div>
 @endrole

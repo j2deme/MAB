@@ -397,4 +397,19 @@ class MovesController extends Controller
 
     return view('moves.index', compact('result', 'user', 'url'));
   }
+
+  public function byTypeAttended()
+  {
+    $last_semester = Semester::last();
+    if (!is_null(Auth::user()->career)) {
+      $career = Career::find(Auth::user()->career->id)->first();
+      $result = $career->moves()->where('semester_id', $last_semester->id)->attended()->paginate();
+    } else {
+      $result = Move::where('semester_id', $last_semester->id)->attended(true)->paginate();
+    }
+
+    $url = route('home.index');
+
+    return view('moves.index', compact('result', 'url'));
+  }
 }
