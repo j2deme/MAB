@@ -22,6 +22,58 @@ class Move extends Model
   ];
 
   /**
+   * SCOPES
+   */
+  public function scopeUnattended($query)
+  {
+    return $query->whereIn('status', ['0', '1'])
+      ->where('is_parallel', false)
+      ->orderBy('user_id', 'desc')
+      ->orderBy('type', 'desc')
+      ->orderBy('is_parallel', 'asc')
+      ->orderBy('status', 'desc');
+  }
+
+  public function scopeUnattendedParallel($query)
+  {
+    return $query->whereIn('status', ['0', '1'])
+      ->orderBy('user_id', 'desc')
+      ->orderBy('type', 'desc')
+      ->orderBy('is_parallel', 'asc')
+      ->orderBy('status', 'desc');
+  }
+
+  public function scopeRegistered($query, $parallel = false)
+  {
+    return $query->where('status', '0')
+      ->where('is_parallel', $parallel)
+      ->orderBy('user_id', 'desc')
+      ->orderBy('type', 'desc')
+      ->orderBy('is_parallel', 'asc')
+      ->orderBy('status', 'desc');
+  }
+
+  public function scopeOnRevision($query, $parallel = false)
+  {
+    return $query->where('status', '1')
+      ->where('is_parallel', $parallel)
+      ->orderBy('user_id', 'desc')
+      ->orderBy('type', 'desc')
+      ->orderBy('is_parallel', 'asc')
+      ->orderBy('status', 'desc');
+  }
+
+  public function scopeAttended($query, $parallel = false)
+  {
+    return $query->whereIn('status', ['2', '3', '4', '5'])
+      ->where('is_parallel', $parallel)
+      ->orderBy('user_id', 'desc')
+      ->orderBy('type', 'desc')
+      ->orderBy('is_parallel', 'asc')
+      ->orderBy('status', 'desc');
+  }
+
+  /**
    * MUTATORS
    */
   public function getJustificationAttribute($value)

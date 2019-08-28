@@ -35,7 +35,7 @@ Route::get('/home', 'HomeController@index')->name('home.index');
 # USER ROUTES -- RESOURCE
 Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.'], function () {
   Route::get('/', 'UserController@index')->name('index');
-  Route::post('/', 'UserController@store')->name('save');
+  Route::post('/save', 'UserController@store')->name('save');
   Route::get('/create', 'UserController@create')->name('new');
   Route::get('/{user}', 'UserController@show')->name('show');
   Route::get('/{user}/edit', 'UserController@edit')->name('edit');
@@ -61,7 +61,19 @@ Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], fu
   Route::get('/{move}/edit', 'MovesController@edit')->name('edit');
   Route::put('/{move}', 'MovesController@update')->name('update');
   Route::delete('/{move}', 'MovesController@destroy')->name('delete');
-  Route::get('/c/{career}', 'MovesController@byCareer')->name('career');
+  Route::delete('/c/{move}', 'MovesController@cancel')->name('cancel');
+  # Filter by career
+  Route::get('/by/career/{career}', 'MovesController@byCareer')->name('byCareer');
+  # Filter by subject
+  Route::get('/by/subject', 'MovesController@listBySubject')->name('listBySubject');
+  Route::get('/by/subject/{subject}', 'MovesController@bySubject')->name('bySubject');
+  # Filter by generation
+  Route::get('/by/student', 'MovesController@listByStudent')->name('listByStudent');
+  Route::get('/by/student/{student}', 'MovesController@byStudent')->name('byStudent');
+  # Filter by status
+  Route::get('/by/status/registered', 'MovesController@byTypeRegistered')->name('listRegistered');
+  Route::get('/by/status/revision', 'MovesController@byTypeRevision')->name('listOnRevision');
+  Route::get('/by/status/attended', 'MovesController@byTypeAttended')->name('listAttended');
 });
 
 # SEMESTER ROUTES -- RESOURCE

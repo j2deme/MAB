@@ -15,7 +15,7 @@ class SemesterController extends Controller
    */
   public function index()
   {
-    $result = Semester::latest()->paginate();
+    $result = Semester::orderBy('created_at', 'desc')->paginate();
     return view('semester.index', compact('result'));
   }
 
@@ -38,16 +38,16 @@ class SemesterController extends Controller
   public function store(Request $request)
   {
     $this->validate($request, [
-      'key' => 'bail|required|min:5',
+      'key' => 'bail|required|min:5|unique:semesters',
       'short_name' => 'required|unique:semesters',
-      'long_name' => 'required|unique:semesters'
+      'long_name' => 'required'
     ]);
 
     // Create the semester
     if ($semester = Semester::create($request->all())) {
       flash('El semestre ha sido creado');
     } else {
-      flash()->error('No es posible crear el semestre');
+      flash()->error('Ocurrió un error al crear el semestre');
     }
 
     return redirect()->route('semesters.index');
@@ -86,7 +86,28 @@ class SemesterController extends Controller
    */
   public function update(Request $request, $id)
   {
-    //
+    $semester = Semester::findOrFail($id)->first();
+
+    $this->validate($request, [
+      'short_name' => 'required',
+      'long_name' => 'required'
+    ]);
+
+    $semester->short_name = $request->get('short_name');
+    $semester->long_name = $request->get('long_name');
+    $semester->begin_up = $request->get('begin_up');
+    $semester->end_up = $request->get('end_up');
+    $semester->begin_down = $request->get('begin_down');
+    $semester->end_down = $request->get('end_down');
+
+    // Create the semester
+    if ($semester->save()) {
+      flash()->success('El semestre ha sido actualizado');
+    } else {
+      flash()->error('Ocurrió un error al actualizar el semestre');
+    }
+
+    return redirect()->route('semesters.index');
   }
 
   /**
@@ -109,7 +130,7 @@ class SemesterController extends Controller
   public function toggle($id)
   {
     $semester = Semester::findOrFail($id);
-    $semester->is_active = !($semester->is_active);
+    $semester->is_active = ($semester->is_active) ? false : true;
     $semester->save();
 
     return redirect()->back();

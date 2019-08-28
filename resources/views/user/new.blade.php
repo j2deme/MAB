@@ -11,12 +11,12 @@
             Nuevo usuario
           </h2>
         </header>
-        <form action="{{ route('users.new') }}" class="ui equal width form @hasError" method="POST">
+        <form action="{{ route('users.save') }}" class="ui equal width form @hasError" method="POST">
           @csrf
           <div class="fields">
             <div class="field">
               <label>Nombre</label>
-              <input type="text" id="name" name="name" value="{{ old('name') }}" autofocus autocomplete="off" />
+              <input type="text" id="name" name="name" value="{{ old('name') }}" autofocus autocomplete="given-name" />
             </div>
             <div class="field">
               <label for="last_name">Apellidos</label>

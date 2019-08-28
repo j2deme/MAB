@@ -6,7 +6,9 @@ use Auth;
 use App\Move;
 use App\Group;
 use App\Career;
+use App\Subject;
 use App\Semester;
+use App\User;
 use Carbon\Carbon;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -24,9 +26,9 @@ class MovesController extends Controller
     if (Auth::user()->hasRole('Estudiante')) {
       $result = Auth::user()->moves()->where('semester_id', $last_semester->id)->latest()->paginate();
     } elseif (Auth::user()->hasRole('Coordinador')) {
-      $result = Career::find(Auth::user()->career->id)->moves()->where('semester_id', $last_semester->id)->whereIn('status', ['0', '1'])->orderBy('type', 'desc')->orderBy('is_parallel', 'asc')->paginate();
+      $result = Career::find(Auth::user()->career->id)->moves()->where('semester_id', $last_semester->id)->unattended()->paginate();
     } else {
-      $result = Move::where('semester_id', $last_semester->id)->whereIn('status', ['0', '1', '2', '5'])->orderBy('type', 'desc')->orderBy('is_parallel', 'asc')->orderBy('status', 'asc')->paginate();
+      $result = Move::where('semester_id', $last_semester->id)->unattendedParallel()->paginate();
     }
     return view('moves.index', compact('result'));
   }
@@ -118,7 +120,7 @@ class MovesController extends Controller
         flash()->error('No fue posible registrar la solicitud');
       }
     } else {
-      flash()->warning('Ya existe una solicitud con las mismas características');
+      flash()->warning('Ya existe una solicitud idéntica');
     }
 
     return redirect()->route('moves.index');
@@ -195,7 +197,11 @@ class MovesController extends Controller
       flash()->error('Ocurrió un error al atender la solicitud');
     }
 
-    return redirect()->route('moves.index');
+    if ($request->has('url')) {
+      return redirect($request->get('url'));
+    } else {
+      return redirect()->route('home.index');
+    }
   }
 
   /**
@@ -209,7 +215,26 @@ class MovesController extends Controller
     if (Move::findOrFail($id)->delete()) {
       flash()->success('La solicitud ha sido cancelada');
     } else {
-      flash()->error('La solicitud no ha sido cancelada');
+      flash()->error('Ocurrió un error al cancelar la solicitud');
+    }
+
+    return redirect()->back();
+  }
+
+  public function cancel($id)
+  {
+    $move = Move::findOrFail($id);
+    // Rechazada por coordinador: 2
+    // Rechazada por jefe / admin: 5
+    $move->status = (Auth::user()->hasRole('Coordinador')) ? '2' : '5';
+    $move->answer = [
+      'main' => 'MOVIMIENTO NO DISPONIBLE',
+      'extra' => ''
+    ];
+    if ($move->save()) {
+      flash()->success('La solicitud ha sido rechazada');
+    } else {
+      flash()->error('Ocurrió un error al rechazar la solicitud');
     }
 
     return redirect()->back();
@@ -219,7 +244,208 @@ class MovesController extends Controller
   {
     $last_semester = Semester::last();
     $career = Career::where('key', $key)->first();
-    $result = $career->moves()->where('semester_id', $last_semester->id)->whereIn('status', ['0', '1'])->orderBy('type', 'desc')->orderBy('is_parallel', 'asc')->paginate();
+    $result = $career->moves()->where('semester_id', $last_semester->id)->unattended()->paginate();
     return view('moves.index', compact('result', 'key'));
+  }
+
+  /**
+   * Show a list of moves ordered by semesters and subject
+   */
+  public function listBySubject()
+  {
+    $last_semester = Semester::last();
+    if (!is_null(Auth::user()->career)) {
+      $result = Move::with('group.subject')->where('semester_id', $last_semester->id)->unattended()->get();
+      $result1 = $result->filter(function ($move, $key) {
+        if (Auth::user()->career->key == 'IIA') {
+          $IAMB = Career::where('key', 'IAMB')->first();
+          return (in_array($move->group->subject->career->id, [Auth::user()->career->id, $IAMB->id]));
+        } else {
+          return ($move->group->subject->career->id == Auth::user()->career->id);
+        }
+      });
+
+      $groupedBySemester = $result1->sortBy('group.subject.semester')->groupBy('group.subject.semester');
+
+      $groupedBySemester->transform(function ($item, $key) {
+        return $item->sortBy('group.subject.key')->groupBy('group.subject.key');
+      });
+    } else {
+      // Jefe / Admin
+      $result = Move::with('group.subject')->where('semester_id', $last_semester->id)->unattendedParallel()->get();
+      $groupedBySemester = $result->sortBy('group.subject.semester')->groupBy('group.subject.semester');
+
+      $groupedBySemester->transform(function ($item, $key) {
+        return $item->sortBy('group.subject.key')->groupBy('group.subject.key');
+      });
+    }
+
+    $subjects = Subject::all()->pluck('short_name', 'key');
+
+    return view('moves.list-semester-subject', compact('groupedBySemester', 'subjects'));
+  }
+
+  /**
+   * Show a table with moves filtered by subject
+   */
+  public function bySubject($key)
+  {
+    $subject = Subject::where('key', $key)->first();
+    $last_semester = Semester::last();
+    $groups = Group::where('semester_id', $last_semester->id)->where('subject_id', $subject->id)->pluck('id');
+
+    if (!is_null(Auth::user()->career)) {
+      $result = Move::with('group.subject', 'user')->where('semester_id', $last_semester->id)->whereIn('group_id', $groups)->unattended()->paginate();
+    } else {
+      $result = Move::with('group.subject', 'user')->where('semester_id', $last_semester->id)->whereIn('group_id', $groups)->unattendedParallel()->paginate();
+    }
+
+    $url = route('moves.listBySubject');
+    session(['url' => $url]);
+
+    return view('moves.index', compact('result', 'subject', 'url'));
+  }
+
+  /**
+   * Show a list of moves ordered by generation
+   */
+  public function listByStudent()
+  {
+    $last_semester = Semester::last();
+    if (!is_null(Auth::user()->career)) {
+      $result = Move::with('user.career')->where('semester_id', $last_semester->id)->unattended()->get();
+      $result1 = $result->filter(function ($move, $key) {
+        if (Auth::user()->career->key == 'IIA') {
+          $IAMB = Career::where('key', 'IAMB')->first();
+          return (in_array($move->user->career->id, [Auth::user()->career->id, $IAMB->id]));
+        } else {
+          return ($move->user->career->id == Auth::user()->career->id);
+        }
+      });
+
+      $groupedByUser = $result1->sortBy('user.username');
+      $generations = [];
+      $students = [];
+      foreach ($groupedByUser as $move) {
+        $no_control = $move->user->username;
+        $gen = substr($no_control, 0, 2);
+        if (!array_key_exists($gen, $generations)) {
+          $generations[$gen] = [];
+        }
+
+        if (!array_key_exists($no_control, $generations[$gen])) {
+          $generations[$gen][$no_control] = [];
+        }
+
+        if (!array_key_exists($no_control, $students)) {
+          $students[$no_control] = 1;
+        } else {
+          $students[$no_control]++;
+        }
+
+        $generations[$gen][$no_control] = $move;
+      }
+      $generations = collect($generations);
+    } else {
+      // Jefe / Admin
+      $result = Move::with('user.career')->where('semester_id', $last_semester->id)->unattendedParallel()->get();
+
+      $groupedByUser = $result->sortBy('user.username');
+      $generations = [];
+      $students = [];
+      foreach ($groupedByUser as $move) {
+        $no_control = $move->user->username;
+        $gen = substr($no_control, 0, 2);
+        if (!array_key_exists($gen, $generations)) {
+          $generations[$gen] = [];
+        }
+
+        if (!array_key_exists($no_control, $generations[$gen])) {
+          $generations[$gen][$no_control] = [];
+        }
+
+        if (!array_key_exists($no_control, $students)) {
+          $students[$no_control] = 1;
+        } else {
+          $students[$no_control]++;
+        }
+
+        $generations[$gen][$no_control] = $move;
+      }
+      $generations = collect($generations);
+    }
+
+    return view('moves.list-generations', compact('generations', 'students'));
+  }
+
+  /**
+   * Show a table with moves filtered by subject
+   */
+  public function byStudent($key)
+  {
+    $user = User::where('username', $key)->first();
+    $last_semester = Semester::last();
+
+    if (!is_null(Auth::user()->career)) {
+      $result = $user->moves()->where('semester_id', $last_semester->id)->unattended()->paginate();
+    } else {
+      $result = $user->moves()->where('semester_id', $last_semester->id)->unattendedParallel()->paginate();
+    }
+
+    $url = route('moves.listByStudent');
+    session(['url' => $url]);
+
+    return view('moves.index', compact('result', 'user', 'url'));
+  }
+
+  public function byTypeRegistered()
+  {
+    $last_semester = Semester::last();
+    if (!is_null(Auth::user()->career)) {
+      $career = Career::find(Auth::user()->career->id)->first();
+      $result = $career->moves()->where('semester_id', $last_semester->id)->registered()->paginate();
+    } else {
+      $result = Move::where('semester_id', $last_semester->id)->registered(true)->paginate();
+    }
+
+    $url = route('home.index');
+
+    $extra = "Sin Atender";
+
+    return view('moves.index', compact('result', 'url', 'extra'));
+  }
+
+  public function byTypeRevision()
+  {
+    $last_semester = Semester::last();
+    if (!is_null(Auth::user()->career)) {
+      $career = Career::find(Auth::user()->career->id)->first();
+      $result = $career->moves()->where('semester_id', $last_semester->id)->onRevision()->paginate();
+    } else {
+      $result = Move::where('semester_id', $last_semester->id)->onRevision(true)->paginate();
+    }
+
+    $url = route('home.index');
+
+    $extra = "Aceptadas y Rechazadas";
+
+    return view('moves.index', compact('result', 'url', 'extra'));
+  }
+
+  public function byTypeAttended()
+  {
+    $last_semester = Semester::last();
+    if (!is_null(Auth::user()->career)) {
+      $career = Career::find(Auth::user()->career->id)->first();
+      $result = $career->moves()->where('semester_id', $last_semester->id)->attended()->paginate();
+    } else {
+      $result = Move::where('semester_id', $last_semester->id)->attended(true)->paginate();
+    }
+
+    $url = route('home.index');
+
+    $extra = "Aceptadas y Rechazadas";
+
+    return view('moves.index', compact('result', 'url', 'extra'));
   }
 }

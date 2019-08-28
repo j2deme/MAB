@@ -21,7 +21,8 @@ class UserController extends Controller
    */
   public function index()
   {
-    $users = User::latest()->paginate();
+    $_users = User::count();
+    $users = User::orderBy('is_suspended')->orderBy('username', 'asc')->paginate($_users);
     return view('user.index', compact('users'));
   }
 
@@ -49,7 +50,7 @@ class UserController extends Controller
       'email' => 'required|email|unique:users',
       'username' => 'required|unique:users',
       'password' => 'required|min:6',
-      'roles' => 'required|min:1'
+      //'roles' => 'required|min:1'
     ]);
 
     // hash password
@@ -60,9 +61,9 @@ class UserController extends Controller
     // Create the user
     if ($user = User::create($request->except('roles', 'permissions'))) {
       $this->syncPermissions($request, $user);
-      flash('El usuario ha sido creado');
+      flash()->success('El usuario ha sido creado');
     } else {
-      flash()->error('No es posible crear el usuario');
+      flash()->error('Ocurrió un error al crear el usuario');
     }
 
     return redirect()->route('users.index');
@@ -132,8 +133,11 @@ class UserController extends Controller
     // Handle the user roles
     $this->syncPermissions($request, $user);
 
-    $user->save();
-    flash()->success('Usuario actualizado');
+    if ($user->save()) {
+      flash()->success('El usuario ha sido actualizado');
+    } else {
+      flash()->error('Ocurrió un error al actualizar el usuario');
+    }
     return redirect()->route('users.index');
   }
 
@@ -168,8 +172,11 @@ class UserController extends Controller
         $user->career()->associate(Career::find($request->get('career_id')));
       }
 
-      $user->save();
-      flash()->success('Usuario actualizado');
+      if ($user->save()) {
+        flash()->success('Usuario actualizado');
+      } else {
+        flash()->error('Ocurrió un error al actualizar el usuario');
+      }
       return redirect()->back();
     }
   }
@@ -190,7 +197,7 @@ class UserController extends Controller
     if (User::findOrFail($id)->delete()) {
       flash()->success('El usuario ha sido borrado');
     } else {
-      flash()->success('El usuario no ha sido borrado');
+      flash()->success('Ocurrió un error al borrar el usuario');
     }
 
     return redirect()->back();
@@ -229,8 +236,8 @@ class UserController extends Controller
    */
   public function toggle($id)
   {
-    $user = User::findOrFail($id);
-    $user->is_suspended = !($user->is_suspended);
+    $user = User::find($id);
+    $user->is_suspended = ($user->is_suspended) ? false : true;
     $user->save();
 
     return redirect()->back();
