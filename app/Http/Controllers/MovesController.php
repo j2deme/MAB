@@ -398,6 +398,40 @@ class MovesController extends Controller
     return view('moves.index', compact('result', 'user', 'url'));
   }
 
+  public function byTypeRegistered()
+  {
+    $last_semester = Semester::last();
+    if (!is_null(Auth::user()->career)) {
+      $career = Career::find(Auth::user()->career->id)->first();
+      $result = $career->moves()->where('semester_id', $last_semester->id)->registered()->paginate();
+    } else {
+      $result = Move::where('semester_id', $last_semester->id)->registered(true)->paginate();
+    }
+
+    $url = route('home.index');
+
+    $extra = "Sin Atender";
+
+    return view('moves.index', compact('result', 'url', 'extra'));
+  }
+
+  public function byTypeRevision()
+  {
+    $last_semester = Semester::last();
+    if (!is_null(Auth::user()->career)) {
+      $career = Career::find(Auth::user()->career->id)->first();
+      $result = $career->moves()->where('semester_id', $last_semester->id)->onRevision()->paginate();
+    } else {
+      $result = Move::where('semester_id', $last_semester->id)->onRevision(true)->paginate();
+    }
+
+    $url = route('home.index');
+
+    $extra = "Aceptadas y Rechazadas";
+
+    return view('moves.index', compact('result', 'url', 'extra'));
+  }
+
   public function byTypeAttended()
   {
     $last_semester = Semester::last();
@@ -410,6 +444,8 @@ class MovesController extends Controller
 
     $url = route('home.index');
 
-    return view('moves.index', compact('result', 'url'));
+    $extra = "Aceptadas y Rechazadas";
+
+    return view('moves.index', compact('result', 'url', 'extra'));
   }
 }

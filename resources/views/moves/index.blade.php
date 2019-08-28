@@ -11,7 +11,7 @@
             @role('Estudiante')
             Mis solicitudes
             @else
-            Solicitudes {{ $subject->short_name or null }} {{ $subject->full_key or null }}
+            Solicitudes {{ $subject->short_name or null }}{{ $subject->full_key or null }}{{ $extra or null }}
             @endrole
           </h2>
         </header>

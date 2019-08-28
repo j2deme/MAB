@@ -71,6 +71,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], fu
   Route::get('/by/student', 'MovesController@listByStudent')->name('listByStudent');
   Route::get('/by/student/{student}', 'MovesController@byStudent')->name('byStudent');
   # Filter by status
+  Route::get('/by/status/registered', 'MovesController@byTypeRegistered')->name('listRegistered');
+  Route::get('/by/status/revision', 'MovesController@byTypeRevision')->name('listOnRevision');
   Route::get('/by/status/attended', 'MovesController@byTypeAttended')->name('listAttended');
 });
 

@@ -43,6 +43,26 @@ class Move extends Model
       ->orderBy('status', 'desc');
   }
 
+  public function scopeRegistered($query, $parallel = false)
+  {
+    return $query->where('status', '0')
+      ->where('is_parallel', $parallel)
+      ->orderBy('user_id', 'desc')
+      ->orderBy('type', 'desc')
+      ->orderBy('is_parallel', 'asc')
+      ->orderBy('status', 'desc');
+  }
+
+  public function scopeOnRevision($query, $parallel = false)
+  {
+    return $query->where('status', '1')
+      ->where('is_parallel', $parallel)
+      ->orderBy('user_id', 'desc')
+      ->orderBy('type', 'desc')
+      ->orderBy('is_parallel', 'asc')
+      ->orderBy('status', 'desc');
+  }
+
   public function scopeAttended($query, $parallel = false)
   {
     return $query->whereIn('status', ['2', '3', '4', '5'])
