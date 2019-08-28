@@ -427,7 +427,7 @@ class MovesController extends Controller
 
     $url = route('home.index');
 
-    $extra = "Aceptadas y Rechazadas";
+    $extra = "En Revisión";
 
     return view('moves.index', compact('result', 'url', 'extra'));
   }
