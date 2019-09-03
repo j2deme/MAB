@@ -439,7 +439,8 @@ class MovesController extends Controller
       $career = Career::find(Auth::user()->career->id)->first();
       $result = $career->moves()->where('semester_id', $last_semester->id)->attended()->paginate();
     } else {
-      $result = Move::where('semester_id', $last_semester->id)->attended(true)->paginate();
+      $_all = Move::where('semester_id', $last_semester->id)->count();
+      $result = Move::where('semester_id', $last_semester->id)->attended(true)->paginate($_all);
     }
 
     $url = route('home.index');
