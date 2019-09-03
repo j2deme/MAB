@@ -45,8 +45,11 @@ class Move extends Model
 
   public function scopeRegistered($query, $parallel = false)
   {
+    # Only show base moves
+    if ($parallel == false) {
+      $query = $query->where('is_parallel', $parallel);
+    }
     return $query->where('status', '0')
-      ->where('is_parallel', $parallel)
       ->orderBy('user_id', 'desc')
       ->orderBy('type', 'desc')
       ->orderBy('is_parallel', 'asc')
@@ -55,8 +58,11 @@ class Move extends Model
 
   public function scopeOnRevision($query, $parallel = false)
   {
+    # Only show base moves
+    if ($parallel == false) {
+      $query = $query->where('is_parallel', $parallel);
+    }
     return $query->where('status', '1')
-      ->where('is_parallel', $parallel)
       ->orderBy('user_id', 'desc')
       ->orderBy('type', 'desc')
       ->orderBy('is_parallel', 'asc')
@@ -65,8 +71,11 @@ class Move extends Model
 
   public function scopeAttended($query, $parallel = false)
   {
+    # Only show base moves
+    if ($parallel == false) {
+      $query = $query->where('is_parallel', $parallel);
+    }
     return $query->whereIn('status', ['2', '3', '4', '5'])
-      ->where('is_parallel', $parallel)
       ->orderBy('user_id', 'desc')
       ->orderBy('type', 'desc')
       ->orderBy('is_parallel', 'asc')
