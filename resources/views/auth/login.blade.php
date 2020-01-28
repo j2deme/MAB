@@ -16,15 +16,14 @@
           <div class="field">
             <div class="ui left icon input">
               <i class="user icon"></i>
-              <input type="text" id="username" name="username" placeholder="No. Control / Usuario"
-                autocomplete="username" autofocus autocomplete="off">
+              <input type="text" id="username" name="username" placeholder="No. Control" autocomplete="username"
+                autofocus autocomplete="off">
             </div>
           </div>
           <div class="field">
             <div class="ui left icon input">
               <i class="lock icon"></i>
-              <input type="password" id="password" name="password" placeholder="Contraseña"
-                autocomplete="current-password">
+              <input type="password" id="password" name="password" placeholder="NIP" autocomplete="current-password">
             </div>
           </div>
           <div class="inline field">
@@ -43,13 +42,13 @@
 
       </form>
 
-      <div class="ui message">
+      {{--<div class="ui message">
         <div class="ui center aligned grid">
           ¿No tienes cuenta? <a href="{{ route('auth.register') }}">Regístrate</a>
-        </div>
-      </div>
     </div>
-  </div>
+  </div>--}}
+</div>
+</div>
 </div>
 @endsection
 
