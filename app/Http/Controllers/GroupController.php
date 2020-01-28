@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Group;
 use App\Subject;
 use App\Semester;
@@ -61,6 +62,28 @@ class GroupController extends Controller
     }
 
 
+    return redirect()->route('groups.index');
+  }
+
+  public function sync()
+  {
+    $semester = Semester::last();
+
+    $groups  = DB::connection('sybase')->select("SELECT materia, grupo AS clave FROM grupos WHERE periodo = :periodo AND materia NOT LIKE '%MOD_' AND materia NOT LIKE '%T__'", ['periodo' => $semester->key]);
+    //dd($groups);
+
+    foreach ($groups as $g) {
+      $data = [
+        'name' => $g->clave,
+        'is_available' => true
+      ];
+      if ($group = Group::create($data)) {
+        $subject = Subject::where('key', trim($g->materia))->first();
+        $group->subject()->associate(isset($subject->id) ? $subject : null);
+        $group->semester()->associate($semester);
+        $group->save();
+      }
+    }
     return redirect()->route('groups.index');
   }
 
