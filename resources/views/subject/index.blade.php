@@ -14,7 +14,7 @@
           <a href="{{ route('subjects.new') }}" class="ui primary labeled icon button">
             <i class="ui add icon"></i> Añadir materia
           </a>
-          <a href="{{ route('subjects.batch') }}" class="ui icon button">
+          <a href="{{ route('subjects.sync') }}" class="ui icon button">
             <i class="upload icon"></i>
           </a>
         </div>

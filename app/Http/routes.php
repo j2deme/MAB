@@ -104,6 +104,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'careers', 'as' => 'careers.']
 # SUBJECT ROUTES -- RESOURCE
 Route::group(['middleware' => 'auth', 'prefix' => 'subjects', 'as' => 'subjects.'], function () {
   Route::get('/', 'SubjectController@index')->name('index');
+  Route::get('/sync', 'SubjectController@sync')->name('sync');
   Route::post('/', 'SubjectController@store')->name('save');
   Route::get('/create', 'SubjectController@create')->name('new');
   Route::get('/{subject}', 'SubjectController@show')->name('show');
