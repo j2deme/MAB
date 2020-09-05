@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use DB;
 use App\Role;
 use App\User;
 use App\Career;
@@ -24,6 +25,31 @@ class UserController extends Controller
     $_users = User::count();
     $users = User::orderBy('is_suspended')->orderBy('username', 'asc')->paginate($_users);
     return view('user.index', compact('users'));
+  }
+
+  public function cloneStudents()
+  {
+    $students  = DB::connection('sybase')->select("SELECT no_de_control AS no_control, nombre_alumno AS nombre, apellido_paterno, apellido_materno, carrera, nip FROM alumnos WHERE estatus_alumno = :estatus", ['estatus' => 'ACT']);
+
+    $role = Role::where('name', 'Estudiante')->first();
+
+    foreach ($students as $s) {
+      $data = [
+        'username' => $s->no_control,
+        'name' => $s->nombre,
+        'last_name' => "{$s->apellido_paterno} {$s->apellido_materno}",
+        'email' => trim($s->no_control) . "@tecvalles.mx",
+        'password' => $s->nip,
+        'is_suspended' => false
+      ];
+      if ($student = User::create($data)) {
+        $career = Career::where('internal_key', $s->carrera)->first();
+        $student->career()->associate(isset($career->id) ? $career : null);
+        $student->save();
+        $student->assignRole($role);
+      }
+    }
+    return redirect()->route('users.index');
   }
 
   /**
@@ -60,7 +86,7 @@ class UserController extends Controller
 
     // Create the user
     if ($user = User::create($request->except('roles', 'permissions'))) {
-      $this->syncPermissions($request, $user);
+      //$this->syncPermissions($request, $user);
       flash()->success('El usuario ha sido creado');
     } else {
       flash()->error('Ocurrió un error al crear el usuario');
