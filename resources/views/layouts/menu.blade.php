@@ -89,7 +89,7 @@
     <i class="sign in icon"></i> Inicio de sesión
   </a>
   {{--<a href="{{ route('auth.register') }}" class="item">
-  <i class="id card icon"></i> Registro
+    <i class="id card icon"></i> Registro
   </a>--}}
   @end
 </div>
