@@ -18,7 +18,7 @@ class Group extends Model
    */
   public function getFullKeyAttribute()
   {
-    return $this->subject->key . "-" . $this->name;
+    return (is_object($this->subject)) ? $this->subject->key . "-" . $this->name : $this->name;
   }
 
   public function getKeyAttribute()

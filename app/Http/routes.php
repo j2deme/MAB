@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'PublicController@index')->name('root');
+Route::get('/test', 'PublicController@test')->name('test');
 
 # Route::auth(); # Removed in order to name auth routes
 
@@ -21,8 +22,8 @@ Route::post('login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController@login
 Route::get('logout', ['as' => 'auth.logout', 'uses' => 'Auth\AuthController@logout']);
 
 # REGISTRATION ROUTES
-Route::get('register', ['as' => 'auth.register', 'uses' => 'Auth\AuthController@showRegistrationForm']);
-Route::post('register', ['as' => 'auth.register', 'uses' => 'Auth\AuthController@register']);
+//Route::get('register', ['as' => 'auth.register', 'uses' => 'Auth\AuthController@showRegistrationForm']);
+//Route::post('register', ['as' => 'auth.register', 'uses' => 'Auth\AuthController@register']);
 
 # PASSWORD RESET ROUTES
 Route::get('password/reset/{token?}', ['as' => 'auth.password.reset', 'uses' => 'Auth\PasswordController@showResetForm']);
@@ -35,6 +36,7 @@ Route::get('/home', 'HomeController@index')->name('home.index');
 # USER ROUTES -- RESOURCE
 Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.'], function () {
   Route::get('/', 'UserController@index')->name('index');
+  Route::get('/clone', 'UserController@cloneStudents')->name('cloneStudents');
   Route::post('/save', 'UserController@store')->name('save');
   Route::get('/create', 'UserController@create')->name('new');
   Route::get('/{user}', 'UserController@show')->name('show');
@@ -69,6 +71,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], fu
   Route::get('/by/subject/{subject}', 'MovesController@bySubject')->name('bySubject');
   # Filter by generation
   Route::get('/by/student', 'MovesController@listByStudent')->name('listByStudent');
+  Route::get('/by/student/switch', 'MovesController@listByGroups')->name('listByGroups');
   Route::get('/by/student/{student}', 'MovesController@byStudent')->name('byStudent');
   # Filter by status
   Route::get('/by/status/registered', 'MovesController@byTypeRegistered')->name('listRegistered');
@@ -103,6 +106,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'careers', 'as' => 'careers.']
 Route::group(['middleware' => 'auth', 'prefix' => 'subjects', 'as' => 'subjects.'], function () {
   Route::get('/', 'SubjectController@index')->name('index');
   Route::post('/', 'SubjectController@store')->name('save');
+  Route::get('/sync', 'SubjectController@sync')->name('sync');
   Route::get('/create', 'SubjectController@create')->name('new');
   Route::get('/{subject}', 'SubjectController@show')->name('show');
   Route::get('/{subject}/edit', 'SubjectController@edit')->name('edit');
@@ -116,6 +120,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'subjects', 'as' => 'subjects.
 Route::group(['middleware' => 'auth', 'prefix' => 'groups', 'as' => 'groups.'], function () {
   Route::get('/', 'GroupController@index')->name('index');
   Route::post('/', 'GroupController@store')->name('save');
+  Route::get('/sync', 'GroupController@sync')->name('sync');
   Route::get('/create', 'GroupController@create')->name('new');
   Route::get('/{group}', 'GroupController@show')->name('show');
   Route::get('/{group}/edit', 'GroupController@edit')->name('edit');

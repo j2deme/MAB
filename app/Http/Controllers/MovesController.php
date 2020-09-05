@@ -56,6 +56,7 @@ class MovesController extends Controller
     }
     $justifications = [
       'up' => [
+        'CAMBIO DE BLOQUE',
         'ADELANTAR MATERIA',
         'ATRASO POR CAMBIO DE CARRERA',
         'COMPATIBILIDAD CON DOCENTE',
@@ -376,6 +377,80 @@ class MovesController extends Controller
     }
 
     return view('moves.list-generations', compact('generations', 'students'));
+  }
+
+  /**
+   * Show a list of moves ordered by generation where students
+   * request a group switch
+   */
+  public function listByGroups()
+  {
+    $last_semester = Semester::last();
+    if (!is_null(Auth::user()->career)) {
+      $result = Move::with('user.career')->where('semester_id', $last_semester->id)->unattendedSwitch()->get();
+      $result1 = $result->filter(function ($move, $key) {
+        if (Auth::user()->career->key == 'IIA') {
+          $IAMB = Career::where('key', 'IAMB')->first();
+          return (in_array($move->user->career->id, [Auth::user()->career->id, $IAMB->id]));
+        } else {
+          return ($move->user->career->id == Auth::user()->career->id);
+        }
+      });
+
+      $groupedByUser = $result1->sortBy('user.username');
+      $generations = [];
+      $students = [];
+      foreach ($groupedByUser as $move) {
+        $no_control = $move->user->username;
+        $gen = substr($no_control, 0, 2);
+        if (!array_key_exists($gen, $generations)) {
+          $generations[$gen] = [];
+        }
+
+        if (!array_key_exists($no_control, $generations[$gen])) {
+          $generations[$gen][$no_control] = [];
+        }
+
+        if (!array_key_exists($no_control, $students)) {
+          $students[$no_control] = 1;
+        } else {
+          $students[$no_control]++;
+        }
+
+        $generations[$gen][$no_control] = $move;
+      }
+      $generations = collect($generations);
+    } else {
+      // Jefe / Admin
+      $result = Move::with('user.career')->where('semester_id', $last_semester->id)->unattendedSwitch()->get();
+
+      $groupedByUser = $result->sortBy('user.username');
+      $generations = [];
+      $students = [];
+      foreach ($groupedByUser as $move) {
+        $no_control = $move->user->username;
+        $gen = substr($no_control, 0, 2);
+        if (!array_key_exists($gen, $generations)) {
+          $generations[$gen] = [];
+        }
+
+        if (!array_key_exists($no_control, $generations[$gen])) {
+          $generations[$gen][$no_control] = [];
+        }
+
+        if (!array_key_exists($no_control, $students)) {
+          $students[$no_control] = 1;
+        } else {
+          $students[$no_control]++;
+        }
+
+        $generations[$gen][$no_control] = $move;
+      }
+      $generations = collect($generations);
+    }
+    $title = "Solicitudes de cambio de grupo";
+
+    return view('moves.list-generations', compact('generations', 'students', 'title'));
   }
 
   /**

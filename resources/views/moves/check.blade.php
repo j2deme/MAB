@@ -37,7 +37,7 @@
                   <td class="ui center aligned">{{ $move->user->full_name }}</td>
                   <td class="ui center aligned">{{ $move->user->career->key }}</td>
                   <td class="ui center aligned">
-                    <a href="http://192.99.204.36/SEGRET/caso/{{ $move->user->username }}" target="_blank">Avance</a>
+                    <a href="http://167.114.218.98/SEGRET/caso/{{ $move->user->username }}" target="_blank">Avance</a>
                   </td>
                   <td class="ui center aligned">{{ $move->type }} DE {{ $move->group->subject->short_name }}
                     ({{ $move->group->full_key }})</td>

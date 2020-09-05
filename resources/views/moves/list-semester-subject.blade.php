@@ -35,11 +35,15 @@
             <a href="{{ route('moves.bySubject', $key) }}" class="ui {{ $color }} card">
               <div class="content">
                 <div class="header">
-                  <h5>{{ $key }} - {{ $subjects[$key] }}</h5>
+                  <h5>{{ $key }}</h5>
                 </div>
                 <div class="description">
-                  {{ $semester[$key]->count() }} solicitud{{ ($semester[$key]->count() > 1) ? 'es' : null }}
+                  {{ $subjects[$key] }}
                 </div>
+              </div>
+              <div class="extra content">
+                <i class="stream icon"></i>
+                {{ $semester[$key]->count() }} solicitud{{ ($semester[$key]->count() > 1) ? 'es' : null }}
               </div>
             </a>
             @endforeach

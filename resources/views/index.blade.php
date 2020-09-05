@@ -22,16 +22,16 @@
         <i class="sign in icon"></i>
         Inicio de sesión
       </a>
-      <a href="{{ route('auth.register') }}" class="ui secondary labeled icon button" tabindex="0">
-        <i class="id card icon"></i>
-        Registro
-      </a>
+      {{--<a href="{{ route('auth.register') }}" class="ui secondary labeled icon button" tabindex="0">
+      <i class="id card icon"></i>
+      Registro
+      </a>--}}
     </div>
   </div>
-  @auth
+  {{--@auth
   Sesión iniciada
   @orguest
   Sesión <span class="ui red text">NO</span> iniciada
-  @end
+  @end--}}
 </div>
 @endsection

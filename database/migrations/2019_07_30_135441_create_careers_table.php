@@ -16,6 +16,7 @@ class CreateCareersTable extends Migration
       $table->increments('id');
       $table->string('key');
       $table->string('name');
+      $table->string('internal_key');
       $table->timestamps();
     });
   }

@@ -28,16 +28,25 @@ class Move extends Model
   {
     return $query->whereIn('status', ['0', '1'])
       ->where('is_parallel', false)
-      ->orderBy('user_id', 'desc')
+      ->orderBy('user_id', 'asc')
       ->orderBy('type', 'desc')
-      ->orderBy('is_parallel', 'asc')
+      ->orderBy('status', 'desc');
+  }
+
+  public function scopeUnattendedSwitch($query)
+  {
+    return $query->whereIn('status', ['0', '1'])
+      ->where('is_parallel', false)
+      ->where('justification', 'like', '%CAMBIO DE BLOQUE%')
+      ->orderBy('user_id', 'asc')
+      ->orderBy('type', 'desc')
       ->orderBy('status', 'desc');
   }
 
   public function scopeUnattendedParallel($query)
   {
     return $query->whereIn('status', ['0', '1'])
-      ->orderBy('user_id', 'desc')
+      ->orderBy('user_id', 'asc')
       ->orderBy('type', 'desc')
       ->orderBy('is_parallel', 'asc')
       ->orderBy('status', 'desc');

@@ -13,18 +13,19 @@ class CareersSeeder extends Seeder
   public function run()
   {
     $careers = [
-      'IAMB'    => "Ingeniería Ambiental",
-      'IIA'     => "Ingeniería en Industrias Alimentarias",
-      'ISC'     => "Ingeniería en Sistemas Computacionales",
-      'II'      => "Ingeniería Industrial",
-      'IGE'     => "Ingeniería en Gestión Empresarial",
-      'IGE-MIX' => "Ingeniería en Gestión Empresarial Mixta",
+      [20, 'IAMB', "Ingeniería Ambiental"],
+      [6, 'IIA', "Ingeniería en Industrias Alimentarias"],
+      [9, 'ISC', "Ingeniería en Sistemas Computacionales"],
+      [4, 'II', "Ingeniería Industrial"],
+      [10, 'IGE', "Ingeniería en Gestión Empresarial"],
+      [14, 'IGE-MIX', "Ingeniería en Gestión Empresarial Mixta"],
     ];
 
-    foreach ($careers as $key => $value) {
+    foreach ($careers as $c) {
       Career::create([
-        'key'  => $key,
-        'name' => $value
+        'key'  => $c[0],
+        'name' => $c[1],
+        'internal_key' => $c[2]
       ]);
     }
     $this->command->info("Careers table seeded");
