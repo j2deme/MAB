@@ -47,11 +47,11 @@ return [
   'connections' => [
     'mysql' => [
       'driver' => 'mysql',
-      'host' => env('DB_HOST', 'localhost'),
-      'port' => env('DB_PORT', '3306'),
-      'database' => env('DB_DATABASE', 'forge'),
-      'username' => env('DB_USERNAME', 'forge'),
-      'password' => env('DB_PASSWORD', ''),
+      'host' => env('DB_HOST', '167.114.218.96'),
+      'port' => '3306', //env('DB_PORT', '3306'),
+      'database' => 'tecvalle_mab', //env('DB_DATABASE', 'forge'),
+      'username' => 'tecvalle', //env('DB_USERNAME', 'forge'),
+      'password' => 'TV201611##', //env('DB_PASSWORD', ''),
       'charset' => 'utf8',
       'collation' => 'utf8_unicode_ci',
       'prefix' => '',
