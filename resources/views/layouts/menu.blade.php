@@ -13,6 +13,9 @@
     <a href="{{ route('moves.listByStudent') }}" class="item">
       <i class="user graduate icon"></i> Ver por estudiante
     </a>
+    <a href="{{ route('moves.listByGroups') }}" class="item">
+      <i class="exchange icon"></i> Ver cambios de grupos
+    </a>
     <a href="{{ route('moves.listBySubject') }}" class="item">
       <i class="project diagram icon"></i> Ver por materia
     </a>
@@ -85,8 +88,8 @@
   <a href="{{ route('auth.login') }}" class="item">
     <i class="sign in icon"></i> Inicio de sesión
   </a>
-  <a href="{{ route('auth.register') }}" class="item">
-    <i class="id card icon"></i> Registro
-  </a>
+  {{--<a href="{{ route('auth.register') }}" class="item">
+  <i class="id card icon"></i> Registro
+  </a>--}}
   @end
 </div>

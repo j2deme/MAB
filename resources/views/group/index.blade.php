@@ -14,7 +14,7 @@
           <a href="{{ route('groups.new') }}" class="ui primary labeled icon button">
             <i class="ui add icon"></i> Añadir grupo
           </a>
-          <a href="{{ route('groups.batch') }}" class="ui icon button">
+          <a href="{{ route('groups.sync') }}" class="ui icon button">
             <i class="upload icon"></i>
           </a>
         </div>

@@ -8,7 +8,7 @@
       <article class="ui attached segment">
         <header>
           <h2 class="ui primary dividing header">
-            Solicitudes por estudiante
+            {{ $title or "Solicitudes por estudiante" }}
           </h2>
         </header>
 
