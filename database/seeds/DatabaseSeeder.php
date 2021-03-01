@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
       foreach ($permissions as $perms) {
         Permission::firstOrCreate(['name' => $perms]);
       }
-      $this->command->info('Permisos defautlt agregados.');
+      $this->command->info('Permisos default agregados.');
 
       $this->command->info('Creando roles y usuarios base para MAB');
       $roles = ['Admin', 'Estudiante', 'Coordinador', 'Jefe'];

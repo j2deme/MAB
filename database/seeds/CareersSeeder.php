@@ -26,10 +26,10 @@ class CareersSeeder extends Seeder
     foreach ($careers as $c) {
       Career::create([
         'key'  => $c[0],
-        'name' => $c[1],
-        'internal_key' => $c[2]
+        'internal_key' => $c[1],
+        'name' => $c[2]
       ]);
     }
-    $this->command->info("Careers table seeded");
+    $this->command->info("Tabla Carreras capturada");
   }
 }
