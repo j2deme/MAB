@@ -36,14 +36,18 @@
       <li>Una vez que registres tus solicitudes, podrás conocer su estatus en todo momento a través de la opción <strong>Solicitudes</strong></li>
       <li>Considera que
         dependiendo de la complejidad de tu solicitud, puede tomar más tiempo del que esperas.</li>
-      <li>Recuerda que si solicitas una materia en otra carrera (paralelo), será atendida hasta haber resuelto todas las
-        solicitudes de esa carrera.</li>
       <li>Todas las solicitudes serán atendidas tomando en cuenta el cupo máximo autorizado para cada grupo.</li>
       <li>Recuerda que si solicitas una materia en otra carrera (paralelo), será atendida hasta haber resuelto todas las solicitudes de esa carrera y estará sujeta a compatibilidad del programa de estudios.</li>
     </ul>
   </div>
 </div>
-<div class="ui two column stackable grid cards">
+<div class="ui warning message">
+  <div class="header">
+    Atención
+  </div>
+  Si lo que buscas es hacer un cambio de grupo completo, espera a que activemos la opción de permuta, para una atención más sencilla.
+</div>
+<div class="ui three column stackable grid cards">
   <div class="column">
     <a class="ui fluid card" href="{{ route('moves.new',['type' => 'up']) }}">
       <div class="content">
@@ -67,6 +71,22 @@
       </div>
       <div class="ui bottom attached red icon button">
         <i class="ui sort down big icon"></i>
+      </div>
+    </a>
+  </div>
+  <div class="column">
+    <a class="ui fluid card" href="#">
+      <div class="content">
+        <div class="header">Permuta de Grupo</div>
+        <div class="description">
+          Solicita un cambio del bloque base completo de materias
+        </div>
+      </div>
+      <div class="extra content">
+        <p>Esta opción bloquea la solicitud de altas y bajas</p>
+      </div>
+      <div class="ui bottom attached icon button">
+        <i class="ui sync alternate big icon"></i>
       </div>
     </a>
   </div>
