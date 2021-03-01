@@ -17,8 +17,8 @@
         <table class="ui celled striped compact table">
           <thead>
             <tr>
-              <th class="ui center aligned one wide">ID</th>
-              <th class="ui center aligned two wide">Clave</th>
+              <th class="ui center aligned one wide">Clave</th>
+              <th class="ui center aligned two wide">Alias</th>
               <th class="ui center aligned">Nombre</th>
               @can('edit_careers')
               <th class="ui center aligned two wide">
@@ -30,8 +30,8 @@
           <tbody>
             @forelse ($result as $item)
             <tr>
-              <td class="ui center aligned">{{ $item->id }}</td>
               <td class="ui center aligned">{{ $item->key }}</td>
+              <td class="ui center aligned">{{ $item->internal_key }}</td>
               <td>
                 <a href="{{ route('careers.show', $item) }}">{{ $item->name }}</a>
               </td>
