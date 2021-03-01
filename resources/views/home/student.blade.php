@@ -2,7 +2,7 @@
 <div class="ui warning icon message">
   <i class="ui exclamation triangle icon"></i>
   <div class="content">
-    <div class="header">Bienvenido {{ Auth::user()->name }}</div>
+    <div class="header">Hola {{ Auth::user()->name }}</div>
     <p>
       Para poder continuar con las solicitudes de cambios, es necesario que especifiques que carrera cursas.
     </p>
@@ -29,16 +29,17 @@
 @else
 <div class="ui message">
   <div class="content">
-    <div class="header">Bienvenido {{ Auth::user()->name }}</div>
+    <div class="header">Hola {{ Auth::user()->name }}</div>
     <ul class="list">
-      <li>En este módulo podrás registrar tus solicitudes de altas y bajas, para una atención más ágil cada movimiento
+      <li>En este módulo podrás registrar tus solicitudes de altas y bajas, para una atención más ágil, es importante que sepas que cada movimiento
         <span class="ui red text"><strong> se registra y procesa de manera individual</strong></span>.</li>
-      <li>Una vez que registres tus solicitudes, podrás conocer su estatus en todo momento.</li>
+      <li>Una vez que registres tus solicitudes, podrás conocer su estatus en todo momento a través de la opción <strong>Solicitudes</strong></li>
       <li>Considera que
         dependiendo de la complejidad de tu solicitud, puede tomar más tiempo del que esperas.</li>
       <li>Recuerda que si solicitas una materia en otra carrera (paralelo), será atendida hasta haber resuelto todas las
         solicitudes de esa carrera.</li>
       <li>Todas las solicitudes serán atendidas tomando en cuenta el cupo máximo autorizado para cada grupo.</li>
+      <li>Recuerda que si solicitas una materia en otra carrera (paralelo), será atendida hasta haber resuelto todas las solicitudes de esa carrera y estará sujeta a compatibilidad del programa de estudios.</li>
     </ul>
   </div>
 </div>
