@@ -19,6 +19,8 @@ class CareersSeeder extends Seeder
       [4, 'II', "Ingeniería Industrial"],
       [10, 'IGE', "Ingeniería en Gestión Empresarial"],
       [14, 'IGE-MIX', "Ingeniería en Gestión Empresarial Mixta"],
+      [26, 'II-MIX','Ingeniería Industrial Mixta'],
+      [25, 'IAGRO', 'Ingeniería en Agronomía'],
     ];
 
     foreach ($careers as $c) {
