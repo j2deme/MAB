@@ -16,10 +16,10 @@ class DatabaseSeeder extends Seeder
   public function run()
   {
     // Ask for db migration refresh, default is no
-    if ($this->command->confirm('Do you wish to refresh migration before seeding, it will clear all old data ?')) {
+    if ($this->command->confirm('Se reiniciara la base de datos antes de hacer el seeding, ¿Continuar y eliminar datos previos?')) {
       // Call the php artisan migrate:refresh
       $this->command->call('migrate:refresh');
-      $this->command->warn("Data cleared, starting from blank database.");
+      $this->command->warn("Datos eliminados, iniciando base de datos en blanco.");
 
       // Seed the default permissions
       $permissions = Permission::defaultPermissions();
@@ -27,16 +27,16 @@ class DatabaseSeeder extends Seeder
       foreach ($permissions as $perms) {
         Permission::firstOrCreate(['name' => $perms]);
       }
-      $this->command->info('Default permissions added.');
+      $this->command->info('Permisos defautlt agregados.');
 
-      $this->command->info('Creating basic roles & users for MAB');
+      $this->command->info('Creando roles y usuarios base para MAB');
       $roles = ['Admin', 'Estudiante', 'Coordinador', 'Jefe'];
       $this->createRoles($roles);
-      $this->command->info('Roles added successfully');
+      $this->command->info('Roles agregados correctamente.');
 
-      $this->command->warn('All done :)');
+      $this->command->warn('Finalizado :)');
     } else {
-      $this->command->warn("Not able to perform seeding to avoid violation of integrity constraints");
+      $this->command->warn("No se pudo realizr el seeding para evitar violaciones a integridad en los datos.");
     }
   }
 
@@ -48,14 +48,14 @@ class DatabaseSeeder extends Seeder
       if ($role->name == 'Admin') {
         // assign all permissions
         $role->syncPermissions(Permission::all());
-        $this->command->info('Admin granted all the permissions');
+        $this->command->info('Admin autorizado con todos los permisos.');
       } else {
         // for others by default only read access
         $role->syncPermissions(Permission::where('name', 'LIKE', 'view_%')->get());
       }
     }
     $this->createUsers();
-    $this->command->info('Users added successfully');
+    $this->command->info('Usuarios agregados correctamente.');
   }
 
   private function createUsers()
@@ -70,7 +70,7 @@ class DatabaseSeeder extends Seeder
     $admin->remember_token = str_random(10);
     $admin->save();
     $admin->assignRole('Admin');
-    $this->command->info('Admin created');
+    $this->command->info('Administrador creado');
 
     foreach (['IGE', 'ISC', 'II', 'ING', 'MIX'] as $key) {
       $coord = new User([
@@ -84,7 +84,7 @@ class DatabaseSeeder extends Seeder
       $coord->assignRole('Coordinador');
       unset($coord);
     }
-    $this->command->info('Coordinators created');
+    $this->command->info('Coordinadores creados');
 
     $jefe = new User();
     $jefe->name = 'Jefe DEP';
@@ -94,6 +94,6 @@ class DatabaseSeeder extends Seeder
     $jefe->remember_token = str_random(10);
     $jefe->save();
     $jefe->assignRole('Jefe');
-    $this->command->info('DEP chief created');
+    $this->command->info('Jefe DEP creado');
   }
 }
