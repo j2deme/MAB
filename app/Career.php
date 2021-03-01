@@ -12,7 +12,7 @@ class Career extends Model
    * CASTING
    */
   protected $casts = [
-    'internal_key' => 'integer'
+    'key' => 'integer'
   ];
 
   /**
@@ -20,7 +20,7 @@ class Career extends Model
    */
   public function setKeyAttribute($value)
   {
-    $this->attributes['key'] = trim(mb_strtoupper($value, 'UTF-8'));
+    $this->attributes['internal_key'] = trim(mb_strtoupper($value, 'UTF-8'));
   }
 
   public function setNameAttribute($value)
