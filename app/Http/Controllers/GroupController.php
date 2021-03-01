@@ -74,19 +74,28 @@ class GroupController extends Controller
 
     $groups  = DB::connection('sybase')->select("SELECT materia, grupo AS clave FROM grupos WHERE periodo = :periodo AND materia NOT LIKE '%MOD_' AND materia NOT LIKE '%T__'", ['periodo' => $semester->key]);
     //dd($groups);
-
+    
+    $synced = 0;
     foreach ($groups as $g) {
-      $data = [
-        'name' => $g->clave,
-        'is_available' => true
-      ];
-      if ($group = Group::create($data)) {
-        $subject = Subject::where('key', trim($g->materia))->first();
-        $group->subject()->associate(isset($subject->id) ? $subject : null);
-        $group->semester()->associate($semester);
-        $group->save();
+      $subject = Subject::where('key', trim($g->materia))->first();
+
+      if(is_object($subject)){
+        $data = [
+          'name' => $g->clave,
+          'is_available' => true,
+          'subject_id' => $subject->id,
+          'semester_id' => $semester->id
+        ];
+  
+        $groupExists = Group::where('subject_id', $subject->materia)->where('semester_id', $semester->id)->first();
+        if (!$groupExists) {
+          $group = Group::create($data);
+          $group->save();
+          $synced++;
+        }
       }
     }
+    flash("{$synced}/" . count($groups) . " grupos creados");
     return redirect()->route('groups.index');
   }
 
