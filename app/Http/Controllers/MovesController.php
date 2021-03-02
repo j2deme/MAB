@@ -454,7 +454,7 @@ class MovesController extends Controller
   }
 
   /**
-   * Show a table with moves filtered by subject
+   * Show a table with moves filtered by student
    */
   public function byStudent($key)
   {
