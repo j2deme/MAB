@@ -24,16 +24,18 @@
           </header>
           <div class="ui six cards">
             @foreach ($generation as $key => $move)
-            @if(starts_with($move->user->career->key, 'ISC'))
+            @if(starts_with($move->user->career->internal_key, 'ISC'))
             @php ($color = 'blue')
-            @elseif(starts_with($move->user->career->key, 'II'))
+            @elseif(starts_with($move->user->career->internal_key, 'II'))
             @php ($color = 'red')
-            @elseif(starts_with($move->user->career->key, 'IGE'))
+            @elseif(starts_with($move->user->career->internal_key, 'IGE'))
             @php ($color = 'teal')
-            @elseif(starts_with($move->user->career->key, 'IIA'))
+            @elseif(starts_with($move->user->career->internal_key, 'IIA'))
             @php ($color = 'green')
-            @elseif(starts_with($move->user->career->key, 'IAMB'))
+            @elseif(starts_with($move->user->career->internal_key, 'IAMB'))
             @php ($color = 'olive')
+            @elseif(starts_with($move->user->career->internal_key, 'IAGRO'))
+            @php ($color = 'orange')
             @else
             @php ($color = 'black')
             @endif
