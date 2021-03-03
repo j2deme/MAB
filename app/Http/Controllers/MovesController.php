@@ -524,4 +524,11 @@ class MovesController extends Controller
 
     return view('moves.index', compact('result', 'url', 'extra'));
   }
+
+  public function switchGroup(){
+  }
+
+  public function saveSwitchGroup(Request $request)
+  {
+  }
 }

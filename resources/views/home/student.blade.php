@@ -41,12 +41,6 @@
     </ul>
   </div>
 </div>
-<div class="ui warning message">
-  <div class="header">
-    Atención
-  </div>
-  Si lo que buscas es hacer un cambio de grupo completo, espera a que activemos la opción de permuta, para una atención más sencilla.
-</div>
 <div class="ui three column stackable grid cards">
   <div class="column">
     <a class="ui fluid card" href="{{ route('moves.new',['type' => 'up']) }}">
@@ -75,17 +69,14 @@
     </a>
   </div>
   <div class="column">
-    <a class="ui fluid card" href="#">
+    <a class="ui fluid card" href="{{ route('moves.switchGroup') }}">
       <div class="content">
-        <div class="header">Permuta de Grupo</div>
+        <div class="header">Cambio de Grupo</div>
         <div class="description">
           Solicita un cambio del bloque base completo de materias
         </div>
       </div>
-      <div class="extra content">
-        <p>Esta opción bloquea la solicitud de altas y bajas</p>
-      </div>
-      <div class="ui bottom attached icon button">
+      <div class="ui bottom attached purple icon button">
         <i class="ui sync alternate big icon"></i>
       </div>
     </a>

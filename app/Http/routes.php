@@ -77,6 +77,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], fu
   Route::get('/by/status/registered', 'MovesController@byTypeRegistered')->name('listRegistered');
   Route::get('/by/status/revision', 'MovesController@byTypeRevision')->name('listOnRevision');
   Route::get('/by/status/attended', 'MovesController@byTypeAttended')->name('listAttended');
+  Route::get('/switch/group','MovesController@switchGroup')->name('switchGroup');
+  Route::post('/switch/group', 'MovesController@saveSwitchGroup')->name('saveSwitchGroup');
 });
 
 # SEMESTER ROUTES -- RESOURCE
