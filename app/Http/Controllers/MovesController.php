@@ -538,5 +538,43 @@ class MovesController extends Controller
 
   public function saveSwitchGroup(Request $request)
   {
+    $last_semester = Semester::last();
+    $this->validate($request, [
+      'base_semester' => 'required',
+      'base_group' => 'required',
+      'switch_group'=> 'required'
+    ]);
+
+    $exists = Permuta::where('user_id', Auth::user()->id)
+      ->where('semester_id', $last_semester->id)
+      ->count();
+
+    $request->merge(['candidate' => trim($request->get('candidate'))]);
+    $candidate = $request->get('candidate');
+
+    # Limita a un registro de permuta por periodo
+    if ($exists == 0) {
+      $data = [
+        'user_id' => Auth::user()->id,
+        'semester_id' => $last_semester->id,
+        'base_semester' => $request->get('base_semester'),
+        'base_group' => $request->get('base_group'),
+        'switch_group' => $request->get('switch_group'),
+        'candidate' => $candidate,
+        'status' => '0',
+        'answer' => ''
+      ];
+
+      if ($permuta = Permuta::create($data)) {
+        flash()->success('Solicitud de cambio de grupo registrada');
+      } else {
+        flash()->error('No fue posible registrar la solicitud');
+      }
+    } else {
+      flash()->warning('Ya existe una solicitud de cambio de grupo para este periodo');
+    }
+
+    return redirect()->route('moves.switchGroup');
+
   }
 }
