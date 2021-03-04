@@ -8,6 +8,7 @@ use App\Group;
 use App\Career;
 use App\Subject;
 use App\Semester;
+use App\Permuta;
 use App\User;
 use Carbon\Carbon;
 use App\Http\Requests;
@@ -526,7 +527,13 @@ class MovesController extends Controller
   }
 
   public function switchGroup(){
-    return view('moves.switch-form');
+    $last_semester = Semester::last();
+    $permuta = Permuta::where('user_id', Auth::user()->id)
+      ->where('semester_id',$last_semester->id)
+      ->first();
+    $active_permuta = (is_object($permuta));
+
+    return view('moves.switch-form',compact('permuta','active_permuta','last_semester'));
   }
 
   public function saveSwitchGroup(Request $request)

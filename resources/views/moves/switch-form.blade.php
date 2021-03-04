@@ -11,6 +11,24 @@
             Solicitud de cambio de grupo
           </h2>
         </header>
+        @if ($active_permuta)
+        <div class="ui icon info message">
+          <i class="inbox icon"></i>
+          <div class="content">
+            <div class="header">
+              Solicitud registrada
+            </div>
+            <p>Ya cuentas con una solicitud de cambio de grupo para el semestre {{ $last_semester->long_name }}, registrada para cambiar del bloque base <strong>{{ $permuta->base_semester . $permuta->base_group }}</strong> al <strong>{{ $permuta->base_semester . $permuta->switch_group }}</strong>.</p>
+            @if (!is_null($permuta->match))
+              <p>Has registrado como candidato para cambiar con {{ $permuta->match->username }} - {{ $permuta->match->name }} {{ $permuta->match->last_name }}, una vez que esta persona registre su solicitud y coincida con la información que capturaste, la solicitud será preautorizada y pasará a revisión por la División de Estudios Profesionales.</p>
+            @else
+              <p>Tu solicitud quedará en espera hasta que otro estudiante registre un movimiento inverso a lo que solicitas o hasta el límite del periodo para adecuación de carga académica.</p>
+              <p>Se te recuerda que la solicitud no es garantía de que se realice, ya que está sujeta a que exista un candidato para cambiar el grupo.</p>
+            @endif
+          </div>
+        </div>
+        @include('components.back', ['route' => route('moves.index')])
+        @else
         <form action="{{ route('moves.saveSwitchGroup') }}" class="ui form" method="POST" id="switchGroupForm">
           @csrf
           <div class="ui field">
@@ -76,6 +94,7 @@
             </div>
           </div>
         </form>
+        @endif
       </article>
     </section>
   </div>
