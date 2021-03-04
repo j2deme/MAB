@@ -577,4 +577,18 @@ class MovesController extends Controller
     return redirect()->route('moves.switchGroup');
 
   }
+
+  public function syncMatches(){
+    # Si existe un candidato, buscar match
+    $match_user = User::where('username', $candidate)->first();
+    if (is_object($match_user)) {
+      $match = Permuta::where('user_id', $match_user->id)
+        ->where('semester_id', $last_semester->id)
+        ->first();
+      if (is_object($match)) {
+        if ($match->candidate == $Auth::user()->username) {
+        }
+      }
+    }
+  }
 }
