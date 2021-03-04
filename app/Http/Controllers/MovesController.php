@@ -526,6 +526,7 @@ class MovesController extends Controller
   }
 
   public function switchGroup(){
+    return view('moves.switch-form');
   }
 
   public function saveSwitchGroup(Request $request)
