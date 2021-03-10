@@ -455,6 +455,40 @@ class MovesController extends Controller
   }
 
   /**
+   * Show a table with group switches for the current semester
+   */
+  public function listPermutas(){
+    $last_semester = Semester::last();
+    # Buscar  matches en permutas registradas con candidato
+    $permutasCandidato = Permuta::with('user')->where('semester_id', $last_semester->id)->where('status', 0)->where('candidate','<>','')->get();
+    if(count($permutasCandidato) > 0){
+      foreach ($permutasCandidato as $permuta) {
+        # Revisa si existe el candidato propuesto
+        $match_user = User::where('username', $permuta->candidate)->first();
+        if (is_object($match_user)) {
+          $match = Permuta::where('user_id', $match_user->id)
+            ->where('semester_id', $last_semester->id)
+            ->where('candidate', $permuta->user->username)
+            ->first();
+          if (is_object($match)) {
+            $permuta->status = 1;
+            $permuta->save();
+
+            $match->status = 1;
+            $match->save();
+          }
+        }
+      }
+    }
+
+    $permutas = Permuta::with('user.career')->where('semester_id', $last_semester->id)->orderBy('candidate','desc')->paginate();
+
+    $title = "Solicitudes de cambio de grupo";
+
+    return view('moves.list-permutas', compact('permutas', 'students', 'title'));
+  }
+
+  /**
    * Show a table with moves filtered by student
    */
   public function byStudent($key)
