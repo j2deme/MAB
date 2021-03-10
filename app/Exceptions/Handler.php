@@ -48,6 +48,11 @@ class Handler extends ExceptionHandler
     if ($e instanceof AuthorizationException) {
       return $this->unauthorized($request, $e);
     }
+    
+    if ($e instanceof TokenMismatchException) {
+      return response()
+        ->view('errors.401', ['error' => 'La página ha expirado por inactividad, actualiza e intenta nuevamente'], 401);
+    }
     return parent::render($request, $e);
   }
 
