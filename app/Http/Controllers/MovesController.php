@@ -382,7 +382,7 @@ class MovesController extends Controller
 
   /**
    * Show a list of moves ordered by generation where students
-   * request a group switch
+   * request a group switch for a subject
    */
   public function listByGroups()
   {
