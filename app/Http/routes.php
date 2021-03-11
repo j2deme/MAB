@@ -81,6 +81,17 @@ Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], fu
   Route::post('/switch/group', 'MovesController@saveSwitchGroup')->name('saveSwitchGroup');
 });
 
+# PERMUTA ROUTES -- RESOURCE
+Route::group(['middleware' => 'auth', 'prefix' => 'permutas', 'as' => 'permutas.'], function () {
+  Route::get('/', 'PermutasController@index')->name('index');
+  Route::post('/', 'PermutasController@store')->name('save');
+  Route::get('/create', 'PermutasController@create')->name('new');
+  Route::get('/{permuta}', 'PermutasController@show')->name('show');
+  Route::get('/{permuta}/edit', 'PermutasController@edit')->name('edit');
+  Route::put('/{permuta}', 'PermutasController@update')->name('update');
+  Route::delete('/{permuta}', 'PermutasController@destroy')->name('delete');
+});
+
 # SEMESTER ROUTES -- RESOURCE
 Route::group(['middleware' => 'auth', 'prefix' => 'semesters', 'as' => 'semesters.'], function () {
   Route::get('/', 'SemesterController@index')->name('index');

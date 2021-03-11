@@ -41,7 +41,7 @@
               <td class="ui center aligned">
                 @hasanyrole(['Jefe','Admin'])
                 <div class="ui icon buttons">
-                  <a href="{{ route('moves.edit', ['move' => $item->id])  }}" class="ui blue icon button" data-content="Revisar permuta">
+                  <a href="{{ route('permutas.edit', ['permuta' => $item->id])  }}" class="ui blue icon button" data-content="Revisar permuta">
                     <i class="ui eye icon"></i>
                   </a>
 
