@@ -45,6 +45,20 @@
             </div>
           </div>
 
+          <div class="fields">
+            <div class="inline field">
+              <div class="ui checkbox">
+                <input type="checkbox" id="is_student" name="is_student">
+                <label>¿Es estudiante?</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="nip">NIP</label>
+              <input type="text" id="nip" name="nip" value="{{ old('nip') }}">
+            </div>
+          </div>
+
           @include('components.back', ['route' => route('users.index')])
           <button type="submit" class="ui positive labeled icon submit button">
             <i class="save icon"></i>
