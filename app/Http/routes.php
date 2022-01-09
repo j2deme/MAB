@@ -13,6 +13,7 @@
 
 Route::get('/', 'PublicController@index')->name('root');
 Route::get('/test', 'PublicController@test')->name('test');
+Route::get('/loadGroups', 'GroupController@load');
 
 # Route::auth(); # Removed in order to name auth routes
 
@@ -77,7 +78,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], fu
   Route::get('/by/status/registered', 'MovesController@byTypeRegistered')->name('listRegistered');
   Route::get('/by/status/revision', 'MovesController@byTypeRevision')->name('listOnRevision');
   Route::get('/by/status/attended', 'MovesController@byTypeAttended')->name('listAttended');
-  Route::get('/switch/group','MovesController@switchGroup')->name('switchGroup');
+  Route::get('/switch/group', 'MovesController@switchGroup')->name('switchGroup');
   Route::post('/switch/group', 'MovesController@saveSwitchGroup')->name('saveSwitchGroup');
 });
 
@@ -139,6 +140,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'groups', 'as' => 'groups.'], 
   Route::get('/{group}/edit', 'GroupController@edit')->name('edit');
   Route::put('/{group}', 'GroupController@update')->name('update');
   Route::delete('/{group}', 'GroupController@destroy')->name('delete');
-  Route::get('/load', 'GroupController@batch')->name('batch');
+  Route::get('/load', 'GroupController@load')->name('batch');
   Route::get('/toggle/{group}', 'GroupController@toggle')->name('toggle');
 });
