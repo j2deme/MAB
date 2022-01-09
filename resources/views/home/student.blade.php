@@ -30,14 +30,22 @@
 <div class="ui message">
   <div class="content">
     <div class="header">Hola {{ Auth::user()->name }}</div>
+    <div class="ui warning message">
+      <div class="header">
+        Atención
+      </div>
+      Antes de realizar tus solicitudes, verifica tu horario en el sistema, recuerda que todo cambio que solicites es bajo tu responsabilidad.
+    </div>
     <ul class="list">
       <li>En este módulo podrás registrar tus solicitudes de altas y bajas, para una atención más ágil, es importante que sepas que cada movimiento
         <span class="ui red text"><strong> se registra y procesa de manera individual</strong></span>.</li>
       <li>Una vez que registres tus solicitudes, podrás conocer su estatus en todo momento a través de la opción <strong>Solicitudes</strong></li>
       <li>Considera que
         dependiendo de la complejidad de tu solicitud, puede tomar más tiempo del que esperas.</li>
+      <li>El tiempo de atención de cada solicitud inicia una vez que cambia su estatus a "En Revisión", no desde que se captura.</li>
       <li>Todas las solicitudes serán atendidas tomando en cuenta el cupo máximo autorizado para cada grupo.</li>
       <li>Recuerda que si solicitas una materia en otra carrera (paralelo), será atendida hasta haber resuelto todas las solicitudes de esa carrera y estará sujeta a compatibilidad del programa de estudios.</li>
+      <li>Al realizar tus solicitudes, se da por entendido que leíste y aceptas las presentes consideraciones.</li>
     </ul>
   </div>
 </div>
