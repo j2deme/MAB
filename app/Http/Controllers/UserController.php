@@ -23,7 +23,7 @@ class UserController extends Controller
   public function index()
   {
     $_users = User::count();
-    $users = User::orderBy('is_suspended')->orderBy('username', 'asc')->paginate();
+    $users = User::orderBy('is_suspended')->orderBy('username', 'asc')->paginate($_users);
     return view('user.index', compact('users'));
   }
 
@@ -34,7 +34,6 @@ class UserController extends Controller
     $role = Role::where('name', 'Estudiante')->first();
 
     foreach ($students as $s) {
-      
       $data = [
         'username' => $s->no_control,
         'name' => $s->nombre,
