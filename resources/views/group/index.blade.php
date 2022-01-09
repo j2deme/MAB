@@ -8,15 +8,16 @@
       <article class="ui attached segment">
         <header>
           <h2 class="ui primary dividing header">Grupos</h2>
+          <div class="sub header">Semestre {{ $semester->short_name }}</div>
         </header>
         @can('add_groups')
         <div class="ui right floated buttons">
           <a href="{{ route('groups.new') }}" class="ui primary labeled icon button">
             <i class="ui add icon"></i> Añadir grupo
           </a>
-          <a href="{{ route('groups.sync') }}" class="ui icon button">
+          {{--<a href="{{ route('groups.sync') }}" class="ui icon button">
             <i class="upload icon"></i>
-          </a>
+          </a>--}}
         </div>
         @endcan
         <table class="ui celled striped compact table">
@@ -42,7 +43,7 @@
               <td>
                 <a href="{{ route('groups.show', $item) }}">{{ $item->subject->short_name }}</a>
               </td>
-              <td class="ui center aligned">{{ $item->subject->career->key }}</td>
+              <td class="ui center aligned">{{ $item->subject->career->internal_key }}</td>
               <td class="ui center aligned">{{ $item->subject->semester }}</td>
               <td class="ui center aligned">
                 <a href="{{ route('groups.toggle', $item) }}">
