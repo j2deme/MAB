@@ -20,9 +20,8 @@ class GroupController extends Controller
   {
     $semester = Semester::last();
     //dd($semester);
-    //where('semester_id',$semester)
-    $result = Group::orderBy('semester_id', 'desc')->orderBy('subject_id', 'asc')->orderBy('name', 'asc')->paginate();
-    return view('group.index', compact('result'));
+    $result = Group::where('semester_id', $semester->id)->orderBy('semester_id', 'desc')->orderBy('subject_id', 'asc')->orderBy('name', 'asc')->paginate();
+    return view('group.index', compact('result','semester'));
   }
 
   /**
