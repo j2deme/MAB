@@ -72,7 +72,7 @@ class SemesterController extends Controller
    */
   public function edit($id)
   {
-    $semester = Semester::findOrFail($id)->first();
+    $semester = Semester::findOrFail($id);
 
     return view('semester.edit', compact('semester'));
   }
@@ -86,7 +86,7 @@ class SemesterController extends Controller
    */
   public function update(Request $request, $id)
   {
-    $semester = Semester::findOrFail($id)->first();
+    $semester = Semester::findOrFail($id);
 
     $this->validate($request, [
       'short_name' => 'required',
