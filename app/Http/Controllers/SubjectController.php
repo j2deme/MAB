@@ -64,18 +64,14 @@ class SubjectController extends Controller
 
   public function sync()
   {
-    $careers = Career::pluck('key')->toJson();
+    $careers = Career::pluck('internal_key')->toJson();
     $careers = str_replace(['[', ']'], '', $careers);
     $careers = str_replace('"', '\'', $careers);
-    #dd($careers);
+    //dd($careers);
 
     $subjects  = DB::connection('sybase')->select("SELECT mc.carrera, mc.reticula, mc.materia, mc.horas_teoricas AS ht, mc.horas_practicas AS hp, mc.creditos_materia AS cr, mc.especialidad, mc.semestre_reticula AS semestre, m.nombre_completo_materia AS nombre, m.nombre_abreviado_materia AS nombre_corto FROM materias_carreras AS mc, materias AS m WHERE carrera IN ({$careers}) AND m.materia = mc.materia AND mc.estatus_materia_carrera = 'A' AND m.tipo_materia <> 4");
-    #dd($subjects);
-    
-    $synced = 0;
-    foreach ($subjects as $s) {
-      $career = Career::where('key', $s->carrera)->first();
 
+    foreach ($subjects as $s) {
       $data = [
         'key' => $s->materia,
         'short_name' => $s->nombre_corto,
@@ -84,19 +80,14 @@ class SubjectController extends Controller
         'ht' => $s->ht,
         'hp' => $s->hp,
         'cr' => $s->cr,
-        'is_active' => true,
-        'career_id' => $career->id
+        'is_active' => true
       ];
-      
-      $subjectExists = Subject::where('key', $s->materia)->first();
-      if(!$subjectExists){
-        $subject = Subject::create($data);
-        //$subject->career()->associate(isset($career->id) ? $career : null);
+      if ($subject = Subject::create($data)) {
+        $career = Career::where('internal_key', $s->carrera)->first();
+        $subject->career()->associate(isset($career->id) ? $career : null);
         $subject->save();
-        $synced++;
       }
     }
-    flash("{$synced}/".count($subjects)." materias creadas");
     return redirect()->route('subjects.index');
   }
 
