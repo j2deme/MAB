@@ -42,7 +42,7 @@ class UserController extends Controller
         'password' => $s->nip,
         'is_suspended' => false
       ];
-      if ($student = User::create($data)) {
+      if ($student = User::firstOrCreate($data)) {
         $career = Career::where('internal_key', $s->carrera)->first();
         $student->career()->associate(isset($career->id) ? $career : null);
         $student->save();
@@ -75,18 +75,34 @@ class UserController extends Controller
       'name' => 'bail|required|min:2',
       'email' => 'required|email|unique:users',
       'username' => 'required|unique:users',
-      'password' => 'required|min:6',
+      'password' => 'required', #|min:6
       //'roles' => 'required|min:1'
     ]);
 
+    if($request->has('is_student')){
+      $request->merge([
+        'password' => trim($request->get('nip')),
+        'password_confirmation' => trim($request->get('nip'))
+      ]);
+    } else {
+      $request->merge([
+        'password' => $request->get('password')
+      ]);
+    }
+
+    $studentRole = Role::where('name','Estudiante')->first();
+
     // hash password
-    $request->merge([
+    /*$request->merge([
       'password' => $request->get('password')
-    ]);
+    ]);*/
 
     // Create the user
-    if ($user = User::create($request->except('roles', 'permissions'))) {
+    if ($user = User::create($request->except('roles', 'permissions','nip','is_student'))) {
       //$this->syncPermissions($request, $user);
+      if($request->has('is_student')){
+        $user->assignRole($studentRole);
+      }
       flash()->success('El usuario ha sido creado');
     } else {
       flash()->error('Ocurrió un error al crear el usuario');
