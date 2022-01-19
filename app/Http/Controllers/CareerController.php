@@ -15,7 +15,7 @@ class CareerController extends Controller
    */
   public function index()
   {
-    $result = Career::orderBy('key','asc')->paginate();
+    $result = Career::orderBy('internal_key','asc')->paginate();
     return view('career.index', compact('result'));
   }
 

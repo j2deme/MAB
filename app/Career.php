@@ -12,7 +12,7 @@ class Career extends Model
    * CASTING
    */
   protected $casts = [
-    'key' => 'integer'
+    'internal_key' => 'integer'
   ];
 
   /**
