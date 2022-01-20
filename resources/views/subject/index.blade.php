@@ -14,7 +14,7 @@
           <a href="{{ route('subjects.new') }}" class="ui primary labeled icon button">
             <i class="ui add icon"></i> Añadir materia
           </a>
-          <a href="{{ route('subjects.sync') }}" class="ui icon button">
+          <a href="{{ route('subjects.upload') }}" class="ui icon button">
             <i class="upload icon"></i>
           </a>
         </div>
@@ -42,7 +42,7 @@
               <td>
                 <a href="{{ route('subjects.show', $item) }}">{{ $item->long_name }}</a>
               </td>
-              <td class="ui center aligned">{{ $item->career->key }}</td>
+              <td class="ui center aligned">{{ is_object($item->career) ?$item->career->key : 'Sin carrera asignada' }}</td>
               <td class="ui center aligned">{{ $item->semester }}</td>
               <td class="ui center aligned">{{ $item->satca }}</td>
               <td class="ui center aligned">

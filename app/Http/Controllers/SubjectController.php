@@ -7,6 +7,9 @@ use App\Career;
 use App\Subject;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use League\Csv\Reader;
+use Storage;
+use File;
 
 class SubjectController extends Controller
 {
@@ -62,31 +65,69 @@ class SubjectController extends Controller
     return redirect()->route('subjects.index');
   }
 
-  public function sync()
+  public function upload()
   {
-    $careers = Career::pluck('internal_key')->toJson();
-    $careers = str_replace(['[', ']'], '', $careers);
-    $careers = str_replace('"', '\'', $careers);
-    //dd($careers);
+    return view('subject.upload');
+  }
 
-    $subjects  = DB::connection('sybase')->select("SELECT mc.carrera, mc.reticula, mc.materia, mc.horas_teoricas AS ht, mc.horas_practicas AS hp, mc.creditos_materia AS cr, mc.especialidad, mc.semestre_reticula AS semestre, m.nombre_completo_materia AS nombre, m.nombre_abreviado_materia AS nombre_corto FROM materias_carreras AS mc, materias AS m WHERE carrera IN ({$careers}) AND m.materia = mc.materia AND mc.estatus_materia_carrera = 'A' AND m.tipo_materia <> 4");
+  public function sync(Request $request)
+  {
+    # Obtener el archivo CSV a subir
+    $file = $request->file('file');
 
-    foreach ($subjects as $s) {
-      $data = [
-        'key' => $s->materia,
-        'short_name' => $s->nombre_corto,
-        'long_name' => $s->nombre,
-        'semester' => $s->semestre,
-        'ht' => $s->ht,
-        'hp' => $s->hp,
-        'cr' => $s->cr,
-        'is_active' => true
-      ];
-      if ($subject = Subject::create($data)) {
-        $career = Career::where('internal_key', $s->carrera)->first();
-        $subject->career()->associate(isset($career->id) ? $career : null);
-        $subject->save();
+    # Obtener el nombre y tipo de archivo para ubicarlo en el Storage
+    $filename = $file->getClientOriginalName();
+    $filetype = $file->getClientOriginalExtension();
+
+    if (Storage::disk('local')->exists($filename)) {
+      # Verificar si existe el archivo, se borra para evitar colisiones
+      Storage::disk('local')->delete($filename);
+    }
+    
+    # Verificar que el archivo proporcionado sea un CSV
+    if(in_array($filetype, ['csv','CSV'])){
+      # Almacenar el archivo CSV en el Storage para su lectura
+      Storage::disk('local')->put($filename,  File::get($file));
+  
+      if (Storage::disk('local')->exists($filename)) {
+        $csv = Reader::createFromPath(storage_path("app/$filename"));
+        $columns = ['key', 'short_name', 'long_name', 'career_id', 'semester', 'ht', 'hp', 'cr'];
+        $records = $csv->getRecords($columns);
+        $syncedRecords = 0;
+        $numRecords = 0;
+        foreach ($records as $record) {
+          $recordData = [
+            'key' => $record['key'],
+            'short_name' => $record['short_name'],
+            'long_name' => $record['long_name'],
+            #'career_id' => (int) $record['career_id'],
+            'semester' => (int) $record['semester'],
+            'ht' => (int) $record['ht'],
+            'hp' => (int) $record['hp'],
+            'cr' => (int) $record['cr'],
+          ];
+  
+          # Verificar cada registro del CSV en caso de que ya exista
+          $subject = Subject::where('key',$recordData['key'])->first();
+          $numRecords++;
+  
+          # Crear registro sino existe previamente
+          if(is_null($subject)){
+            $recordData['is_active'] = true;
+            if ($subject = Subject::create($recordData)) {
+              $career = Career::where('internal_key', $record['career_id'])->first();
+              $subject->career()->associate(isset($career->id) ? $career : null);
+              $subject->save();
+              $syncedRecords++;
+            }
+          }
+        }
+        flash("$syncedRecords/$numRecords registros procesados");
+      } else {
+        flash()->error('Error al procesar el archivo, intente nuevamente');
       }
+    } else {
+      flash()->error('Tipo de archivo incompatible, intente nuevamente');
     }
     return redirect()->route('subjects.index');
   }
@@ -140,16 +181,6 @@ class SubjectController extends Controller
     }
 
     return redirect()->back();
-  }
-
-  /**
-   * Show the form for uploading subjects on batch.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function batch()
-  {
-    //
   }
 
   /**

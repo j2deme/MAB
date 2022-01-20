@@ -120,7 +120,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'careers', 'as' => 'careers.']
 Route::group(['middleware' => 'auth', 'prefix' => 'subjects', 'as' => 'subjects.'], function () {
   Route::get('/', 'SubjectController@index')->name('index');
   Route::post('/', 'SubjectController@store')->name('save');
-  Route::get('/sync', 'SubjectController@sync')->name('sync');
+  Route::get('/sync', 'SubjectController@upload')->name('upload');
+  Route::post('/sync', 'SubjectController@sync')->name('sync');
   Route::get('/create', 'SubjectController@create')->name('new');
   Route::get('/{subject}', 'SubjectController@show')->name('show');
   Route::get('/{subject}/edit', 'SubjectController@edit')->name('edit');
