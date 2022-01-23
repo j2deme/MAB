@@ -8,16 +8,16 @@
       <article class="ui attached segment">
         <header>
           <h2 class="ui primary dividing header">Grupos</h2>
-          <div class="sub header">Semestre {{ $semester->short_name }}</div>
+          <div class="sub header">{{ (!is_null($semester)) ? "Semestre ".$semester->short_name : "Sin semestre activo" }}</div>
         </header>
         @can('add_groups')
         <div class="ui right floated buttons">
           <a href="{{ route('groups.new') }}" class="ui primary labeled icon button">
             <i class="ui add icon"></i> Añadir grupo
           </a>
-          {{--<a href="{{ route('groups.sync') }}" class="ui icon button">
+          <a href="{{ route('groups.sync') }}" class="ui icon button">
             <i class="upload icon"></i>
-          </a>--}}
+          </a>
         </div>
         @endcan
         <table class="ui celled striped compact table">
@@ -41,9 +41,9 @@
             <tr>
               <td class="ui center aligned">{{ $item->full_key }}</td>
               <td>
-                <a href="{{ route('groups.show', $item) }}">{{ $item->subject->short_name }}</a>
+                <a href="{{ route('groups.show', $item) }}">{{ $item->subject->long_name }}</a>
               </td>
-              <td class="ui center aligned">{{ $item->subject->career->internal_key }}</td>
+              <td class="ui center aligned">{{ $item->subject->career->key }}</td>
               <td class="ui center aligned">{{ $item->subject->semester }}</td>
               <td class="ui center aligned">
                 <a href="{{ route('groups.toggle', $item) }}">
@@ -66,7 +66,11 @@
                 <div class="ui placeholder segment">
                   <div class="ui icon header">
                     <i class="ui shapes icon"></i>
-                    No existen grupos registrados
+                    @if(!is_null($semester))
+                      No existen grupos registrados
+                    @else
+                      Es necesario activar un semestre para cargar grupos
+                    @endif
                   </div>
                   @role('Admin')
                   <a href="{{ route('groups.new') }}" class="ui primary icon labeled button">
@@ -82,7 +86,9 @@
           <tfoot class="full-width">
             <tr>
               <th colspan="7">
+                @if (count($result) != 0)
                 @include('pagination.custom', ['paginator' => $result])
+                @endif
               </th>
             </tr>
           </tfoot>
