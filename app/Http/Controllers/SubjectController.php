@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use DB;
 use App\Career;
 use App\Subject;
 use App\Http\Requests;
