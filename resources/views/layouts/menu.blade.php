@@ -58,6 +58,9 @@
     <a href="{{ route('users.students') }}" class="item">
       <i class="user graduate icon"></i> Estudiantes
     </a>
+    <a href="{{ route('users.uploadActive') }}" class="item">
+      <i class="user check icon"></i> Activar estudiantes
+    </a>
   </div>
 </div>
 @endhasanyrole

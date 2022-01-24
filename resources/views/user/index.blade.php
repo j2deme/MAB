@@ -14,9 +14,9 @@
           <a href="{{ route('users.new') }}" class="ui primary labeled icon button">
             <i class="ui add icon"></i> Añadir usuario
           </a>
-        <a href="{{ route('users.cloneStudents') }}" class="ui right floated labeled icon button">
-          <i class="ui clone outline icon"></i> Clonar estudiantes
-        </a>
+          <a href="{{ route('users.upload') }}" class="ui icon button">
+            <i class="upload icon"></i>
+          </a>
         </div>
         @endrole
         <table class="ui celled striped compact table">
@@ -28,6 +28,7 @@
               <th class="ui center aligned two wide">Rol</th>
               <th class="ui center aligned two wide">Carrera</th>
               <th class="ui center aligned one wide">Activo</th>
+              <th class="ui center aligned one wide">Inscrito</th>
               @can('edit_users')
               <th class="ui center aligned two wide">
                 <i class="ui cog icon"></i>
@@ -50,6 +51,9 @@
                 <a href="{{ route('users.toggle', $item->id) }}">
                   <i class="ui {{ $item->is_suspended ? 'red toggle off' : 'green toggle on' }} icon"></i>
                 </a>
+              </td>
+              <td class="ui center aligned">
+                <i class="ui {{ $item->is_enrolled ? 'green check' : 'red x' }} icon"></i>
               </td>
               @can('edit_users')
               <td class="ui center aligned">

@@ -15,7 +15,7 @@ class User extends Authenticatable
    * @var array
    */
   protected $fillable = [
-    'name', 'last_name', 'username', 'email', 'password', 'is_suspended'
+    'name', 'last_name', 'username', 'email', 'password', 'is_suspended','is_enrolled'
   ];
 
   /**
@@ -31,7 +31,8 @@ class User extends Authenticatable
    * CASTING
    */
   protected $casts = [
-    'is_suspended' => 'boolean'
+    'is_suspended' => 'boolean',
+    'is_enrolled' => 'boolean'
   ];
 
   /**

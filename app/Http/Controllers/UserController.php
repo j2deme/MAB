@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use DB;
 use App\Role;
 use App\User;
 use App\Career;
@@ -11,6 +10,9 @@ use App\Permission;
 use App\Http\Requests;
 use App\Traits\Authorizable;
 use Illuminate\Http\Request;
+use League\Csv\Reader;
+use Storage;
+use File;
 
 class UserController extends Controller
 {
@@ -283,5 +285,127 @@ class UserController extends Controller
     $user->save();
 
     return redirect()->back();
+  }
+
+  public function upload()
+  {
+    return view('user.upload');
+  }
+
+  public function sync(Request $request)
+  {
+    # Obtener el archivo CSV a subir
+    $file = $request->file('file');
+
+    # Obtener el nombre y tipo de archivo para ubicarlo en el Storage
+    $filename = $file->getClientOriginalName();
+    $filetype = $file->getClientOriginalExtension();
+
+    if (Storage::disk('local')->exists($filename)) {
+      # Verificar si existe el archivo, se borra para evitar colisiones
+      Storage::disk('local')->delete($filename);
+    }
+
+    # Verificar que el archivo proporcionado sea un CSV
+    if (in_array($filetype, ['csv', 'CSV'])) {
+      # Almacenar el archivo CSV en el Storage para su lectura
+      Storage::disk('local')->put($filename,  File::get($file));
+
+      if (Storage::disk('local')->exists($filename)) {
+        $csv = Reader::createFromPath(storage_path("app/$filename"));
+        $columns = ['noControl', 'name','lastName1','lastName2','nip','career'];
+        $records = $csv->getRecords($columns);
+        $syncedRecords = 0;
+        $numRecords = 0;
+
+        foreach ($records as $record) {
+          # Verificar si existe el estudiante, sino crearlo
+          $student = User::where('username',$record['noControl'])->first();
+          $numRecords++;
+          
+          if(is_null($student)){
+            $role = Role::where('name', 'Estudiante')->first();
+            $career = Career::where('internal_key', $record['career'])->first();
+
+            $data = [
+              'username' => $record['noControl'],
+              'name' => $record['name'],
+              'last_name' => trim($record['lastName1']." ".$record['lastName2']),
+              'email' => trim($record['noControl']) . "@tecvalles.mx",
+              'password' => $record['nip'],
+              'is_suspended' => false
+            ];
+
+            $student = User::create($data);
+            $student->career()->associate(isset($career->id) ? $career : null);
+            $student->assignRole($role);
+            $student->save();
+            $syncedRecords++;
+          }
+        }
+
+        flash("$syncedRecords/$numRecords registros procesados");
+      } else {
+        flash()->error('Error al procesar el archivo, intente nuevamente');
+      }
+    } else {
+      flash()->error('Tipo de archivo incompatible, intente nuevamente');
+    }
+
+    return redirect()->route('users.index');
+  }
+
+  public function uploadActive()
+  {
+    return view('user.activate');
+  }
+
+  public function activate(Request $request)
+  {
+    # Obtener el archivo CSV a subir
+    $file = $request->file('file');
+
+    # Obtener el nombre y tipo de archivo para ubicarlo en el Storage
+    $filename = $file->getClientOriginalName();
+    $filetype = $file->getClientOriginalExtension();
+
+    if (Storage::disk('local')->exists($filename)) {
+      # Verificar si existe el archivo, se borra para evitar colisiones
+      Storage::disk('local')->delete($filename);
+    }
+
+    # Verificar que el archivo proporcionado sea un CSV
+    if (in_array($filetype, ['csv', 'CSV'])) {
+      # Almacenar el archivo CSV en el Storage para su lectura
+      Storage::disk('local')->put($filename,  File::get($file));
+
+      if (Storage::disk('local')->exists($filename)) {
+        $csv = Reader::createFromPath(storage_path("app/$filename"));
+        $columns = ['noControl'];
+        $records = $csv->getRecords($columns);
+        $syncedRecords = 0;
+        $numRecords = 0;
+
+        foreach ($records as $record) {
+          # Busca el estudiante para activarlo
+          $student = User::where('username', $record['noControl'])->first();
+          $numRecords++;
+
+          if (!is_null($student)) {
+            $student->is_enrolled = true;
+            $student->save();
+            $syncedRecords++;
+          }
+        }
+
+        flash("$syncedRecords/$numRecords registros procesados");
+      } else {
+        flash()->error('Error al procesar el archivo, intente nuevamente');
+      }
+    } else {
+      flash()->error('Tipo de archivo incompatible, intente nuevamente');
+    }
+
+    return redirect()->route('users.index');
   }
 }

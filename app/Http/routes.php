@@ -38,6 +38,10 @@ Route::get('/home', 'HomeController@index')->name('home.index');
 Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.'], function () {
   Route::get('/', 'UserController@index')->name('index');
   Route::get('/students','UserController@listStudents')->name('students');
+  Route::get('/sync', 'UserController@upload')->name('upload');
+  Route::post('/sync', 'UserController@sync')->name('sync');
+  Route::get('/activate', 'UserController@uploadActive')->name('uploadActive');
+  Route::post('/activate', 'UserController@activate')->name('activate');
   Route::post('/save', 'UserController@store')->name('save');
   Route::get('/create', 'UserController@create')->name('new');
   Route::get('/{user}', 'UserController@show')->name('show');
@@ -127,7 +131,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'subjects', 'as' => 'subjects.
   Route::get('/{subject}/edit', 'SubjectController@edit')->name('edit');
   Route::put('/{subject}', 'SubjectController@update')->name('update');
   Route::delete('/{subject}', 'SubjectController@destroy')->name('delete');
-  Route::get('/load', 'SubjectController@batch')->name('batch');
   Route::get('/toggle/{subject}', 'SubjectController@toggle')->name('toggle');
 });
 
