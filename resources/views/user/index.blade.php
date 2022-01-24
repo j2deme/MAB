@@ -7,15 +7,17 @@
     <section class="fourteen wide column">
       <article class="ui attached segment">
         <header>
-          <h2 class="ui primary dividing header">Usuarios</h2>
+          <h2 class="ui primary dividing header">{{ (isset($title)) ? $title : "Usuarios" }} ({{ $users->total() }})</h2>
         </header>
         @role('Admin')
-        <a href="{{ route('users.new') }}" class="ui right floated primary labeled icon button">
-          <i class="ui add icon"></i> Añadir usuario
-        </a>
+        <div class="ui right floated buttons">
+          <a href="{{ route('users.new') }}" class="ui primary labeled icon button">
+            <i class="ui add icon"></i> Añadir usuario
+          </a>
         <a href="{{ route('users.cloneStudents') }}" class="ui right floated labeled icon button">
           <i class="ui clone outline icon"></i> Clonar estudiantes
         </a>
+        </div>
         @endrole
         <table class="ui celled striped compact table">
           <thead>
@@ -38,10 +40,10 @@
             <tr>
               <td class="ui center aligned">{{ $item->id }}</td>
               <td>{{ $item->full_name }}</td>
-              <td>
+              <td class="ui center aligned">
                 <a href="{{ route('users.show', $item) }}">{{ $item->username }}</a>
               </td>
-              <td>{{ (isset($item->roles[0])) ? $item->roles[0]->name : 'NA' }}</td>
+              <td class="ui center aligned">{{ (isset($item->roles[0])) ? $item->roles[0]->name : 'NA' }}</td>
               <td class="ui center aligned">
                 {{ (!is_null($item->career)) ? $item->career->key : '-'}}</td>
               <td class="ui center aligned">

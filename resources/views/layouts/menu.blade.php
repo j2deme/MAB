@@ -55,10 +55,7 @@
     <a class="item" href="{{ route('users.index') }}">
       <i class="user shield icon"></i> Superusuarios
     </a>
-    <a href="#" class="item">
-      <i class="user check icon"></i> Coordinadores
-    </a>
-    <a href="#" class="item">
+    <a href="{{ route('users.students') }}" class="item">
       <i class="user graduate icon"></i> Estudiantes
     </a>
   </div>

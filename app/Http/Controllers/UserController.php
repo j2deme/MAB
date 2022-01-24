@@ -36,29 +36,20 @@ class UserController extends Controller
     return view('user.index', $data);
   }
 
-  public function cloneStudents()
-  {
-    $students  = DB::connection('sybase')->select("SELECT no_de_control AS no_control, nombre_alumno AS nombre, apellido_paterno, apellido_materno, carrera, nip FROM alumnos WHERE estatus_alumno = :estatus", ['estatus' => 'ACT']);
+  public function listStudents(){
+    $students = User::where('username','LIKE','__69____')
+    ->orWhere('username','LIKE', '____0___')
+    ->orWhere('username','LIKE','B________')
+    ->orWhere('username','LIKE','C________')
+    ->orderBy('is_suspended')
+    ->orderBy('career_id','asc')
+    ->orderBy('username', 'asc')
+    ->paginate(20);
 
-    $role = Role::where('name', 'Estudiante')->first();
+    $data['users'] = $students;
+    $data['title'] = "Estudiantes";
 
-    foreach ($students as $s) {
-      $data = [
-        'username' => $s->no_control,
-        'name' => $s->nombre,
-        'last_name' => "{$s->apellido_paterno} {$s->apellido_materno}",
-        'email' => trim($s->no_control) . "@tecvalles.mx",
-        'password' => $s->nip,
-        'is_suspended' => false
-      ];
-      if ($student = User::firstOrCreate($data)) {
-        $career = Career::where('internal_key', $s->carrera)->first();
-        $student->career()->associate(isset($career->id) ? $career : null);
-        $student->save();
-        $student->assignRole($role);
-      }
-    }
-    return redirect()->route('users.index');
+    return view('user.index', $data);
   }
 
   /**
