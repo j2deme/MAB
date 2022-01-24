@@ -22,9 +22,18 @@ class UserController extends Controller
    */
   public function index()
   {
-    $_users = User::count();
-    $users = User::orderBy('is_suspended')->orderBy('username', 'asc')->paginate($_users);
-    return view('user.index', compact('users'));
+    $users = User::where('username', 'NOT LIKE', '__69____')
+      ->where('username', 'NOT LIKE', '____0___')
+      ->where('username', 'NOT LIKE', 'B________')
+      ->where('username', 'NOT LIKE', 'C________')
+      ->orderBy('is_suspended')
+      ->orderBy('username', 'asc')
+      ->paginate(20);
+
+    $data['users'] = $users;
+    $data['title'] = "Superusuarios";
+
+    return view('user.index', $data);
   }
 
   public function cloneStudents()
