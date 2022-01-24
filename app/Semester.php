@@ -20,7 +20,13 @@ class Semester extends Model
    */
   public function scopeLast($query)
   {
-    return $query->where('is_active', true)->orderBy('key', 'desc')->first();
+    //return $query->orderBy('key', 'desc')->first();
+    $active = Semester::where('is_active', true)->get();
+    if(count($active) == 0){
+      return $query->orderBy('key','desc')->first();
+    } else {
+      return $query->where('is_active', true)->orderBy('key', 'desc')->first();
+    }
   }
 
   /**
