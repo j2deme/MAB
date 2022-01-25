@@ -24,17 +24,17 @@
           </header>
           <div class="ui six cards">
             @foreach ($generation as $key => $move)
-            @if(starts_with($move->user->career->internal_key, 'ISC'))
+            @if(starts_with($move->user->career->key, 'ISC'))
             @php ($color = 'blue')
-            @elseif(starts_with($move->user->career->internal_key, 'II'))
+            @elseif(starts_with($move->user->career->key, 'II'))
             @php ($color = 'red')
-            @elseif(starts_with($move->user->career->internal_key, 'IGE'))
+            @elseif(starts_with($move->user->career->key, 'IGE'))
             @php ($color = 'teal')
-            @elseif(starts_with($move->user->career->internal_key, 'IIA'))
+            @elseif(starts_with($move->user->career->key, 'IIA'))
             @php ($color = 'green')
-            @elseif(starts_with($move->user->career->internal_key, 'IAMB'))
+            @elseif(starts_with($move->user->career->key, 'IAMB'))
             @php ($color = 'olive')
-            @elseif(starts_with($move->user->career->internal_key, 'IAGRO'))
+            @elseif(starts_with($move->user->career->key, 'IAGRO'))
             @php ($color = 'orange')
             @else
             @php ($color = 'black')
@@ -42,6 +42,9 @@
             <a href="{{ route('moves.byStudent', $key) }}"
               class="ui {{ $color }} {{ ($move->user->is_suspended) ? 'inverted' : null }} card">
               <div class="content">
+                @if (!$move->user->is_enrolled)
+                  <i class="right floated red exclamation icon"></i>
+                @endif
                 <div class="header">
                   <h5>{{ $move->user->username }}</h5>
                 </div>
