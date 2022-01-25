@@ -25,6 +25,7 @@ class UserController extends Controller
   public function index()
   {
     $users = User::where('username', 'NOT LIKE', '__69____')
+      ->where('username', 'NOT LIKE', '__18____')
       ->where('username', 'NOT LIKE', '____0___')
       ->where('username', 'NOT LIKE', 'B________')
       ->where('username', 'NOT LIKE', 'C________')
@@ -40,6 +41,7 @@ class UserController extends Controller
 
   public function listStudents(){
     $students = User::where('username','LIKE','__69____')
+    ->orWhere('username','LIKE', '__18____')
     ->orWhere('username','LIKE', '____0___')
     ->orWhere('username','LIKE','B________')
     ->orWhere('username','LIKE','C________')
