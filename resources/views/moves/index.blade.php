@@ -32,7 +32,7 @@
             <tr>
               <th class="ui center aligned two wide">No. Control</th>
               <th class="ui center aligned">Solicitud</th>
-              <th class="ui center aligned one wide">Tipo</th>
+              <th class="ui center aligned two wide">Tipo</th>
               <th class="ui center aligned one wide">Paralelo</th>
               <th class="ui center aligned two wide">Estatus</th>
               @can('edit_moves')
@@ -48,14 +48,13 @@
               <td class="ui center aligned">{{ $item->user->username }}</td>
               <td>{{ $item->type }} DE {{ $item->group->subject->short_name }} ({{ $item->group->full_key }})</td>
               <td class="ui center aligned">
-                <i class="ui {{ $item->type == 'ALTA' ? 'blue arrow up' : 'red arrow down' }} icon"></i>
+                <small>{{ $item->type }}</small> <i class="ui {{ $item->type == 'ALTA' ? 'blue arrow up' : 'red arrow down' }} icon"></i>
               </td>
               <td class="ui center aligned">
                 @if ($item->is_parallel)
                 <a class="ui blue circular label">P</a>
                 @else
                 <i class="ui grey minus icon"></i>
-                {{--<i class="ui {{ $item->is_parallel ? 'green check' : 'red times' }} icon"></i>--}}
                 @endif
               </td>
               <td class="ui center aligned">
