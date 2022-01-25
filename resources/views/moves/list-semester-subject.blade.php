@@ -27,6 +27,8 @@
             @php ($color = 'teal')
             @elseif(starts_with($key, 'IIA'))
             @php ($color = 'green')
+            @elseif(starts_with($key, 'IAGR'))
+            @php ($color = 'orange')
             @elseif(starts_with($key, 'IAMB'))
             @php ($color = 'olive')
             @else
