@@ -39,11 +39,10 @@
             @else
             @php ($color = 'black')
             @endif
-            <a href="{{ route('moves.byStudent', $key) }}"
-              class="ui {{ $color }} {{ ($move->user->is_suspended) ? 'inverted' : null }} card">
-              <div class="content">
+            <a href="{{ route('moves.byStudent', $key) }}" class="ui {{ $color }} card">
+              <div class="ui content {{ (!$move->user->is_enrolled) ? "$color inverted" : null }} segment">
                 @if (!$move->user->is_enrolled)
-                  <i class="right floated red exclamation icon"></i>
+                  <i class="ui right floated star icon"></i>
                 @endif
                 <div class="header">
                   <h5>{{ $move->user->username }}</h5>
