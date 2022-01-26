@@ -21,7 +21,7 @@ class MovesController extends Controller
    *
    * @return \Illuminate\Http\Response
    */
-  public function index()
+  public function index($all = null)
   {
     $last_semester = Semester::last();
     if (Auth::user()->hasRole('Estudiante')) {
@@ -29,8 +29,14 @@ class MovesController extends Controller
     } elseif (Auth::user()->hasRole('Coordinador')) {
       $result = Career::find(Auth::user()->career->id)->moves()->where('semester_id', $last_semester->id)->unattended()->paginate();
     } else {
-      $result = Move::where('semester_id', $last_semester->id)->unattendedParallel()->paginate();
+      if(!is_null($all)){
+        $total = Move::where('semester_id', $last_semester->id)->unattendedParallel()->count();
+        $result = Move::where('semester_id', $last_semester->id)->unattendedParallel()->paginate($total);
+      } else {
+        $result = Move::where('semester_id', $last_semester->id)->unattendedParallel()->paginate();
+      }
     }
+    
     return view('moves.index', compact('result'));
   }
 
@@ -290,16 +296,24 @@ class MovesController extends Controller
   /**
    * Show a table with moves filtered by subject
    */
-  public function bySubject($key)
+  public function bySubject($key, $all = null)
   {
     $subject = Subject::where('key', $key)->first();
     $last_semester = Semester::last();
     $groups = Group::where('semester_id', $last_semester->id)->where('subject_id', $subject->id)->pluck('id');
 
     if (!is_null(Auth::user()->career)) {
-      $result = Move::with('group.subject', 'user')->where('semester_id', $last_semester->id)->whereIn('group_id', $groups)->unattended()->paginate();
+      if(!is_null($all)){
+        $result = Move::with('group.subject', 'user')->where('semester_id', $last_semester->id)->whereIn('group_id', $groups)->unattended()->get();
+      } else {
+        $result = Move::with('group.subject', 'user')->where('semester_id', $last_semester->id)->whereIn('group_id', $groups)->unattended()->paginate();
+      }
     } else {
-      $result = Move::with('group.subject', 'user')->where('semester_id', $last_semester->id)->whereIn('group_id', $groups)->unattendedParallel()->paginate();
+      if(!is_null($all)){
+        $result = Move::with('group.subject', 'user')->where('semester_id', $last_semester->id)->whereIn('group_id', $groups)->unattendedParallel()->get();
+      } else {
+        $result = Move::with('group.subject', 'user')->where('semester_id', $last_semester->id)->whereIn('group_id', $groups)->unattendedParallel()->paginate();
+      }
     }
 
     $url = route('moves.listBySubject');
@@ -508,14 +522,22 @@ class MovesController extends Controller
     return view('moves.index', compact('result', 'user', 'url'));
   }
 
-  public function byTypeRegistered()
+  public function byTypeRegistered($all = null)
   {
     $last_semester = Semester::last();
     if (!is_null(Auth::user()->career)) {
       $career = Career::find(Auth::user()->career->id)->first();
-      $result = $career->moves()->where('semester_id', $last_semester->id)->registered()->paginate();
+      if(!is_null($all)){
+        $result = $career->moves()->where('semester_id', $last_semester->id)->registered()->get();
+      } else {
+        $result = $career->moves()->where('semester_id', $last_semester->id)->registered()->paginate();
+      }
     } else {
-      $result = Move::where('semester_id', $last_semester->id)->registered(true)->paginate();
+      if(!is_null($all)){
+        $result = Move::where('semester_id', $last_semester->id)->registered(true)->get();
+      } else {
+        $result = Move::where('semester_id', $last_semester->id)->registered(true)->paginate();
+      }
     }
 
     $url = route('home.index');

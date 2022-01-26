@@ -61,7 +61,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'roles', 'as' => 'roles.'], fu
 
 # MOVE ROUTES -- RESOURCE
 Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], function () {
-  Route::get('/', 'MovesController@index')->name('index');
+  Route::get('/{all?}', 'MovesController@index')->name('index');
   Route::post('/', 'MovesController@store')->name('save');
   Route::get('/create/{type}', 'MovesController@create')->name('new');
   Route::get('/{move}', 'MovesController@show')->name('show');
@@ -73,13 +73,13 @@ Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], fu
   Route::get('/by/career/{career}', 'MovesController@byCareer')->name('byCareer');
   # Filter by subject
   Route::get('/by/subject', 'MovesController@listBySubject')->name('listBySubject');
-  Route::get('/by/subject/{subject}', 'MovesController@bySubject')->name('bySubject');
+  Route::get('/by/subject/{subject}/{all?}', 'MovesController@bySubject')->name('bySubject');
   # Filter by generation
   Route::get('/by/student', 'MovesController@listByStudent')->name('listByStudent');
   Route::get('/by/student/switch', 'MovesController@listPermutas')->name('listByGroups');
   Route::get('/by/student/{student}', 'MovesController@byStudent')->name('byStudent');
   # Filter by status
-  Route::get('/by/status/registered', 'MovesController@byTypeRegistered')->name('listRegistered');
+  Route::get('/by/status/registered/{all?}', 'MovesController@byTypeRegistered')->name('listRegistered');
   Route::get('/by/status/revision', 'MovesController@byTypeRevision')->name('listOnRevision');
   Route::get('/by/status/attended', 'MovesController@byTypeAttended')->name('listAttended');
   Route::get('/switch/group', 'MovesController@switchGroup')->name('switchGroup');

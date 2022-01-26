@@ -2,6 +2,9 @@
 
 @section('content')
 @include('layouts.navbar')
+<!-- DATA 
+Path: {{ Request::path() }}
+-->
 <div class="ui stackable centered grid">
   <div class="ui stretched row">
     <section class="fourteen wide column">
@@ -15,8 +18,8 @@
             @endrole
           </h2>
         </header>
-        @role('Estudiante')
         <div class="ui right floated small buttons">
+        @role('Estudiante')
           <a href="{{ route('moves.new',['type' => 'up']) }}" class="ui blue icon labeled button">
             <i class="ui sort up icon"></i>
             Altas
@@ -25,8 +28,11 @@
             <i class="ui sort down icon"></i>
             Bajas
           </a>
-        </div>
         @endrole
+        @hasanyrole(['Jefe','Admin'])
+        @include('components.list-all')
+        @endhasanyrole
+        </div>
         <table class="ui celled striped compact table">
           <thead>
             <tr>
@@ -105,7 +111,9 @@
           <tfoot class="full-width">
             <tr>
               <th colspan="6">
-                @include('pagination.custom', ['paginator' => $result])
+                @if (!ends_with(Request::path(), "/all"))
+                  @include('pagination.custom', ['paginator' => $result])
+                @endif
               </th>
             </tr>
           </tfoot>
