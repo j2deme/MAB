@@ -50,6 +50,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.'], fu
   Route::put('/s/{user}', 'UserController@selfUpdate')->name('selfUpdate');
   Route::delete('/{user}', 'UserController@destroy')->name('delete');
   Route::get('/toggle/{user}', 'UserController@toggle')->name('toggle');
+  Route::get('/search','UserController@search')->name('search');
 });
 
 # ROLE ROUTES -- RESOURCE
