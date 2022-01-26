@@ -37,7 +37,7 @@ Route::get('/home', 'HomeController@index')->name('home.index');
 # USER ROUTES -- RESOURCE
 Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.'], function () {
   Route::get('/', 'UserController@index')->name('index');
-  Route::get('/students','UserController@listStudents')->name('students');
+  Route::get('/students/{all?}','UserController@listStudents')->name('students');
   Route::get('/sync', 'UserController@upload')->name('upload');
   Route::post('/sync', 'UserController@sync')->name('sync');
   Route::get('/activate', 'UserController@uploadActive')->name('uploadActive');

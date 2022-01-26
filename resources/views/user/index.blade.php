@@ -7,18 +7,21 @@
     <section class="fourteen wide column">
       <article class="ui attached segment">
         <header>
-          <h2 class="ui primary dividing header">{{ (isset($title)) ? $title : "Usuarios" }} ({{ $users->total() }})</h2>
+          <h2 class="ui primary dividing header">{{ (isset($title)) ? $title : "Usuarios" }} ({{ $total }})</h2>
         </header>
-        @role('Admin')
         <div class="ui right floated buttons">
+        @role('Admin')
           <a href="{{ route('users.new') }}" class="ui primary labeled icon button">
             <i class="ui add icon"></i> Añadir usuario
           </a>
           <a href="{{ route('users.upload') }}" class="ui icon button">
             <i class="upload icon"></i>
           </a>
-        </div>
         @endrole
+        @hasanyrole(['Jefe','Admin'])
+        @include('components.list-all')
+        @endhasanyrole
+        </div>
         <table class="ui celled striped compact table">
           <thead>
             <tr>
@@ -86,11 +89,14 @@
           <tfoot class="full-width">
             <tr>
               <th colspan="7">
-                @include('pagination.custom', ['paginator' => $users])
+                @if (!ends_with(Request::path(),"/all"))
+                  @include('pagination.custom', ['paginator' => $users])
+                @endif
               </th>
             </tr>
           </tfoot>
         </table>
+        @include('components.back')
       </article>
     </section>
   </div>

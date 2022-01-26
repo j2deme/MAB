@@ -39,7 +39,13 @@ class UserController extends Controller
     return view('user.index', $data);
   }
 
-  public function listStudents(){
+  public function listStudents($all = null){
+    $total = User::where('username', 'LIKE', '__69____')
+      ->orWhere('username', 'LIKE', '__18____')
+      ->orWhere('username', 'LIKE', '____0___')
+      ->orWhere('username', 'LIKE', 'B________')
+      ->orWhere('username', 'LIKE', 'C________')
+      ->count();
     $students = User::where('username','LIKE','__69____')
     ->orWhere('username','LIKE', '__18____')
     ->orWhere('username','LIKE', '____0___')
@@ -48,10 +54,13 @@ class UserController extends Controller
     ->orderBy('is_suspended')
     ->orderBy('career_id','asc')
     ->orderBy('username', 'asc')
-    ->paginate(20);
+    ->paginate(
+      (is_null($all)) ? 20 : $total
+    );
 
     $data['users'] = $students;
     $data['title'] = "Estudiantes";
+    $data['total'] = $total;
 
     return view('user.index', $data);
   }
