@@ -24,6 +24,12 @@ class UserController extends Controller
    */
   public function index()
   {
+    $total = User::where('username', 'NOT LIKE', '__69____')
+      ->orWhere('username', 'NOT LIKE', '__18____')
+      ->orWhere('username', 'NOT LIKE', '____0___')
+      ->orWhere('username', 'NOT LIKE', 'B________')
+      ->orWhere('username', 'NOT LIKE', 'C________')
+      ->count();
     $users = User::where('username', 'NOT LIKE', '__69____')
       ->where('username', 'NOT LIKE', '__18____')
       ->where('username', 'NOT LIKE', '____0___')
@@ -35,6 +41,7 @@ class UserController extends Controller
 
     $data['users'] = $users;
     $data['title'] = "Superusuarios";
+    $data['total'] = $total;
 
     return view('user.index', $data);
   }
