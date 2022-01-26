@@ -99,7 +99,6 @@ class SubjectController extends Controller
             'key' => $record['key'],
             'short_name' => $record['short_name'],
             'long_name' => $record['long_name'],
-            #'career_id' => (int) $record['career_id'],
             'semester' => (int) $record['semester'],
             'ht' => (int) $record['ht'],
             'hp' => (int) $record['hp'],
@@ -107,16 +106,15 @@ class SubjectController extends Controller
           ];
   
           # Verificar cada registro del CSV en caso de que ya exista
-          $subject = Subject::where('key',$recordData['key'])->first();
+          $subject = Subject::where('key', $recordData['key'])->first();
           $numRecords++;
   
           # Crear registro sino existe previamente
           if(is_null($subject)){
             $recordData['is_active'] = true;
+            $career = Career::where('internal_key', $record['career_id'])->first();
+            $recordData['career_id'] = $career->id;
             if ($subject = Subject::create($recordData)) {
-              $career = Career::where('internal_key', $record['career_id'])->first();
-              $subject->career()->associate(isset($career->id) ? $career : null);
-              $subject->save();
               $syncedRecords++;
             }
           }
