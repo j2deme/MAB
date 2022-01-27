@@ -426,4 +426,16 @@ class UserController extends Controller
 
     return redirect()->route('users.index');
   }
+
+  public function singleActivate($key)
+  {
+    $student = User::where('username', $key)->first();
+
+    if (!is_null($student)) {
+      $student->is_enrolled = true;
+      $student->save();
+    }
+    
+    return redirect()->route('moves.byStudent',['key'=> $key]);
+  }
 }

@@ -42,6 +42,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.'], fu
   Route::post('/sync', 'UserController@sync')->name('sync');
   Route::get('/activate', 'UserController@uploadActive')->name('uploadActive');
   Route::post('/activate', 'UserController@activate')->name('activate');
+  Route::get('/singleActivate/{key}', 'UserController@singleActivate')->name('singleActivate');
   Route::post('/save', 'UserController@store')->name('save');
   Route::get('/create', 'UserController@create')->name('new');
   Route::get('/{user}', 'UserController@show')->name('show');
