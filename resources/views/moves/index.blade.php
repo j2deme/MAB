@@ -31,7 +31,7 @@ Path: {{ Request::path() }}
         @endrole
         @hasanyrole(['Jefe','Admin'])
         @include('components.list-all')
-        @if (!$user->is_enrolled)
+        @if (isset($user) and !$user->is_enrolled)
         <a href="{{ route('users.singleActivate', ['key'=> $user->username]) }}" class="ui green icon labeled button">
           <i class="ui sort down icon"></i>
           Inscribir
