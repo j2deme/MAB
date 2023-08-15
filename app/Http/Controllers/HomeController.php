@@ -30,7 +30,10 @@ class HomeController extends Controller
   {
     if (is_null(Auth::user()->career)) {
       $data['careers'] = Career::pluck('name', 'id');
-      $data['ups'] = $data['downs'] = $data['attended'] = 0;
+      $last_semester = Semester::last();
+      $data['ups'] = $last_semester->moves->where('type', 'ALTA')->count();
+      $data['downs'] = $last_semester->moves->where('type', 'BAJA')->count();
+      $data['attended'] = $last_semester->moves->whereIn('status', ['2', '3', '4', '5'])->count();
     } else {
       // Estadísticas de solicitudes por rol
       if (Auth::user()->hasRole('Estudiante')) {
