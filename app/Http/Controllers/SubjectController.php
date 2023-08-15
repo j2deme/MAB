@@ -66,7 +66,48 @@ class SubjectController extends Controller
 
   public function upload()
   {
-    return view('subject.upload');
+    #return view('subject.upload'); # View for CSV file
+    return view('subject.load'); # View for TextArea
+  }
+
+  public function load(Request $request)
+  {
+    if (!empty($request->materias)) {
+      $filas = explode("\r\n", trim($request->materias));
+      foreach ($filas as $fila) {
+        $materias[] = explode("\t", trim($fila));
+      }
+      $syncedRecords = 0;
+      $numRecords = 0;
+
+      foreach ($materias as $record) {
+        $recordData = [
+          'key' => $record[0],
+          'short_name' => $record[1],
+          'long_name' => $record[2],
+          'semester' => (int) $record[3],
+          'ht' => (int) $record[4],
+          'hp' => (int) $record[5],
+          'cr' => (int) $record[6],
+        ];
+        $numRecords++;
+
+        # Verificar los registros a cargar, para evitar duplicados
+        $subject = Subject::where('key', $recordData['key'])->first();
+
+        # Crear registro sino existe previamente
+        if (is_null($subject)) {
+          $recordData['is_active'] = true;
+          $career = Career::where('internal_key', $record['career_id'])->first();
+          $recordData['career_id'] = $career->id;
+          if ($subject = Subject::create($recordData)) {
+            $syncedRecords++;
+          }
+        }
+      }
+      flash("$syncedRecords/$numRecords registros procesados");
+    }
+    return redirect()->route('subjects.index');
   }
 
   public function sync(Request $request)
@@ -82,12 +123,12 @@ class SubjectController extends Controller
       # Verificar si existe el archivo, se borra para evitar colisiones
       Storage::disk('local')->delete($filename);
     }
-    
+
     # Verificar que el archivo proporcionado sea un CSV
-    if(in_array($filetype, ['csv','CSV'])){
+    if (in_array($filetype, ['csv', 'CSV'])) {
       # Almacenar el archivo CSV en el Storage para su lectura
-      Storage::disk('local')->put($filename,  File::get($file));
-  
+      Storage::disk('local')->put($filename, File::get($file));
+
       if (Storage::disk('local')->exists($filename)) {
         $csv = Reader::createFromPath(storage_path("app/$filename"));
         $columns = ['key', 'short_name', 'long_name', 'career_id', 'semester', 'ht', 'hp', 'cr'];
@@ -104,13 +145,13 @@ class SubjectController extends Controller
             'hp' => (int) $record['hp'],
             'cr' => (int) $record['cr'],
           ];
-  
+
           # Verificar cada registro del CSV en caso de que ya exista
           $subject = Subject::where('key', $recordData['key'])->first();
           $numRecords++;
-  
+
           # Crear registro sino existe previamente
-          if(is_null($subject)){
+          if (is_null($subject)) {
             $recordData['is_active'] = true;
             $career = Career::where('internal_key', $record['career_id'])->first();
             $recordData['career_id'] = $career->id;

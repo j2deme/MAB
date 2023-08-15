@@ -37,7 +37,7 @@ Route::get('/home', 'HomeController@index')->name('home.index');
 # USER ROUTES -- RESOURCE
 Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.'], function () {
   Route::get('/', 'UserController@index')->name('index');
-  Route::get('/students/{all?}','UserController@listStudents')->name('students');
+  Route::get('/students/{all?}', 'UserController@listStudents')->name('students');
   Route::get('/sync', 'UserController@upload')->name('upload');
   Route::post('/sync', 'UserController@sync')->name('sync');
   Route::get('/activate', 'UserController@uploadActive')->name('uploadActive');
@@ -51,7 +51,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.'], fu
   Route::put('/s/{user}', 'UserController@selfUpdate')->name('selfUpdate');
   Route::delete('/{user}', 'UserController@destroy')->name('delete');
   Route::get('/toggle/{user}', 'UserController@toggle')->name('toggle');
-  Route::get('/search','UserController@search')->name('search');
+  Route::get('/search', 'UserController@search')->name('search');
 });
 
 # ROLE ROUTES -- RESOURCE
@@ -127,7 +127,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'subjects', 'as' => 'subjects.
   Route::get('/', 'SubjectController@index')->name('index');
   Route::post('/', 'SubjectController@store')->name('save');
   Route::get('/sync', 'SubjectController@upload')->name('upload');
-  Route::post('/sync', 'SubjectController@sync')->name('sync');
+  Route::post('/sync', 'SubjectController@sync')->name('sync'); // Uses CSV
+  Route::post('/load', 'SubjectController@load')->name('load'); // Uses TextArea
   Route::get('/create', 'SubjectController@create')->name('new');
   Route::get('/{subject}', 'SubjectController@show')->name('show');
   Route::get('/{subject}/edit', 'SubjectController@edit')->name('edit');
