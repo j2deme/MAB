@@ -46,24 +46,25 @@ class UserController extends Controller
     return view('user.index', $data);
   }
 
-  public function listStudents($all = null){
+  public function listStudents($all = null)
+  {
     $total = User::where('username', 'LIKE', '__69____')
       ->orWhere('username', 'LIKE', '__18____')
       ->orWhere('username', 'LIKE', '____0___')
       ->orWhere('username', 'LIKE', 'B________')
       ->orWhere('username', 'LIKE', 'C________')
       ->count();
-    $students = User::where('username','LIKE','__69____')
-    ->orWhere('username','LIKE', '__18____')
-    ->orWhere('username','LIKE', '____0___')
-    ->orWhere('username','LIKE','B________')
-    ->orWhere('username','LIKE','C________')
-    ->orderBy('is_suspended')
-    ->orderBy('career_id','asc')
-    ->orderBy('username', 'asc')
-    ->paginate(
-      (is_null($all)) ? 20 : $total
-    );
+    $students = User::where('username', 'LIKE', '__69____')
+      ->orWhere('username', 'LIKE', '__18____')
+      ->orWhere('username', 'LIKE', '____0___')
+      ->orWhere('username', 'LIKE', 'B________')
+      ->orWhere('username', 'LIKE', 'C________')
+      ->orderBy('is_suspended')
+      ->orderBy('career_id', 'asc')
+      ->orderBy('username', 'asc')
+      ->paginate(
+        (is_null($all)) ? 20 : $total
+      );
 
     $data['users'] = $students;
     $data['title'] = "Estudiantes";
@@ -99,7 +100,7 @@ class UserController extends Controller
       //'roles' => 'required|min:1'
     ]);
 
-    if($request->has('is_student')){
+    if ($request->has('is_student')) {
       $request->merge([
         'password' => trim($request->get('nip')),
         'password_confirmation' => trim($request->get('nip'))
@@ -110,7 +111,7 @@ class UserController extends Controller
       ]);
     }
 
-    $studentRole = Role::where('name','Estudiante')->first();
+    $studentRole = Role::where('name', 'Estudiante')->first();
 
     // hash password
     /*$request->merge([
@@ -118,9 +119,9 @@ class UserController extends Controller
     ]);*/
 
     // Create the user
-    if ($user = User::create($request->except('roles', 'permissions','nip','is_student'))) {
+    if ($user = User::create($request->except('roles', 'permissions', 'nip', 'is_student'))) {
       //$this->syncPermissions($request, $user);
-      if($request->has('is_student')){
+      if ($request->has('is_student')) {
         $user->assignRole($studentRole);
       }
       flash()->success('El usuario ha sido creado');
@@ -307,7 +308,49 @@ class UserController extends Controller
 
   public function upload()
   {
-    return view('user.upload');
+    #return view('user.upload'); # View for CSV file
+    return view('user.load'); # View for TextArea
+  }
+
+  public function load(Request $request)
+  {
+    if (!empty($request->estudiantes)) {
+      $filas = explode("\r\n", trim($request->estudiantes));
+      foreach ($filas as $fila) {
+        $estudiantes[] = explode("\t", trim($fila));
+      }
+      $syncedRecords = 0;
+      $numRecords = 0;
+
+      foreach ($estudiantes as $record) {
+        # Verificar si existe el estudiante, sino crearlo
+        $student = User::where('username', $record[0])->first();
+
+        $numRecords++;
+
+        if (is_null($student)) {
+          $role = Role::where('name', 'Estudiante')->first();
+          $career = Career::where('internal_key', $record[5])->first();
+
+          $data = [
+            'username' => $record[0],
+            'name' => $record[1],
+            'last_name' => trim($record[2] . " " . $record[3]),
+            'email' => trim($record[0]) . "@tecvalles.mx",
+            'password' => $record[4],
+            'is_suspended' => false
+          ];
+
+          $student = User::create($data);
+          $student->career()->associate(isset($career->id) ? $career : null);
+          $student->assignRole($role);
+          $student->save();
+          $syncedRecords++;
+        }
+      }
+      flash("$syncedRecords/$numRecords estudiantes procesados");
+    }
+    return redirect()->route('users.index');
   }
 
   public function sync(Request $request)
@@ -327,28 +370,28 @@ class UserController extends Controller
     # Verificar que el archivo proporcionado sea un CSV
     if (in_array($filetype, ['csv', 'CSV'])) {
       # Almacenar el archivo CSV en el Storage para su lectura
-      Storage::disk('local')->put($filename,  File::get($file));
+      Storage::disk('local')->put($filename, File::get($file));
 
       if (Storage::disk('local')->exists($filename)) {
         $csv = Reader::createFromPath(storage_path("app/$filename"));
-        $columns = ['noControl', 'name','lastName1','lastName2','nip','career'];
+        $columns = ['noControl', 'name', 'lastName1', 'lastName2', 'nip', 'career'];
         $records = $csv->getRecords($columns);
         $syncedRecords = 0;
         $numRecords = 0;
 
         foreach ($records as $record) {
           # Verificar si existe el estudiante, sino crearlo
-          $student = User::where('username',$record['noControl'])->first();
+          $student = User::where('username', $record['noControl'])->first();
           $numRecords++;
-          
-          if(is_null($student)){
+
+          if (is_null($student)) {
             $role = Role::where('name', 'Estudiante')->first();
             $career = Career::where('internal_key', $record['career'])->first();
 
             $data = [
               'username' => $record['noControl'],
               'name' => $record['name'],
-              'last_name' => trim($record['lastName1']." ".$record['lastName2']),
+              'last_name' => trim($record['lastName1'] . " " . $record['lastName2']),
               'email' => trim($record['noControl']) . "@tecvalles.mx",
               'password' => $record['nip'],
               'is_suspended' => false
@@ -395,7 +438,7 @@ class UserController extends Controller
     # Verificar que el archivo proporcionado sea un CSV
     if (in_array($filetype, ['csv', 'CSV'])) {
       # Almacenar el archivo CSV en el Storage para su lectura
-      Storage::disk('local')->put($filename,  File::get($file));
+      Storage::disk('local')->put($filename, File::get($file));
 
       if (Storage::disk('local')->exists($filename)) {
         $csv = Reader::createFromPath(storage_path("app/$filename"));
@@ -435,7 +478,7 @@ class UserController extends Controller
       $student->is_enrolled = true;
       $student->save();
     }
-    
-    return redirect()->route('moves.byStudent',['key'=> $key]);
+
+    return redirect()->route('moves.byStudent', ['key' => $key]);
   }
 }

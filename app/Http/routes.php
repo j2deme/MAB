@@ -39,7 +39,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.'], fu
   Route::get('/', 'UserController@index')->name('index');
   Route::get('/students/{all?}', 'UserController@listStudents')->name('students');
   Route::get('/sync', 'UserController@upload')->name('upload');
-  Route::post('/sync', 'UserController@sync')->name('sync');
+  Route::post('/sync', 'UserController@sync')->name('sync'); // Uses CSV
+  Route::post('/load', 'UserController@load')->name('load'); // Uses TextArea
   Route::get('/activate', 'UserController@uploadActive')->name('uploadActive');
   Route::post('/activate', 'UserController@activate')->name('activate');
   Route::get('/singleActivate/{key}', 'UserController@singleActivate')->name('singleActivate');
