@@ -29,14 +29,11 @@ class MovesController extends Controller
     } elseif (Auth::user()->hasRole('Coordinador')) {
       $result = Career::find(Auth::user()->career->id)->moves()->where('semester_id', $last_semester->id)->unattended()->paginate();
     } else {
-      if(!is_null($all)){
-        $total = Move::where('semester_id', $last_semester->id)->unattendedParallel()->count();
-        $result = Move::where('semester_id', $last_semester->id)->unattendedParallel()->paginate($total);
-      } else {
-        $result = Move::where('semester_id', $last_semester->id)->unattendedParallel()->paginate();
-      }
+      $result = Move::where('semester_id', $last_semester->id)->unattendedParallel();
+
+      $result = (!is_null($all)) ? $result->get() : $result->paginate();
     }
-    
+
     return view('moves.index', compact('result'));
   }
 
@@ -302,19 +299,14 @@ class MovesController extends Controller
     $last_semester = Semester::last();
     $groups = Group::where('semester_id', $last_semester->id)->where('subject_id', $subject->id)->pluck('id');
 
-    if (!is_null(Auth::user()->career)) {
-      if(!is_null($all)){
-        $result = Move::with('group.subject', 'user')->where('semester_id', $last_semester->id)->whereIn('group_id', $groups)->unattended()->get();
-      } else {
-        $result = Move::with('group.subject', 'user')->where('semester_id', $last_semester->id)->whereIn('group_id', $groups)->unattended()->paginate();
-      }
-    } else {
-      if(!is_null($all)){
-        $result = Move::with('group.subject', 'user')->where('semester_id', $last_semester->id)->whereIn('group_id', $groups)->unattendedParallel()->get();
-      } else {
-        $result = Move::with('group.subject', 'user')->where('semester_id', $last_semester->id)->whereIn('group_id', $groups)->unattendedParallel()->paginate();
-      }
-    }
+    $result = Move::with('group.subject', 'user')
+      ->where('semester_id', $last_semester->id)
+      ->whereIn('group_id', $groups)
+      ->whereIn('status', ['0', '1'])
+    ;
+
+    $result = (is_null(Auth::user()->career)) ? $result : $result->where('is_parallel', false);
+    $result = (!is_null($all)) ? $result->get() : $result->paginate();
 
     $url = route('moves.listBySubject');
     session(['url' => $url]);
@@ -471,11 +463,12 @@ class MovesController extends Controller
   /**
    * Show a table with group switches for the current semester
    */
-  public function listPermutas(){
+  public function listPermutas()
+  {
     $last_semester = Semester::last();
     # Buscar  matches en permutas registradas con candidato
-    $permutasCandidato = Permuta::with('user')->where('semester_id', $last_semester->id)->where('status', 0)->where('candidate','<>','')->get();
-    if(count($permutasCandidato) > 0){
+    $permutasCandidato = Permuta::with('user')->where('semester_id', $last_semester->id)->where('status', 0)->where('candidate', '<>', '')->get();
+    if (count($permutasCandidato) > 0) {
       foreach ($permutasCandidato as $permuta) {
         # Revisa si existe el candidato propuesto
         $match_user = User::where('username', $permuta->candidate)->first();
@@ -495,7 +488,7 @@ class MovesController extends Controller
       }
     }
 
-    $permutas = Permuta::with('user.career')->where('semester_id', $last_semester->id)->orderBy('candidate','desc')->paginate();
+    $permutas = Permuta::with('user.career')->where('semester_id', $last_semester->id)->orderBy('candidate', 'desc')->paginate();
 
     $title = "Solicitudes de cambio de grupo";
 
@@ -527,17 +520,11 @@ class MovesController extends Controller
     $last_semester = Semester::last();
     if (!is_null(Auth::user()->career)) {
       $career = Career::find(Auth::user()->career->id)->first();
-      if(!is_null($all)){
-        $result = $career->moves()->where('semester_id', $last_semester->id)->registered()->get();
-      } else {
-        $result = $career->moves()->where('semester_id', $last_semester->id)->registered()->paginate();
-      }
+      $result = $career->moves()->where('semester_id', $last_semester->id)->registered();
+      $result = (!is_null($all)) ? $result->get() : $result->paginate();
     } else {
-      if(!is_null($all)){
-        $result = Move::where('semester_id', $last_semester->id)->registered(true)->get();
-      } else {
-        $result = Move::where('semester_id', $last_semester->id)->registered(true)->paginate();
-      }
+      $result = Move::where('semester_id', $last_semester->id)->registered(true);
+      $result = (!is_null($all)) ? $result->get() : $result->paginate();
     }
 
     $url = route('home.index');
@@ -582,14 +569,15 @@ class MovesController extends Controller
     return view('moves.index', compact('result', 'url', 'extra'));
   }
 
-  public function switchGroup(){
+  public function switchGroup()
+  {
     $last_semester = Semester::last();
     $permuta = Permuta::where('user_id', Auth::user()->id)
-      ->where('semester_id',$last_semester->id)
+      ->where('semester_id', $last_semester->id)
       ->first();
     $active_permuta = (is_object($permuta));
 
-    return view('moves.switch-form',compact('permuta','active_permuta','last_semester'));
+    return view('moves.switch-form', compact('permuta', 'active_permuta', 'last_semester'));
   }
 
   public function saveSwitchGroup(Request $request)
@@ -598,7 +586,7 @@ class MovesController extends Controller
     $this->validate($request, [
       'base_semester' => 'required',
       'base_group' => 'required',
-      'switch_group'=> 'required'
+      'switch_group' => 'required'
     ]);
 
     $exists = Permuta::where('user_id', Auth::user()->id)
