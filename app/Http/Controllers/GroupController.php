@@ -20,9 +20,9 @@ class GroupController extends Controller
    */
   public function index()
   {
-    $semester = Semester::whereIsActive(true)->orderBy('key','desc')->first();
+    $semester = Semester::whereIsActive(true)->orderBy('key', 'desc')->first();
 
-    if(is_null($semester)){
+    if (is_null($semester)) {
       $result = [];
     } else {
       $result = Group::where('semester_id', $semester->id)->orderBy('semester_id', 'desc')->orderBy('subject_id', 'asc')->orderBy('name', 'asc')->paginate();
@@ -40,7 +40,7 @@ class GroupController extends Controller
    */
   public function create()
   {
-    $semesters = Semester::orderBy('key', 'desc')->pluck('long_name', 'id');
+    $semesters = Semester::orderBy('id', 'desc')->pluck('long_name', 'id');
     $subjects = Subject::orderBy('career_id', 'asc')->orderBy('semester', 'asc')->where('is_active', true)->get();
 
     return view('group.new', compact('semesters', 'subjects'));
@@ -99,7 +99,7 @@ class GroupController extends Controller
     # Verificar que el archivo proporcionado sea un CSV
     if (in_array($filetype, ['csv', 'CSV'])) {
       # Almacenar el archivo CSV en el Storage para su lectura
-      Storage::disk('local')->put($filename,  File::get($file));
+      Storage::disk('local')->put($filename, File::get($file));
 
       if (Storage::disk('local')->exists($filename)) {
         $csv = Reader::createFromPath(storage_path("app/$filename"));
@@ -108,18 +108,18 @@ class GroupController extends Controller
         $syncedRecords = 0;
         $numRecords = 0;
         $semester = Semester::whereIsActive(true)->orderBy('key', 'desc')->first();
-        
+
         foreach ($records as $record) {
           # Verificar si existe el grupo para el periodo, sino crearlo
           $subject = Subject::where('key', trim($record['subject']))->first();
           $group = Group::where([
-            'subject_id'=> $subject->id,
+            'subject_id' => $subject->id,
             'semester_id' => $semester->id,
             'name' => trim($record['name']),
           ])->first();
           $numRecords++;
 
-          if(is_null($group)){
+          if (is_null($group)) {
             $data = [
               'name' => $record['name'],
               'is_available' => true,
