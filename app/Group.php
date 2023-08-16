@@ -50,4 +50,9 @@ class Group extends Model
   {
     return $this->belongsTo('App\Subject');
   }
+
+  public function moves()
+  {
+    return $this->hasMany('App\Move');
+  }
 }

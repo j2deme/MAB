@@ -183,7 +183,15 @@ class GroupController extends Controller
    */
   public function destroy($id)
   {
-    //
+    $group = Group::findOrFail($id);
+    if ($group->moves->count() > 0) {
+      flash()->error('No es posible eliminar el grupo, ya tiene movimientos registrados');
+    } else {
+      $group->delete();
+      flash()->success('El grupo ha sido eliminado');
+    }
+
+    return redirect()->back();
   }
 
   /**
