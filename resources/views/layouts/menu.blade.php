@@ -75,6 +75,9 @@
 @end
 <div class="right menu">
   @auth
+  <div class="item">
+    <strong>{{ App\Semester::last()->short_name }}</strong>
+  </div>
   <div class="ui simple dropdown item">
     {{ Auth::user()->username }} <i class="dropdown icon"></i>
     <div class="menu">
