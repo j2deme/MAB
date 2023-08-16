@@ -140,8 +140,14 @@ class SemesterController extends Controller
    */
   public function toggle($id)
   {
+    # Obtener el semestre a activar/desactivar
     $semester = Semester::findOrFail($id);
-    $semester->is_active = ($semester->is_active) ? false : true;
+
+    # Desactivar todos los semestres
+    Semester::where('is_active', true)->update(['is_active' => false]);
+
+    # Activar el semestre seleccionado
+    $semester->is_active = true; # ($semester->is_active) ? false : true;
     $semester->save();
 
     return redirect()->back();
