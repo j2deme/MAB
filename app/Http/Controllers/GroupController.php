@@ -79,7 +79,51 @@ class GroupController extends Controller
   public function upload()
   {
     $data['semester'] = Semester::whereIsActive(true)->orderBy('key', 'desc')->first();
-    return view('group.upload', $data);
+    # return view('group.upload', $data); # View for CSV
+    return view('group.load', $data); # View for TextArea
+  }
+
+  public function load(Request $request)
+  {
+    if (!empty($request->grupos)) {
+      $filas = explode("\r\n", trim($request->grupos));
+      foreach ($filas as $fila) {
+        $grupos[] = explode("\t", trim($fila));
+      }
+      $syncedRecords = 0;
+      $numRecords = count($grupos);
+      $semester = Semester::whereIsActive(true)->orderBy('key', 'desc')->first();
+
+      foreach ($grupos as $record) {
+        # Verificar si existe la materia
+        $subject = Subject::where('key', trim($record[0]))->first();
+
+        if (is_null($subject)) { # Si no existe la materia, se detiene el proceso
+          flash()->error("No existe la materia con identificador {$record[0]}");
+          return redirect()->route('users.index');
+        }
+
+        # Verificar si existe el grupo para el periodo, sino crearlo
+        $group = Group::where([
+          'subject_id' => $subject->id,
+          'semester_id' => $semester->id,
+          'name' => trim($record[1]),
+        ])->first();
+
+        if (is_null($group)) {
+          $data = [
+            'name' => $record[1],
+            'is_available' => true,
+            'subject_id' => $subject->id,
+            'semester_id' => $semester->id
+          ];
+          $group = Group::create($data);
+          $syncedRecords++;
+        }
+      }
+      flash("$syncedRecords/$numRecords grupos procesados");
+    }
+    return redirect()->route('groups.index');
   }
 
   public function sync(Request $request)
