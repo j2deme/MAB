@@ -118,7 +118,18 @@ class SemesterController extends Controller
    */
   public function destroy($id)
   {
-    //
+    $semester = Semester::findOrFail($id);
+
+    if ($semester->groups->count() > 0) {
+      flash()->error('El semestre no puede ser eliminado porque tiene grupos asociados');
+      return redirect()->back();
+    }
+
+    if ($semester->delete()) {
+      flash()->success('El semestre ha sido eliminado');
+    } else {
+      flash()->error('Ocurrió un error al eliminar el semestre');
+    }
   }
 
   /**
