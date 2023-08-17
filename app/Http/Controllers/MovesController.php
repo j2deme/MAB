@@ -266,8 +266,12 @@ class MovesController extends Controller
   {
     $last_semester = Semester::last();
     if (!is_null(Auth::user()->career)) {
-      $result = Move::with('group.subject')->where('semester_id', $last_semester->id)->unattended()->get();
-      $result1 = $result->filter(function ($move, $key) {
+      $result = Move::with('group.subject')->where('semester_id', $last_semester->id);
+
+      $result = ($last_semester->has_ended) ? $result->attended() : $result->unattended();
+      $result = $result->get();
+
+      $result = $result->filter(function ($move, $key) {
         if (Auth::user()->career->key == 'IIA') {
           $IAMB = Career::where('key', 'IAMB')->first();
           return (in_array($move->group->subject->career->id, [Auth::user()->career->id, $IAMB->id]));
@@ -275,21 +279,19 @@ class MovesController extends Controller
           return ($move->group->subject->career->id == Auth::user()->career->id);
         }
       });
-
-      $groupedBySemester = $result1->sortBy('group.subject.semester')->groupBy('group.subject.semester');
-
-      $groupedBySemester->transform(function ($item, $key) {
-        return $item->sortBy('group.subject.key')->groupBy('group.subject.key');
-      });
     } else {
       // Jefe / Admin
-      $result = Move::with('group.subject')->where('semester_id', $last_semester->id)->unattendedParallel()->get();
-      $groupedBySemester = $result->sortBy('group.subject.semester')->groupBy('group.subject.semester');
+      $result = Move::with('group.subject')->where('semester_id', $last_semester->id);
 
-      $groupedBySemester->transform(function ($item, $key) {
-        return $item->sortBy('group.subject.key')->groupBy('group.subject.key');
-      });
+      $result = ($last_semester->has_ended) ? $result->attended(true) : $result->unattendedParallel();
+      $result = $result->get();
     }
+
+    $groupedBySemester = $result->sortBy('group.subject.semester')->groupBy('group.subject.semester');
+
+    $groupedBySemester->transform(function ($item, $key) {
+      return $item->sortBy('group.subject.key')->groupBy('group.subject.key');
+    });
 
     $subjects = Subject::all()->pluck('short_name', 'key');
 
@@ -307,10 +309,9 @@ class MovesController extends Controller
 
     $result = Move::with('group.subject', 'user')
       ->where('semester_id', $last_semester->id)
-      ->whereIn('group_id', $groups)
-      ->whereIn('status', ['0', '1'])
-    ;
+      ->whereIn('group_id', $groups);
 
+    $result = ($last_semester->has_ended) ? $result : $result->whereIn('status', ['0', '1']);
     $result = (is_null(Auth::user()->career)) ? $result : $result->where('is_parallel', false);
     $result = (!is_null($all)) ? $result->get() : $result->paginate();
 
@@ -327,8 +328,12 @@ class MovesController extends Controller
   {
     $last_semester = Semester::last();
     if (!is_null(Auth::user()->career)) {
-      $result = Move::with('user.career')->where('semester_id', $last_semester->id)->unattended()->get();
-      $result1 = $result->filter(function ($move, $key) {
+      $result = Move::with('user.career')->where('semester_id', $last_semester->id);
+
+      $result = ($last_semester->has_ended) ? $result->attended() : $result->unattended();
+      $result = $result->get();
+
+      $result = $result->filter(function ($move, $key) {
         if (Auth::user()->career->key == 'IIA') {
           $IAMB = Career::where('key', 'IAMB')->first();
           return (in_array($move->user->career->id, [Auth::user()->career->id, $IAMB->id]));
@@ -336,58 +341,41 @@ class MovesController extends Controller
           return ($move->user->career->id == Auth::user()->career->id);
         }
       });
-
-      $groupedByUser = $result1->sortBy('user.username');
-      $generations = [];
-      $students = [];
-      foreach ($groupedByUser as $move) {
-        $no_control = $move->user->username;
-        $gen = substr($no_control, 0, 2);
-        if (!array_key_exists($gen, $generations)) {
-          $generations[$gen] = [];
-        }
-
-        if (!array_key_exists($no_control, $generations[$gen])) {
-          $generations[$gen][$no_control] = [];
-        }
-
-        if (!array_key_exists($no_control, $students)) {
-          $students[$no_control] = 1;
-        } else {
-          $students[$no_control]++;
-        }
-
-        $generations[$gen][$no_control] = $move;
-      }
-      $generations = collect($generations);
     } else {
       // Jefe / Admin
-      $result = Move::with('user.career')->where('semester_id', $last_semester->id)->unattendedParallel()->get();
+      $result = Move::with('user.career')->where('semester_id', $last_semester->id);
 
-      $groupedByUser = $result->sortBy('user.username');
-      $generations = [];
-      $students = [];
-      foreach ($groupedByUser as $move) {
-        $no_control = $move->user->username;
-        $gen = substr($no_control, 0, 2);
-        if (!array_key_exists($gen, $generations)) {
-          $generations[$gen] = [];
-        }
-
-        if (!array_key_exists($no_control, $generations[$gen])) {
-          $generations[$gen][$no_control] = [];
-        }
-
-        if (!array_key_exists($no_control, $students)) {
-          $students[$no_control] = 1;
-        } else {
-          $students[$no_control]++;
-        }
-
-        $generations[$gen][$no_control] = $move;
-      }
-      $generations = collect($generations);
+      $result = ($last_semester->has_ended) ? $result->attended(true) : $result->unattendedParallel();
+      $result = $result->get();
     }
+
+    $groupedByUser = $result->sortBy('user.username');
+    $generations = [];
+    $students = [];
+    foreach ($groupedByUser as $move) {
+      $no_control = $move->user->username;
+      if (ctype_alpha($no_control[0])) {
+        $no_control = substr($no_control, 1);
+      }
+
+      $gen = substr($no_control, 0, 2);
+      if (!array_key_exists($gen, $generations)) {
+        $generations[$gen] = [];
+      }
+
+      if (!array_key_exists($no_control, $generations[$gen])) {
+        $generations[$gen][$no_control] = [];
+      }
+
+      if (!array_key_exists($no_control, $students)) {
+        $students[$no_control] = 1;
+      } else {
+        $students[$no_control]++;
+      }
+
+      $generations[$gen][$no_control] = $move;
+    }
+    $generations = collect($generations);
 
     return view('moves.list-generations', compact('generations', 'students'));
   }
@@ -508,12 +496,16 @@ class MovesController extends Controller
   {
     $user = User::where('username', $key)->first();
     $last_semester = Semester::last();
+    $result = $user->moves()->where('semester_id', $last_semester->id);
 
-    if (!is_null(Auth::user()->career)) {
-      $result = $user->moves()->where('semester_id', $last_semester->id)->unattended()->paginate();
+    if ($last_semester->has_ended) {
+      $result = (!is_null(Auth::user()->career)) ? $result->attended() : $result->attended(true);
     } else {
-      $result = $user->moves()->where('semester_id', $last_semester->id)->unattendedParallel()->paginate();
+      $result = (!is_null(Auth::user()->career)) ? $result->unattended() : $result->unattendedParallel();
     }
+
+
+    $result = $result->paginate();
 
     $url = route('moves.listByStudent');
     session(['url' => $url]);
