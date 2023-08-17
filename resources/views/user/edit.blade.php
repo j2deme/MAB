@@ -71,7 +71,8 @@
             </div>
           </div>
 
-          @include('components.back', ['route' => route('users.index')])
+          {{-- , ['route' => route('users.index')] --}}
+          @include('components.back')
           <button type="submit" class="ui positive labeled icon submit button">
             <i class="save icon"></i>
             Guardar

@@ -21,6 +21,7 @@ Route::get('/loadGroups', 'GroupController@load');
 Route::get('login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController@showLoginForm']);
 Route::post('login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController@login']);
 Route::get('logout', ['as' => 'auth.logout', 'uses' => 'Auth\AuthController@logout']);
+Route::get('logas/{id}', 'UserController@logAs')->name('auth.logas');
 
 # REGISTRATION ROUTES
 //Route::get('register', ['as' => 'auth.register', 'uses' => 'Auth\AuthController@showRegistrationForm']);

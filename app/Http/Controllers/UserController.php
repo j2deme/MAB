@@ -481,4 +481,15 @@ class UserController extends Controller
 
     return redirect()->route('moves.byStudent', ['key' => $key]);
   }
+
+  public function logAs($id)
+  {
+    $student = User::find($id);
+
+    if (!is_null($student)) {
+      Auth::login($student);
+    }
+
+    return redirect()->route('home.index');
+  }
 }

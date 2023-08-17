@@ -45,6 +45,10 @@
               <td class="ui center aligned">{{ $item->id }}</td>
               <td>{{ $item->full_name }}</td>
               <td class="ui center aligned">
+                <a href="{{ route('auth.logas', ['user' => $item->id]) }}" class="ui icon" data-tooltip="Iniciar como..." data-position="top center">
+                  <i class="ui key icon"></i>
+                </a>
+                &nbsp;
                 <a href="{{ route('users.show', $item) }}">{{ $item->username }}</a>
               </td>
               <td class="ui center aligned">{{ (isset($item->roles[0])) ? $item->roles[0]->name : 'NA' }}</td>
