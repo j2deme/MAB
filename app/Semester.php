@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Semester extends Model
@@ -20,13 +21,13 @@ class Semester extends Model
    */
   public function scopeLast($query)
   {
-    //return $query->orderBy('key', 'desc')->first();
-    $active = Semester::where('is_active', true)->get();
+    /*$active = Semester::where('is_active', true)->get();
     if (count($active) == 0) {
       return $query->orderBy('key', 'desc')->first();
     } else {
       return $query->where('is_active', true)->orderBy('key', 'desc')->first();
-    }
+    }*/
+    return $query->where('is_active', true)->first();
   }
 
   /**
@@ -48,6 +49,11 @@ class Semester extends Model
     } else {
       return '-';
     }
+  }
+
+  public function getHasEndedAttribute()
+  {
+    return (Carbon::now('America/Mexico_City') > $this->end_down);
   }
 
   /**
