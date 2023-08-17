@@ -418,7 +418,34 @@ class UserController extends Controller
 
   public function uploadActive()
   {
-    return view('user.activate');
+    # return view('user.activate'); # View for CSV file
+    return view('user.enroll'); # View for TextArea
+  }
+
+  public function enroll(Request $request)
+  {
+    if (!empty($request->estudiantes)) {
+      $filas = explode("\r\n", trim($request->estudiantes));
+      foreach ($filas as $fila) {
+        $estudiantes[] = explode("\t", trim($fila));
+      }
+
+      $syncedRecords = 0;
+      $numRecords = count($estudiantes);
+
+      foreach ($estudiantes as $record) {
+        # Busca el estudiante para activarlo
+        $student = User::where('username', $record[0])->first();
+
+        if (!is_null($student)) {
+          $student->is_enrolled = true;
+          $student->save();
+          $syncedRecords++;
+        }
+      }
+      flash("$syncedRecords/$numRecords estudiantes procesados");
+    }
+    return redirect()->route('users.index');
   }
 
   public function activate(Request $request)
