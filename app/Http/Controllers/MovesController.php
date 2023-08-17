@@ -50,6 +50,7 @@ class MovesController extends Controller
 
     $last = Semester::last();
     $today = Carbon::now('America/Mexico_City');
+    $max_ups = $last->max_ups;
     $ups_open = ($last->begin_up <= $today and $last->end_up >= $today);
     $downs_open = ($last->begin_down <= $today and $last->end_down >= $today);
 
@@ -78,7 +79,7 @@ class MovesController extends Controller
         'BAJA TEMPORAL',
       ]
     ];
-    return view('moves.new', compact(['type', 'groups', 'justifications', 'last', 'ups_open', 'downs_open', 'today']));
+    return view('moves.new', compact(['type', 'groups', 'justifications', 'last', 'ups_open', 'downs_open', 'today', 'moves', 'max_ups']));
   }
 
   /**

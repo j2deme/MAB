@@ -1,3 +1,50 @@
+@php
+$statuses = [
+'0' => ['teal', 'REGISTRADA'], // Registrada
+'1' => ['yellow', 'REVISIÓN'], // En revisión
+'2' => ['orange', 'RECHAZADA'], // Rechazada por coordinador
+'3' => ['green', 'ACEPTADA'], // Aceptada por coordinador
+'4' => ['green', 'ACEPTADA'], // Aceptada por jefe / admin
+'5' => ['red', 'RECHAZADA'] // Rechazada por jefe / admin
+];
+@endphp
+<p>Puedes solicitar un máximo de {{ $max_ups }} movimientos de alta.</p>
+<div class="ui five stackable cards">
+  @for ($i = 0; $i < $max_ups; $i++)
+  <div class="ui fluid {{ (isset($moves[$i])) ? $statuses[$moves[$i]->status][0] : null }} card">
+    <div class="content">
+    @if (isset($moves[$i]))
+      <div class="content">
+        <div class="header">
+          <span>{{ $moves[$i]->group->subject->short_name }}</span>
+        </div>
+        <div class="meta">
+          <div class="left floated">
+            @if ($moves[$i]->is_parallel)
+              <span class="ui blue small circular label">P</span>
+            @endif
+          </div>
+          <span class="right floated">
+            <span class="ui mini label">
+              {{ $moves[$i]->group->full_key }}
+            </span>
+          </span>
+        </div>
+      </div>
+    @else
+      <div class="center aligned header">
+        {{ $i + 1 }}
+      </div>
+      <div class="center aligned description">
+        Disponible
+      </div>
+    @endif
+    </div>
+  </div>
+  @endfor
+</div>
+<br>
+@if (count($moves) < $max_ups)
 <form action="{{ route('moves.save') }}" class="ui form {{ (!$ups_open) ? 'closed' : null }}" method="POST"
   id="moveForm">
   @csrf
@@ -50,3 +97,6 @@
     </div>
   </div>
 </form>
+@else
+@include('components.back', ['route' => route('moves.index')])
+@endif
