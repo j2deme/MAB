@@ -20,20 +20,26 @@
           <h2 class="ui secondary dividing header">Estadísticas</h2>
         </header>
         <div class="ui center aligned grid">
-          <div class="column">
-            <div class="ui stackable statistics">
+                    <div class="row">
+            <div class="ui stackable horizontal statistics">
               <div class="ui statistic">
-                <div class="value">{{ $ups }}</div>
-                <div class="blue label">Altas</div>
+                <div class="value">{{ number_format($ups) }}</div>
+                <div class="label">Altas</div>
               </div>
               <div class="ui statistic">
-                <div class="value">{{ $downs }}</div>
+                <div class="value">{{ number_format($downs) }}</div>
                 <div class="label">Bajas</div>
               </div>
               <div class="ui statistic">
-                <div class="value">{{ $attended }}</div>
+                <div class="value">{{ number_format($attended) }}</div>
                 <div class="label">Atendidas</div>
               </div>
+              @hasanyrole(['Jefe','Admin'])
+              <div class="ui statistic">
+                <div class="value">{{ App\Semester::last()->groups->count() }}</div>
+                <div class="blue label">Grupos</div>
+              </div>
+              @endhasanyrole
             </div>
           </div>
         </div>
