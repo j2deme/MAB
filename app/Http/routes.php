@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.'], fu
   Route::post('/load', 'UserController@load')->name('load'); // Uses TextArea
   Route::get('/activate', 'UserController@uploadActive')->name('uploadActive');
   Route::post('/activate', 'UserController@activate')->name('activate');
+  Route::get('/deactivate', 'UserController@deactivate')->name('deactivate');
   Route::get('/singleActivate/{key}', 'UserController@singleActivate')->name('singleActivate');
   Route::post('/save', 'UserController@store')->name('save');
   Route::get('/create', 'UserController@create')->name('new');

@@ -470,6 +470,15 @@ class UserController extends Controller
     return redirect()->route('users.index');
   }
 
+  public function deactivate(Request $request)
+  {
+    $students = User::where('is_enrolled', true)->update(['is_enrolled' => false]);
+
+    flash("$students estudiantes desactivados");
+
+    return redirect()->back();
+  }
+
   public function singleActivate($key)
   {
     $student = User::where('username', $key)->first();

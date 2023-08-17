@@ -64,6 +64,9 @@
     <a href="{{ route('users.uploadActive') }}" class="item">
       <i class="user check icon"></i> Activar estudiantes
     </a>
+    <a href="{{ route('users.deactivate') }}" class="item">
+      <i class="user slash icon"></i> Limpiar inscritos
+    </a>
   </div>
 </div>
 @endhasanyrole
