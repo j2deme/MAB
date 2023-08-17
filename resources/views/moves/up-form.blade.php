@@ -10,7 +10,7 @@ $statuses = [
 @endphp
 <p>Puedes solicitar un máximo de {{ $max_ups }} movimientos de alta.</p>
 <div class="ui five stackable cards">
-  @for ($i = 0; $i < $max_ups; $i++)
+  @for ($i = 0; $i < max($max_ups, count($moves)); $i++)
   <div class="ui fluid {{ (isset($moves[$i])) ? $statuses[$moves[$i]->status][0] : null }} card">
     <div class="content">
     @if (isset($moves[$i]))
