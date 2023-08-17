@@ -27,7 +27,7 @@
   </div>
 </div>
 @else
-<div class="ui message">
+<div class="ui segment">
   <div class="content">
     <div class="header">Hola {{ Auth::user()->name }}</div>
     <div class="ui warning message">

@@ -44,7 +44,13 @@ Path: {{ Request::path() }}
           <table class="ui celled striped compact table">
             <thead>
               <tr>
-                <th class="ui center aligned two wide">No. Control</th>
+                <th class="ui center aligned two wide">
+                @role('Estudiante')
+                # 
+                @else
+                No. Control
+                @endrole
+                </th>
                 <th class="ui center aligned">Solicitud</th>
                 <th class="ui center aligned two wide">Tipo</th>
                 <th class="ui center aligned one wide">Paralelo</th>
@@ -57,9 +63,15 @@ Path: {{ Request::path() }}
               </tr>
             </thead>
             <tbody>
-              @forelse ($result as $item)
+              @forelse ($result as $key => $item)
               <tr>
-                <td class="ui center aligned">{{ $item->user->username }}</td>
+                <td class="ui center aligned">
+                @role('Estudiante')
+                {{ $key + 1 }}
+                @else
+                {{ $item->user->username }}
+                @endrole
+                </td>
                 <td>{{ $item->type }} DE {{ $item->group->subject->short_name }} ({{ $item->group->full_key }})</td>
                 <td class="ui center aligned">
                   <small>{{ $item->type }}</small> <i class="ui {{ $item->type == 'ALTA' ? 'blue arrow up' : 'red arrow down' }} icon"></i>
@@ -97,20 +109,6 @@ Path: {{ Request::path() }}
                       No hay movimientos solicitados
                       @endrole
                     </div>
-                    @if (!is_null(Auth::user()->career))
-                    @role('Estudiante')
-                    <div class="inline">
-                      <a href="{{ route('moves.new',['type' => 'up']) }}" class="ui blue icon labeled button">
-                        <i class="ui sort up icon"></i>
-                        Altas
-                      </a>
-                      <a href="{{ route('moves.new',['type' => 'down']) }}" class="ui red icon labeled button">
-                        <i class="ui sort down icon"></i>
-                        Bajas
-                      </a>
-                    </div>
-                    @endrole
-                    @endif
                   </div>
                 </td>
               </tr>
@@ -177,9 +175,9 @@ Path: {{ Request::path() }}
         </div>
         <div class="ui row sixteen wide column">
           @if (isset($url))
-          @include('components.back', ['route' => $url])
+            @include('components.back', ['route' => $url])
           @else
-          @include('components.back')
+            @include('components.back')
           @endif
         </div>
       </article>
