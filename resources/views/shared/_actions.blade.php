@@ -1,6 +1,6 @@
 <div class="ui icon small buttons">
   @can('edit_'.$entity)
-  <a href="{{ route($entity.'.edit', [str_singular($entity) => $id])  }}" class="ui blue icon button"
+  <a href="{{ route($entity.'.edit', [str_singular($entity) => $id])  }}" class="ui tertiary blue icon button"
     data-content="Editar registro">
     <i class="ui edit icon"></i>
   </a>
@@ -12,7 +12,7 @@
     style="display:inline;">
     @csrf
     @method('delete')
-    <button type="submit" class="ui red icon button" data-content="Eliminar registro">
+    <button type="submit" class="ui tertiary red icon button" data-content="Eliminar registro">
       <i class="ui trash alternate icon"></i>
     </button>
   </form>
