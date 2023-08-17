@@ -54,7 +54,12 @@ class MovesController extends Controller
     $ups_open = ($last->begin_up <= $today and $last->end_up >= $today);
     $downs_open = ($last->begin_down <= $today and $last->end_down >= $today);
 
-    if ($type == 'ALTA') {
+    $moves = ($type == 'up') ? Move::where('user_id', Auth::user()->id)
+      ->where('semester_id', $last->id)
+      ->where('type', 'ALTA')
+      ->get() : [];
+
+    if ($type == 'up') {
       $groups = Group::where('semester_id', $last->id)->where('is_available', true)->get();
     } else {
       $groups = Group::where('semester_id', $last->id)->get();
