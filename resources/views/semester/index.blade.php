@@ -19,9 +19,10 @@
             <tr>
               <th class="ui center aligned one wide">Clave</th>
               <th class="ui center aligned">Nombre</th>
-              <th class="ui center aligned three wide">Altas</th>
-              <th class="ui center aligned three wide">Bajas</th>
+              <th class="ui center aligned three wide">Período Altas</th>
+              <th class="ui center aligned three wide">Período Bajas</th>
               <th class="ui center aligned one wide">Activo</th>
+              <th class="ui center aligned one wide">Máx. Altas</th>
               @can('edit_semesters')
               <th class="ui center aligned two wide">
                 <i class="ui cog icon"></i>
@@ -43,6 +44,7 @@
                   <i class="ui {{ $item->is_active ? 'green toggle on' : 'red toggle off' }} icon"></i>
                 </a>
               </td>
+              <td class="ui center aligned">{{ $item->max_ups }}</td>
               @can('edit_semesters')
               <td class="ui center aligned">
                 @include('shared._actions', [
@@ -54,7 +56,7 @@
             </tr>
             @empty
             <tr>
-              <td colspan="6">
+              <td colspan="7">
                 <div class="ui placeholder segment">
                   <div class="ui icon header">
                     <i class="calendar alternate outline icon"></i>
@@ -73,7 +75,7 @@
           </tbody>
           <tfoot class="full-width">
             <tr>
-              <th colspan="6">
+              <th colspan="7">
                 @include('pagination.custom', ['paginator' => $result])
               </th>
             </tr>

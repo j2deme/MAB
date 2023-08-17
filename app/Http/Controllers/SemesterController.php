@@ -95,6 +95,7 @@ class SemesterController extends Controller
 
     $semester->short_name = $request->get('short_name');
     $semester->long_name = $request->get('long_name');
+    $semester->max_ups = $request->get('max_ups');
     $semester->begin_up = $request->get('begin_up');
     $semester->end_up = $request->get('end_up');
     $semester->begin_down = $request->get('begin_down');

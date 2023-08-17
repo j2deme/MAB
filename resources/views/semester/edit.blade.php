@@ -27,10 +27,17 @@
                 placeholder="{{ $semester->short_name }}">
             </div>
           </div>
-          <div class="field">
-            <label for="long_name">Nombre completo</label>
-            <input type="text" id="long_name" name="long_name" value="{{ $semester->long_name }}"
-              placeholder="{{ $semester->long_name }}">
+          <div class="two fields">
+            <div class="field">
+              <label for="long_name">Nombre completo</label>
+              <input type="text" id="long_name" name="long_name" value="{{ $semester->long_name }}"
+                placeholder="{{ $semester->long_name }}">
+            </div>
+            <div class="field">
+              <label for="max_ups">Límite de Altas</label>
+              <input type="number" id="max_ups" name="max_ups" value="{{ $semester->max_ups }}"
+                placeholder="{{ $semester->max_ups }}">
+            </div>
           </div>
           <h4 class="ui dividing header">Período de Altas</h4>
           <div class="ui two fields">
