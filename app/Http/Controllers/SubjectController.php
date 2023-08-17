@@ -78,19 +78,19 @@ class SubjectController extends Controller
         $materias[] = explode("\t", trim($fila));
       }
       $syncedRecords = 0;
-      $numRecords = 0;
+      $numRecords = count($materias);
 
       foreach ($materias as $record) {
         $recordData = [
           'key' => $record[0],
           'short_name' => $record[1],
           'long_name' => $record[2],
-          'semester' => (int) $record[3],
-          'ht' => (int) $record[4],
-          'hp' => (int) $record[5],
-          'cr' => (int) $record[6],
+          'semester' => (int) $record[4],
+          'ht' => (int) $record[5],
+          'hp' => (int) $record[6],
+          'cr' => (int) $record[7],
         ];
-        $numRecords++;
+        $career_id = $record[3];
 
         # Verificar los registros a cargar, para evitar duplicados
         $subject = Subject::where('key', $recordData['key'])->first();
@@ -98,7 +98,7 @@ class SubjectController extends Controller
         # Crear registro sino existe previamente
         if (is_null($subject)) {
           $recordData['is_active'] = true;
-          $career = Career::where('internal_key', $record['career_id'])->first();
+          $career = Career::where('internal_key', $career_id)->first();
           $recordData['career_id'] = $career->id;
           if ($subject = Subject::create($recordData)) {
             $syncedRecords++;
