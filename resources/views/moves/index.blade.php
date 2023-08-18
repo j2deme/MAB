@@ -164,14 +164,6 @@ Path: {{ Request::path() }}
           @if (!ends_with(Request::path(), "/all"))
             @include('pagination.custom', ['paginator' => $result])
           @endif
-
-          <div class="ui row sixteen wide column">
-            @if (isset($url))
-            @include('components.back', ['route' => $url])
-            @else
-            @include('components.back')
-            @endif
-          </div>
         </div>
         <div class="ui row sixteen wide column">
           @if (isset($url))
