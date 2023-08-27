@@ -565,7 +565,7 @@ class MovesController extends Controller
   {
     $last_semester = Semester::last();
     if (!is_null(Auth::user()->career)) {
-      $career = Career::find(Auth::user()->career->id)->first();
+      $career = Career::find(Auth::user()->career->id);
       $result = $career->moves()->where('semester_id', $last_semester->id)->onRevision()->paginate();
     } else {
       $result = Move::where('semester_id', $last_semester->id)->onRevision(true)->paginate();
