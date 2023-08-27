@@ -315,10 +315,23 @@ class MovesController extends Controller
     $result = (is_null(Auth::user()->career)) ? $result : $result->where('is_parallel', false);
     $result = (!is_null($all)) ? $result->get() : $result->paginate();
 
+    $ups = $downs = 0;
+    foreach ($result as $move) {
+      if ($move->type == 'ALTA') {
+        $ups++;
+      } else {
+        $downs++;
+      }
+    }
+
+    if (!is_null(Auth::user()->career) and Auth::user()->career->id == 4) { // Industrial
+      //dd($result);
+    }
+
     $url = route('moves.listBySubject');
     session(['url' => $url]);
 
-    return view('moves.index', compact('result', 'subject', 'url'));
+    return view('moves.index', compact('result', 'subject', 'url', 'ups', 'downs'));
   }
 
   /**

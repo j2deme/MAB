@@ -18,6 +18,16 @@ Path: {{ Request::path() }}
             @endrole
           </h2>
         </header>
+        <span class="ui sub header">
+          @if (isset($ups))
+            {{ $ups }} <i class="ui blue up arrow icon"></i> 
+          @endif
+          &emsp;
+          @if (isset($downs))
+            {{ $downs }} <i class="ui red down arrow icon"></i> 
+          @endif
+        </span>
+
         <div class="ui right floated small buttons">
         @role('Estudiante')
           <a href="{{ route('moves.new',['type' => 'up']) }}" class="ui blue icon labeled button">
