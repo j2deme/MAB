@@ -24,51 +24,30 @@ class UserController extends Controller
    */
   public function index()
   {
-    $total = User::where('username', 'NOT LIKE', '__69____')
-      ->Where('username', 'NOT LIKE', '__18____')
-      ->Where('username', 'NOT LIKE', '____0___')
-      ->Where('username', 'NOT LIKE', 'B________')
-      ->Where('username', 'NOT LIKE', 'C________')
-      ->count();
-    $users = User::where('username', 'NOT LIKE', '__69____')
-      ->where('username', 'NOT LIKE', '__18____')
-      ->where('username', 'NOT LIKE', '____0___')
-      ->where('username', 'NOT LIKE', 'B________')
-      ->where('username', 'NOT LIKE', 'C________')
-      ->orderBy('is_suspended')
-      ->orderBy('username', 'asc')
-      ->paginate(20);
+    $result = Role::whereIn('name', ['Admin', 'Jefe', 'Coordinador'])->get();
+    $users = collect([]);
+
+    foreach ($result as $role) {
+      $users = $users->merge($role->users()->get());
+    }
 
     $data['users'] = $users;
     $data['title'] = "Superusuarios";
-    $data['total'] = $total;
+    $data['total'] = $users->count();
+    $data['no_paginate'] = true;
 
     return view('user.index', $data);
   }
 
   public function listStudents($all = null)
   {
-    $total = User::where('username', 'LIKE', '__69____')
-      ->orWhere('username', 'LIKE', '__18____')
-      ->orWhere('username', 'LIKE', '____0___')
-      ->orWhere('username', 'LIKE', 'B________')
-      ->orWhere('username', 'LIKE', 'C________')
-      ->count();
-    $students = User::where('username', 'LIKE', '__69____')
-      ->orWhere('username', 'LIKE', '__18____')
-      ->orWhere('username', 'LIKE', '____0___')
-      ->orWhere('username', 'LIKE', 'B________')
-      ->orWhere('username', 'LIKE', 'C________')
-      ->orderBy('is_suspended')
-      ->orderBy('career_id', 'asc')
-      ->orderBy('username', 'asc')
-      ->paginate(
-        (is_null($all)) ? 20 : $total
-      );
+    $students = Role::where('name', 'Estudiante')->first()->users();
+
+    $students = (!is_null($all)) ? $students->get() : $students->paginate(20);
 
     $data['users'] = $students;
     $data['title'] = "Estudiantes";
-    $data['total'] = $total;
+    $data['total'] = (get_class($students) == "Illuminate\Pagination\LengthAwarePaginator") ? $students->total() : $students->count();
 
     return view('user.index', $data);
   }
