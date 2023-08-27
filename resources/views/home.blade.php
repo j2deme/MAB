@@ -43,6 +43,17 @@
             </div>
           </div>
         </div>
+        @hasanyrole(['Jefe','Admin','Coordinador'])
+        <header>
+          <h2 class="ui secondary dividing header">Avance</h2>
+        </header>
+        @php ($total = $ups + $downs)
+        <div class="ui indicating progress">
+          <div class="bar">
+            <div class="progress"></div>   
+          </div>
+        </div>
+        @endhasanyrole
       </section>
     </aside>
   </div>
@@ -53,6 +64,12 @@
 <script>
   $(document).ready(function () {
     $('.ui.dropdown').dropdown();
+
+    $('.ui.progress').progress(
+      {
+        percent: {{ $attended / $total * 100 }},
+      }
+    );
   });
 </script>
 @endpush
