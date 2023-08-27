@@ -7,12 +7,12 @@ $statuses = [
 '4' => ['green', 'ACEPTADA'], // Aceptada por jefe / admin
 '5' => ['red', 'RECHAZADA'] // Rechazada por jefe / admin
 ];
+$color = $statuses[$status][0];
 $label = $statuses[$status][1];
-
-//data-content=\"$label\"
-if(array_key_exists($status, $statuses)){
-echo "<span class=\"ui {$statuses[$status][0]} label\">{$label}</span>";
-} else {
-echo "<span class=\"ui black label\">CANCELADA</span>";
-}
 @endphp
+
+@if(array_key_exists($status, $statuses))
+<span class="ui {{ $color }} label">{{ $label }}</span>
+@else
+<span class="ui black label">CANCELADA</span>
+@endif
