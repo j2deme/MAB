@@ -120,10 +120,23 @@ class UserController extends Controller
   public function show($id)
   {
     $user = User::find($id);
-    $roles = Role::pluck('name', 'id');
-    $permissions = Permission::all('name', 'id');
 
-    return view('user.edit', compact('user', 'roles', 'permissions'));
+    $log = [];
+    foreach ($user->moves as $move) {
+      $semester = $move->semester->key;
+      if (isset($log[$semester])) {
+        $log[$semester]['moves'][] = $move;
+      } else {
+        $log[$semester] = [
+          'semester' => Semester::where('key', $semester)->first(),
+          'moves' => [$move]
+        ];
+      }
+    }
+
+    asort($log);
+
+    return view('user.show', compact('user', 'log', 'moves'));
   }
 
   /**
