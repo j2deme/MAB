@@ -39,13 +39,21 @@ Path: {{ Request::path() }}
             Bajas
           </a>
         @endrole
-        @hasanyrole(['Jefe','Admin'])
+        @hasanyrole(['Jefe','Admin','Coordinador'])
+        @if(isset($search) and $search == true)
+        <form action="{{ route('moves.listAttended') }}" method="GET" class="ui horizontal form">
+          <div class="ui icon input">
+            <input type="text" name="search" placeholder="Buscar..." autocomplete="off">
+            <i class="search icon"></i>
+          </div>
+        </form>
+        @endif
         @include('components.list-all')
         @if (isset($user) and !$user->is_enrolled)
-        <a href="{{ route('users.singleActivate', ['key'=> $user->username]) }}" class="ui green icon labeled button">
-          <i class="ui sort down icon"></i>
-          Inscribir
-        </a>
+          <a href="{{ route('users.singleActivate', ['key'=> $user->username]) }}" class="ui green icon labeled button">
+            <i class="ui sort down icon"></i>
+            Inscribir
+          </a>
         @endif
         @endhasanyrole
         </div>

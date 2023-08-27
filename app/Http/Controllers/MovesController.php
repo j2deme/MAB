@@ -578,22 +578,26 @@ class MovesController extends Controller
     return view('moves.index', compact('result', 'url', 'extra'));
   }
 
-  public function byTypeAttended()
+  public function byTypeAttended(Request $request, $all = null)
   {
-    $last_semester = Semester::last();
-    if (!is_null(Auth::user()->career)) {
-      $career = Career::find(Auth::user()->career->id)->first();
-      $result = $career->moves()->where('semester_id', $last_semester->id)->attended()->paginate();
-    } else {
-      $_all = Move::where('semester_id', $last_semester->id)->count();
-      $result = Move::where('semester_id', $last_semester->id)->attended(true)->paginate($_all);
+    if (!empty($request->search)) {
+      $users = User::where('username', 'LIKE', "%$request->search%")->get();
     }
+    $last_semester = Semester::last();
+
+    $result = (!is_null(Auth::user()->career)) ? Auth::user()->career->moves() : Move::where('semester_id', $last_semester->id);
+    $result = $result->where('semester_id', $last_semester->id); // Movimientos del semestre activo
+    $result = (!is_null(Auth::user()->career)) ? $result->attended() : $result->attended(true);
+    $result = (!empty($request->search)) ? $result->whereIn('user_id', $users->pluck('id')) : $result;
+
+    $result = (!is_null($all)) ? $result->get() : $result->paginate();
 
     $url = route('home.index');
 
-    $extra = "Aceptadas y Rechazadas";
+    $extra = "Finalizadas";
+    $search = true;
 
-    return view('moves.index', compact('result', 'url', 'extra'));
+    return view('moves.index', compact('result', 'url', 'extra', 'search'));
   }
 
   public function switchGroup()
