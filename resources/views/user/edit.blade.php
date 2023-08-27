@@ -8,7 +8,11 @@
       <article class="ui attached segment">
         <header>
           <h2 class="ui primary dividing header">
+            @if ($user->id == Auth::user()->id)
+            Editar mi perfil
+            @else
             Editar usuario {{ $user->username }}
+            @endif
           </h2>
         </header>
         <form action="{{ route('users.update', $user) }}" class="ui equal width form @hasError" method="POST">
@@ -22,19 +26,22 @@
             <div class="field">
               <label for="last_name">Apellidos</label>
               <input type="text" id="last_name" name="last_name" value="{{ $user->last_name }}"
-                autocomplete="family-name" />
+                autocomplete="off" />
             </div>
           </div>
+          @if (Auth::user()->hasRole('Admin') or $user->id == Auth::user()->id)
           <div class="fields">
             <div class="field">
               <label for="password">Contraseña</label>
-              <input type="password" id="password" name="password" autocomplete="new-password">
+              <input type="password" id="password" name="password" autocomplete="off">
             </div>
             <div class="field">
               <label for="password_confirmation">Confirmación contraseña</label>
               <input type="password" id="password_confirmation" name="password_confirmation" autocomplete="off">
             </div>
           </div>
+          @endif
+          @hasrole('Admin')
           <div class="fields">
             <div class="field">
               <label for="username">Usuario</label>
@@ -42,9 +49,11 @@
             </div>
             <div class="field">
               <label for="email">Correo electrónico</label>
-              <input type="text" id="email" name="email" value="{{ $user->email }}" autocomplete="email" />
+              <input type="text" id="email" name="email" value="{{ $user->email }}" autocomplete="off" />
             </div>
           </div>
+          @endhasrole
+          @if (Auth::user()->hasRole('Admin') and $user->id != Auth::user()->id)
           <div class="two fields">
             <div class="field">
               <label for="roles">Rol</label>
@@ -70,6 +79,7 @@
               </select>
             </div>
           </div>
+          @endhasrole
 
           {{-- , ['route' => route('users.index')] --}}
           @include('components.back')

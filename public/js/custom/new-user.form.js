@@ -1,30 +1,34 @@
 $(document).ready(function () {
-  $('#roles').dropdown({
+  $("#roles").dropdown({
     ignoreDiacritics: true,
     sortSelect: true,
-    fullTextSearch: true
+    fullTextSearch: true,
   });
-  $('#career_id').dropdown({
+  $("#career_id").dropdown({
     ignoreDiacritics: true,
     sortSelect: true,
-    fullTextSearch: true
+    fullTextSearch: true,
   });
 
-  $('.ui.form').form({
+  $(".ui.form").form({
     fields: {
       name: {
-        rules: [{
-          type: 'empty',
-          prompt: 'Especifique el nombre o nombres'
-        }]
+        rules: [
+          {
+            type: "empty",
+            prompt: "Especifique el nombre o nombres",
+          },
+        ],
       },
       last_name: {
-        rules: [{
-          type: 'empty',
-          prompt: 'Especifique los apellidos'
-        }]
+        rules: [
+          {
+            type: "empty",
+            prompt: "Especifique los apellidos",
+          },
+        ],
       },
-      password: {
+      /*password: {
         identifier: 'password',
         rules: [{
           type: 'empty',
@@ -41,24 +45,27 @@ $(document).ready(function () {
             prompt: 'Las contraseñas no coinciden'
           }
         ]
-      },
+      },*/
       email: {
-        rules: [{
-            type: 'empty',
-            prompt: 'Especifique el correo electrónico'
+        rules: [
+          {
+            type: "empty",
+            prompt: "Especifique el correo electrónico",
           },
           {
-            type: 'email',
-            prompt: 'Especifique un correo electrónico válido'
-          }
-        ]
+            type: "email",
+            prompt: "Especifique un correo electrónico válido",
+          },
+        ],
       },
       username: {
-        rules: [{
-          type: 'empty',
-          prompt: 'Especifique un nombre de usuario'
-        }]
+        rules: [
+          {
+            type: "empty",
+            prompt: "Especifique un nombre de usuario",
+          },
+        ],
       },
-    }
+    },
   });
 });

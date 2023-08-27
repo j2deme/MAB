@@ -84,7 +84,7 @@
   <div class="ui simple dropdown item">
     {{ Auth::user()->username }} <i class="dropdown icon"></i>
     <div class="menu">
-      <a class="item" href="#">
+      <a class="item" href="{{ route('users.edit', ['id' => Auth::user()->id]) }}">
         <i class="user cog icon"></i> Cuenta
       </a>
       <div class="divider"></div>

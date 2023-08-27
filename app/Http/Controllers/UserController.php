@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Role;
+use App\Semester;
 use App\User;
 use App\Career;
 use App\Permission;
@@ -166,8 +167,8 @@ class UserController extends Controller
   {
     $this->validate($request, [
       'name' => 'bail|required|min:2',
-      'email' => 'required|email|unique:users,email,' . $id,
-      'roles' => 'required|min:1'
+      'email' => 'sometimes|required|email|unique:users,email,' . $id,
+      'roles' => 'sometimes|required|min:1'
     ]);
 
     // Get the user
@@ -189,11 +190,17 @@ class UserController extends Controller
     $this->syncPermissions($request, $user);
 
     if ($user->save()) {
-      flash()->success('El usuario ha sido actualizado');
+      $extra = ($request->has('password') and !empty($request->get('password'))) ? ". Se cambio la contraseña" : null;
+      flash()->success("El usuario ha sido actualizado" . $extra);
     } else {
       flash()->error('Ocurrió un error al actualizar el usuario');
     }
-    return redirect()->route('users.index');
+
+    if (Auth::user()->id == $user->id) {
+      return redirect()->route('home.index');
+    } else {
+      return redirect()->route('users.index');
+    }
   }
 
   /**
