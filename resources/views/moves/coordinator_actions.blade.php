@@ -1,15 +1,8 @@
 <div class="ui icon buttons">
-  <a href="{{ route('moves.edit', ['move' => $id])  }}" class="ui blue icon button" data-content="Atender solicitud">
+  <a href="{{ route('moves.show', ['move' => $id])  }}" class="ui tertiary blue icon button" data-content="Revisar solicitud">
     <i class="ui eye icon"></i>
   </a>
-
-  <form action="{{ route('moves.cancel', ['move' => $id]) }}" method="post"
-    onsubmit="return confirm('¿Está seguro de rechazar la solicitud?\nEsta acción no es reversible');"
-    style="display:inline;">
-    @csrf
-    @method('delete')
-    <button type="submit" class="ui red icon button" data-content="Rechazar solicitud">
-      <i class="ui times icon"></i>
-    </button>
-  </form>
+  <a href="{{ route('moves.edit', ['move' => $id])  }}" class="ui tertiary green icon button" data-content="Atender solicitud">
+    <i class="ui edit icon"></i>
+  </a>
 </div>
