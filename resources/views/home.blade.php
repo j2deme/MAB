@@ -14,13 +14,13 @@
         @endrole
       </article>
     </section>
-    <aside class="four wide computer only column">
+    <aside class="four wide computer column">
       <section class="ui segment">
         <header>
           <h2 class="ui secondary dividing header">Estadísticas</h2>
         </header>
         <div class="ui center aligned grid">
-                    <div class="row">
+          <div class="row">
             <div class="ui stackable horizontal statistics">
               <div class="ui statistic">
                 <div class="value">{{ number_format($ups) }}</div>
