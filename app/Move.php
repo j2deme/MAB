@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Move extends Model
 {
   use SoftDeletes;
+  protected $table = 'moves';
   protected $fillable = ['user_id', 'semester_id', 'group_id', 'type', 'justification', 'answer', 'status', 'linked_to', 'is_batch', 'is_parallel', 'is_upgraded'];
 
   /**
@@ -16,7 +17,7 @@ class Move extends Model
   protected $dates = ['deleted_at'];
 
   protected $casts = [
-    'is_batch'    => 'boolean',
+    'is_batch' => 'boolean',
     'is_parallel' => 'boolean',
     'is_upgraded' => 'boolean'
   ];
@@ -45,7 +46,8 @@ class Move extends Model
 
   public function scopeUnattendedParallel($query)
   {
-    return $query->whereIn('status', ['0', '1'])
+    return $query
+      ->whereIn('status', ['0', '1'])
       ->orderBy('user_id', 'asc')
       ->orderBy('type', 'desc')
       ->orderBy('is_parallel', 'asc')
@@ -89,6 +91,11 @@ class Move extends Model
       ->orderBy('type', 'desc')
       ->orderBy('is_parallel', 'asc')
       ->orderBy('status', 'desc');
+  }
+
+  public function scopeParallel($query, $parallel = true)
+  {
+    return $query->where('is_parallel', $parallel);
   }
 
   /**
