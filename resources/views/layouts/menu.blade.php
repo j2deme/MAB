@@ -13,9 +13,11 @@
     <a href="{{ route('moves.listByStudent') }}" class="item">
       <i class="user graduate icon"></i> Ver por estudiante
     </a>
-    <a href="{{ route('moves.listByGroups') }}" class="item">
+    {{--
+    <a href="route('moves.listByGroups')" class="item">
       <i class="exchange icon"></i> Ver cambios de grupos
     </a>
+    --}}
     <a href="{{ route('moves.listBySubject') }}" class="item">
       <i class="project diagram icon"></i> Ver por materia
     </a>
@@ -23,7 +25,7 @@
       <i class="tasks icon"></i> Ver por estatus <i class="dropdown icon"></i>
       <div class="menu">
         <a href="{{ route('moves.listRegistered') }}" class="item">
-          <i class="check icon"></i> No procesadas
+          <i class="clock icon"></i> No procesadas
         </a>
         <a href="{{ route('moves.listOnRevision') }}" class="item">
           <i class="check double icon"></i> En revisión
