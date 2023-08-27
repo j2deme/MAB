@@ -49,13 +49,13 @@ Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.'], fu
   Route::get('/singleActivate/{key}', 'UserController@singleActivate')->name('singleActivate');
   Route::post('/save', 'UserController@store')->name('save');
   Route::get('/create', 'UserController@create')->name('new');
+  Route::get('/search', 'UserController@search')->name('search');
   Route::get('/{user}', 'UserController@show')->name('show');
   Route::get('/{user}/edit', 'UserController@edit')->name('edit');
   Route::put('/{user}', 'UserController@update')->name('update');
   Route::put('/s/{user}', 'UserController@selfUpdate')->name('selfUpdate');
   Route::delete('/{user}', 'UserController@destroy')->name('delete');
   Route::get('/toggle/{user}', 'UserController@toggle')->name('toggle');
-  Route::get('/search', 'UserController@search')->name('search');
 });
 
 # ROLE ROUTES -- RESOURCE
@@ -87,7 +87,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'moves', 'as' => 'moves.'], fu
   # Filter by status
   Route::get('/by/status/registered/{all?}', 'MovesController@byTypeRegistered')->name('listRegistered');
   Route::get('/by/status/revision', 'MovesController@byTypeRevision')->name('listOnRevision');
-  Route::get('/by/status/attended', 'MovesController@byTypeAttended')->name('listAttended');
+  Route::get('/by/status/attended/{all?}', 'MovesController@byTypeAttended')->name('listAttended');
   Route::get('/switch/group', 'MovesController@switchGroup')->name('switchGroup');
   Route::post('/switch/group', 'MovesController@saveSwitchGroup')->name('saveSwitchGroup');
 });
