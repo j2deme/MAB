@@ -1,5 +1,5 @@
 <div class="ui icon small buttons">
-  <a href="{{ route('moves.show', ['move' => $id])  }}" class="ui blue icon button" data-content="Ver solicitud">
+  <a href="{{ route('moves.show', ['move' => $id])  }}" class="ui tertiary blue icon button" data-content="Ver solicitud">
     <i class="ui eye icon"></i>
   </a>
 
@@ -9,7 +9,7 @@
     style="display:inline;">
     @csrf
     @method('delete')
-    <button type="submit" class="ui red icon button" data-content="Cancelar solicitud">
+    <button type="submit" class="ui tertiary red icon button" data-content="Cancelar solicitud">
       <i class="ui times circle icon"></i>
     </button>
   </form>
