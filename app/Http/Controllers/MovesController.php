@@ -301,18 +301,39 @@ class MovesController extends Controller
   /**
    * Show a table with moves filtered by subject
    */
-  public function bySubject($key, $all = null)
+  public function bySubject(Request $request, $key, $all = null)
   {
     $subject = Subject::where('key', $key)->first();
     $last_semester = Semester::last();
     $groups = Group::where('semester_id', $last_semester->id)->where('subject_id', $subject->id)->pluck('id');
 
-    $result = Move::with('group.subject', 'user')
+    $result = Move::with('group', 'group.subject', 'user')
       ->where('semester_id', $last_semester->id)
       ->whereIn('group_id', $groups);
 
     $result = ($last_semester->has_ended) ? $result : $result->whereIn('status', ['0', '1']);
-    $result = (is_null(Auth::user()->career)) ? $result : $result->where('is_parallel', false);
+    $result = (!is_null(Auth::user()->career)) ? $result->parallel(false) : $result;
+
+    if (!empty($request->sort)) {
+      switch ($request->sort) {
+        case 'student':
+          $result = $result->orderBy('user_id', 'asc')->orderBy('type', 'desc');
+          break;
+        case 'group':
+          $result = $result->orderBy('group_id', 'asc');
+          break;
+        case 'type':
+          $result = $result->orderBy('type', 'asc')->orderBy('user_id', 'asc');
+          break;
+        case 'status':
+          $result = $result->orderBy('status', 'asc');
+          break;
+        default:
+          $result = $result->orderBy('group.name');
+          break;
+      }
+    }
+
     $result = (!is_null($all)) ? $result->get() : $result->paginate();
 
     $ups = $downs = 0;
@@ -363,6 +384,7 @@ class MovesController extends Controller
     }
 
     $groupedByUser = $result->sortBy('user.username');
+
     $generations = [];
     $students = [];
     foreach ($groupedByUser as $move) {

@@ -55,16 +55,33 @@ Path: {{ Request::path() }}
             <thead>
               <tr>
                 <th class="ui center aligned two wide">
-                @role('Estudiante')
-                # 
-                @else
-                No. Control
-                @endrole
+                  @role('Estudiante')
+                  #
+                  @else
+                    @if(isset($ups))
+                    <a href="?sort=student">No. Control</a>
+                    @else
+                    No. Control
+                    @endif
+                  @endrole
                 </th>
                 <th class="ui center aligned">Solicitud</th>
-                <th class="ui center aligned two wide">Tipo</th>
-                <th class="ui center aligned one wide">Paralelo</th>
-                <th class="ui center aligned two wide">Estatus</th>
+                <th class="ui center aligned one wide">Semestre</th>
+                @if (isset($ups))
+                  <th class="ui center aligned one wide"><a href="?sort=group">Grupo</a></th>
+                  <th class="ui center aligned two wide"><a href="?sort=type">Tipo</a></th>
+                  @hasanyrole(['Admin','Jefe'])
+                  <th class="ui center aligned one wide">Paralelo</th>
+                  @endhasanyrole
+                  <th class="ui center aligned two wide"><a href="?sort=status">Estatus</a></th>
+                @else
+                  <th class="ui center aligned one wide">Grupo</th>
+                  <th class="ui center aligned two wide">Tipo</th>
+                  @hasanyrole(['Admin','Jefe'])
+                  <th class="ui center aligned one wide">Paralelo</th>
+                  @endhasanyrole
+                  <th class="ui center aligned two wide">Estatus</th>
+                @endif
                 @can('edit_moves')
                 <th class="ui center aligned two wide">
                   <i class="ui cog icon"></i>
@@ -109,7 +126,7 @@ Path: {{ Request::path() }}
               </tr>
               @empty
               <tr>
-                <td colspan="6">
+                <td colspan="8">
                   <div class="ui placeholder segment">
                     <div class="ui icon header">
                       <i class="inbox icon"></i>
@@ -126,7 +143,7 @@ Path: {{ Request::path() }}
             </tbody>
             <tfoot class="full-width">
               <tr>
-                <th colspan="6">
+                <th colspan="8">
                   @if (!ends_with(Request::path(), "/all"))
                     @include('pagination.custom', ['paginator' => $result])
                   @endif
@@ -152,7 +169,7 @@ Path: {{ Request::path() }}
               <div class="left floated">
                 @if ($item->is_parallel)
                   <a class="ui blue label">PARALELO</a>
-                  @endif
+                @endif
               </div>
               <div class="right floated">
                 @include('shared._move_status', ['status' => $item->status])
