@@ -84,7 +84,12 @@
     <strong>{{ App\Semester::last()->short_name }}</strong>
   </div>
   <div class="ui simple dropdown item">
-    {{ Auth::user()->username }} <i class="dropdown icon"></i>
+    @hasrole('Estudiante')
+    {{ Auth::user()->username }}
+    @else
+    {{ Auth::user()->full_name }}
+    @endhasrole
+    <i class="dropdown icon"></i>
     <div class="menu">
       <a class="item" href="{{ route('users.edit', ['id' => Auth::user()->id]) }}">
         <i class="user cog icon"></i> Cuenta
