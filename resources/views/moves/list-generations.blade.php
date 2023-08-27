@@ -12,6 +12,17 @@
           </h2>
         </header>
 
+        @hasanyrole(['Admin', 'Jefe'])
+        <div class="ui sixteen wide column">
+          <span class="ui blue label">SISTEMAS</span>
+          <span class="ui red label">INDUSTRIAL</span>
+          <span class="ui teal label">GESTIÓN EMP.</span>
+          <span class="ui green label">ALIMENTARIAS</span>
+          <span class="ui olive label">AMBIENTAL</span>
+          <span class="ui orange label">AGRONOMÍA</span>
+        </div>
+        @endhasanyrole
+        <div class="ui hidden divider"></div>
         @foreach ($generations as $key => $generation)
         <article>
           <header>
