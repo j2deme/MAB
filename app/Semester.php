@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Semester extends Model
 {
+  protected $table = 'semesters';
   protected $fillable = ['key', 'short_name', 'long_name', 'is_active', 'begin_up', 'end_up', 'begin_down', 'end_down', 'max_ups'];
 
   /**
@@ -21,12 +22,6 @@ class Semester extends Model
    */
   public function scopeLast($query)
   {
-    /*$active = Semester::where('is_active', true)->get();
-    if (count($active) == 0) {
-      return $query->orderBy('key', 'desc')->first();
-    } else {
-      return $query->where('is_active', true)->orderBy('key', 'desc')->first();
-    }*/
     return $query->where('is_active', true)->first();
   }
 
