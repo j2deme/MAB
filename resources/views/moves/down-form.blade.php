@@ -1,6 +1,19 @@
 <form action="{{ route('moves.save') }}" class="ui form {{ (!$downs_open) ? 'closed' : null }}" method="POST" id="moveForm">
   @csrf
   <input type="hidden" id="type" name="type" value="{{ $type }}">
+  @php
+  function careerLabel($career){
+    $career = str_replace('-MIX', ' MIXTA', strtoupper($career));
+    $career = str_replace('IIA', ' ING. IND. ALIMENTARIAS', $career);
+    $career = str_replace('II', ' ING. INDUSTRIAL', $career);
+    $career = str_replace('IGE', ' ING. GESTIÓN EMPRESARIAL', $career);
+    $career = str_replace('ISC', ' ING. SISTEMAS COMPUTACIONALES', $career);
+    $career = str_replace('IAMB', ' ING. AMBIENTAL', $career);
+    $career = str_replace('IAGRO', ' ING. EN AGRONOMÍA', $career);
+
+    return $career;
+  }
+  @endphp
   <div class="field">
     <span class="ui primary circular label">1</span>
     <label for="group_id">Elige el grupo deseas dar de baja (asegurate que ya lo tengas registrado en tu
@@ -8,7 +21,7 @@
     <select id="group_id" name="group_id" class="ui search selection dropdown">
       <option value="">---</option>
       @foreach ($groups as $item)
-      <option value="{{ $item->id }}">[{{ $item->full_key }}] {{ $item->subject->long_name }}</option>
+      <option value="{{ $item->id }}">{{ $item->subject->long_name }} ({{ $item->key }} - {{ careerLabel($item->subject->career->key) }})</option>
       @endforeach
     </select>
   </div>
