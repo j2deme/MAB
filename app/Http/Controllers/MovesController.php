@@ -66,7 +66,7 @@ class MovesController extends Controller
     }
     $justifications = [
       'up' => [
-        'CAMBIO DE BLOQUE',
+        //'CAMBIO DE BLOQUE', # AD 2023 - Se retira opción por nueva nomeclatura de grupos
         'ADELANTAR MATERIA',
         'ATRASO POR CAMBIO DE CARRERA',
         'COMPATIBILIDAD CON DOCENTE',

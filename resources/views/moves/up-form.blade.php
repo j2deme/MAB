@@ -1,45 +1,42 @@
-@php
-$statuses = [
-'0' => ['teal', 'REGISTRADA'], // Registrada
-'1' => ['yellow', 'REVISIÓN'], // En revisión
-'2' => ['orange', 'RECHAZADA'], // Rechazada por coordinador
-'3' => ['green', 'ACEPTADA'], // Aceptada por coordinador
-'4' => ['green', 'ACEPTADA'], // Aceptada por jefe / admin
-'5' => ['red', 'RECHAZADA'] // Rechazada por jefe / admin
-];
-@endphp
 <p>Puedes solicitar un máximo de {{ $max_ups }} movimientos de alta.</p>
 <div class="ui five stackable cards">
   @for ($i = 0; $i < max($max_ups, count($moves)); $i++)
-  <div class="ui fluid {{ (isset($moves[$i])) ? $statuses[$moves[$i]->status][0] : null }} card">
-    <div class="content">
+  <div class="ui fluid card">
     @if (isset($moves[$i]))
-      <div class="content">
-        <div class="header">
-          <span>{{ $moves[$i]->group->subject->short_name }}</span>
-        </div>
-        <div class="meta">
-          <div class="left floated">
-            @if ($moves[$i]->is_parallel)
-              <span class="ui blue small circular label">P</span>
-            @endif
-          </div>
-          <span class="right floated">
-            <span class="ui mini label">
-              {{ $moves[$i]->group->full_key }}
-            </span>
-          </span>
+    <div class="content">
+      <div class="header">
+        <h5>{{ $moves[$i]->group->subject->short_name }}</h5>
+      </div>
+      <div class="meta">
+        <div class="right floated">
+          @if ($moves[$i]->is_parallel)
+            <span class="ui blue small label">P</span>
+          @endif
         </div>
       </div>
+    </div>
+    <div class="extra content">
+      <span class="left floated">
+        @if ($moves[$i]->is_parallel)
+        <span class="ui blue small label">P</span>
+        @endif
+      </span>
+      <span class="right floated">
+        <span class="ui small black label">
+          {{ $moves[$i]->group->full_key }}
+        </span>
+      </span>
+    </div>
     @else
+    <div class="content">
       <div class="center aligned header">
         {{ $i + 1 }}
       </div>
       <div class="center aligned description">
         Disponible
       </div>
-    @endif
     </div>
+    @endif
   </div>
   @endfor
 </div>
