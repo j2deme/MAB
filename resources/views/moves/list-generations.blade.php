@@ -22,24 +22,24 @@
               </div>
             </h2>
           </header>
-          <div class="ui six cards">
+          <div class="ui six doubling cards">
             @foreach ($generation as $key => $move)
             @if(starts_with($move->user->career->key, 'ISC'))
             @php ($color = 'blue')
-            @elseif(starts_with($move->user->career->key, 'II'))
-            @php ($color = 'red')
             @elseif(starts_with($move->user->career->key, 'IGE'))
             @php ($color = 'teal')
             @elseif(starts_with($move->user->career->key, 'IIA'))
             @php ($color = 'green')
             @elseif(starts_with($move->user->career->key, 'IAMB'))
             @php ($color = 'olive')
+            @elseif(starts_with($move->user->career->key, 'II'))
+            @php ($color = 'red')
             @elseif(starts_with($move->user->career->key, 'IAGRO'))
             @php ($color = 'orange')
             @else
             @php ($color = 'black')
             @endif
-            <a href="{{ route('moves.byStudent', $key) }}" class="ui {{ $color }} card">
+            <a href="{{ route('moves.byStudent', $move->user->username) }}" class="ui {{ $color }} card">
               <div class="ui content {{ (!$move->user->is_enrolled) ? "$color inverted" : null }} segment">
                 @if (!$move->user->is_enrolled)
                   <i class="ui right floated star icon"></i>
@@ -59,7 +59,7 @@
             @endforeach
           </div>
         </article>
-        <br><br>
+        <div class="ui hidden divider"></div>
         @endforeach
         @include('components.back', ['route' => route('home.index')])
       </article>
