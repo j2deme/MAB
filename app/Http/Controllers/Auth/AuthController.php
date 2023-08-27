@@ -55,21 +55,21 @@ class AuthController extends Controller
   protected function validator(array $data)
   {
     return Validator::make($data, [
-      'name'      => 'required|max:255',
+      'name' => 'required|max:255',
       'last_name' => 'required|max:255',
-      'username'  => 'required|max:255|unique:users',
-      'email'     => 'required|email|max:255|unique:users',
-      'password'  => 'required|min:6|confirmed',
+      'username' => 'required|max:255|unique:users',
+      'email' => 'required|email|max:255|unique:users',
+      'password' => 'required|min:6|confirmed',
     ], [
-      'name.required'      => 'Ingresa tu nombre o nombres',
+      'name.required' => 'Ingresa tu nombre o nombres',
       'last_name.required' => 'Ingresa tus apellidos',
-      'username.required'  => 'Se requiere usuario / no. de control',
-      'username.unique'    => 'El número de control ya fue registrado',
-      'password.required'  => 'Ingresa tu contraseña',
+      'username.required' => 'Se requiere usuario / no. de control',
+      'username.unique' => 'El número de control ya fue registrado',
+      'password.required' => 'Ingresa tu contraseña',
       'password.confirmed' => 'Las contraseñas no coinciden',
-      'email.required'     => 'Ingresa tu correo electrónico',
-      'email.email'        => 'Ingresa un correo electrónico válido',
-      'email.unique'       => 'El correo electrónico ya se encuentra asociado a otra cuenta'
+      'email.required' => 'Ingresa tu correo electrónico',
+      'email.email' => 'Ingresa un correo electrónico válido',
+      'email.unique' => 'El correo electrónico ya se encuentra asociado a otra cuenta'
     ]);
   }
 
@@ -82,14 +82,24 @@ class AuthController extends Controller
   protected function create(array $data)
   {
     $user = User::create([
-      'name'      => $data['name'],
+      'name' => $data['name'],
       'last_name' => $data['last_name'],
-      'username'  => $data['username'],
-      'email'     => $data['email'],
-      'password'  => $data['password'],
+      'username' => $data['username'],
+      'email' => $data['email'],
+      'password' => $data['password'],
     ]);
     $user->assignRole('Estudiante');
 
     return $user;
+  }
+
+  protected function getCredentials()
+  {
+    return array_merge(\Request::only($this->loginUsername(), 'password'), ['is_suspended' => 0]);
+  }
+
+  protected function getFailedLoginMessage()
+  {
+    return "La cuenta esta suspendida o los datos de acceso son incorrectos";
   }
 }
