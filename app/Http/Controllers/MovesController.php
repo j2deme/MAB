@@ -533,13 +533,7 @@ class MovesController extends Controller
     $last_semester = Semester::last();
     $result = $user->moves()->where('semester_id', $last_semester->id);
 
-    if ($last_semester->has_ended) {
-      $result = (!is_null(Auth::user()->career)) ? $result->attended() : $result->attended(true);
-    } else {
-      $result = (!is_null(Auth::user()->career)) ? $result->unattended() : $result->unattendedParallel();
-    }
-
-
+    $result = (!is_null(Auth::user()->career)) ? $result->parallel(false) : $result;
     $result = $result->paginate();
 
     $url = route('moves.listByStudent');
