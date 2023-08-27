@@ -527,4 +527,23 @@ class UserController extends Controller
 
     return redirect()->route('home.index');
   }
+
+  public function search(Request $request)
+  {
+    $data = [];
+    $data['q'] = $request->q;
+
+    if (!empty($request->q)) {
+      $q = $request->q;
+
+      $users = User::where('username', 'LIKE', "%$q%")
+        ->orWhere('name', 'LIKE', "%$q%")
+        ->orWhere('last_name', 'LIKE', "%$q%")
+        ->get();
+
+      $data['users'] = $users;
+    }
+
+    return view('user.search', $data);
+  }
 }

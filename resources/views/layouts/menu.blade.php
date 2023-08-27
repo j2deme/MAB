@@ -52,7 +52,7 @@
 <div class="ui simple dropdown {{ Request::is('users*') ? 'blue' : ' ' }} item">
   <i class="users icon"></i> Usuarios
   <div class="menu">
-    <a href="#" class="item">
+    <a href="{{ route('users.search') }}" class="item">
       <i class="search icon"></i> Buscar usuario
     </a>
     <a class="item" href="{{ route('users.index') }}">
