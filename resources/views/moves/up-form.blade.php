@@ -72,7 +72,7 @@ $statuses = [
   <div class="field">
     <span class="ui primary circular label">3</span>
     <label for="motivation">Añade más información sobre el motivo seleccionado</label>
-    <textarea name="motivation" id="motivation" rows="5" maxlength="150"></textarea>
+    <textarea name="motivation" id="motivation" rows="5" maxlength="250"></textarea>
     <span class="ui chars"></span>
   </div>
   @include('components.back', ['route' => route('moves.index')])

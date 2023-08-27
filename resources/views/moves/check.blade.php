@@ -76,20 +76,21 @@
             </select>
           </div>
           <div class="field">
-            <label for="extra">Añade información extra para respuesta (Opcional)</label>
-            <textarea name="extra" id="extra" rows="5" maxlength="150"></textarea>
-            <span class="ui chars"></span>
+              <label for="extra">Información extra para respuesta (Opcional)</label>
+              <textarea name="extra" id="extra" rows="5" maxlength="250">{{ isset($move->answer['extra']) ? $move->answer['extra'] : null }}</textarea>
+              <span class="ui chars"></span>
+            </div>
           </div>
+
           <div class="ui warning visible icon message">
             <i class="exclamation triangle icon"></i>
             <div class="content">
               <div class="ui big header">
-                ATENCIÓN COORDINADOR
+                <h2>Atención Coordinador</h2>
               </div>
-              <h2>Verifique que el movimiento se puede realizar en el SII, antes de presionar "ACEPTAR".</h2>
+              <p>Antes de aceptar el movimiento, asegurate de que sea posible realizarlo en plataforma.</p>
             </div>
           </div>
-          @include('components.back')
           <button type="submit" class="ui red labeled icon submit button" id="denyBtn" name="denyBtn" value="0">
             <i class="times icon"></i> Rechazar
           </button>
@@ -100,6 +101,7 @@
           @include('components.errors-message')
 
         </form>
+        @include('components.back')
       </article>
     </section>
   </div>

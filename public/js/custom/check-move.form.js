@@ -1,26 +1,30 @@
 $(document).ready(function () {
-  $('#answer').dropdown({
+  $("#answer").dropdown({
     ignoreDiacritics: true,
     sortSelect: true,
-    fullTextSearch: true
+    fullTextSearch: true,
   });
 
-  $('#extra').charsCounter();
+  $("#extra").charsCounter();
 
-  $('.ui.form').form({
+  $(".ui.form").form({
     fields: {
       answer: {
-        rules: [{
-          type: 'empty',
-          prompt: 'Debe indicar una respuesta'
-        }]
+        rules: [
+          {
+            type: "empty",
+            prompt: "Debe indicar una respuesta",
+          },
+        ],
       },
       extra: {
-        rules: [{
-          type: 'maxLength[150]',
-          prompt: 'La información extra no debe exceder 150 caracteres'
-        }]
-      }
-    }
+        rules: [
+          {
+            type: "maxLength[250]",
+            prompt: "La información extra no debe exceder 250 caracteres",
+          },
+        ],
+      },
+    },
   });
 });

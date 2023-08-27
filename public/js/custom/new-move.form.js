@@ -1,43 +1,51 @@
 $(document).ready(function () {
-  let _form = $('#moveForm');
-  if (_form.hasClass('closed')) {
-    _form.dimmer({
-      closable: false
-    }).dimmer('show');
+  let _form = $("#moveForm");
+  if (_form.hasClass("closed")) {
+    _form
+      .dimmer({
+        closable: false,
+      })
+      .dimmer("show");
   }
-  $('#group_id').dropdown({
+  $("#group_id").dropdown({
     ignoreDiacritics: true,
     sortSelect: true,
-    fullTextSearch: true
+    fullTextSearch: true,
   });
-  $('#justification').dropdown({
+  $("#justification").dropdown({
     ignoreDiacritics: true,
     sortSelect: true,
-    fullTextSearch: true
+    fullTextSearch: true,
   });
 
-  $('#motivation').charsCounter();
+  $("#motivation").charsCounter();
 
-  $('.ui.form').form({
+  $(".ui.form").form({
     fields: {
       group_id: {
-        rules: [{
-          type: 'empty',
-          prompt: 'Debes seleccionar un grupo'
-        }]
+        rules: [
+          {
+            type: "empty",
+            prompt: "Debes seleccionar un grupo",
+          },
+        ],
       },
       justification: {
-        rules: [{
-          type: 'empty',
-          prompt: 'Debes seleccionar un motivo'
-        }]
+        rules: [
+          {
+            type: "empty",
+            prompt: "Debes seleccionar un motivo",
+          },
+        ],
       },
       motivation: {
-        rules: [{
-          type: 'maxLength[150]',
-          prompt: 'La información extra no debe exceder 150 caracteres'
-        }]
-      }
-    }
+        rules: [
+          {
+            type: "maxLength[250]",
+            prompt: "La información extra no debe exceder 250 caracteres",
+          },
+        ],
+      },
+    },
   });
 });
