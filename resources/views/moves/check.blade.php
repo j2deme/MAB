@@ -71,11 +71,13 @@
             <select id="answer" name="answer" class="ui search selection dropdown">
               <option value="">Elija una respuesta predefinida</option>
               @foreach ($answers as $item)
-              <option value="{{ $item }}">{{ $item }}</option>
-              @endforeach
-            </select>
-          </div>
-          <div class="field">
+                <option value="{{ $item }}"
+                {{ (isset($move->answer['main']) and $move->answer['main'] == $item) ? 'selected' : '' }}
+                >{{ $item }}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="field">
               <label for="extra">Información extra para respuesta (Opcional)</label>
               <textarea name="extra" id="extra" rows="5" maxlength="250">{{ isset($move->answer['extra']) ? $move->answer['extra'] : null }}</textarea>
               <span class="ui chars"></span>
