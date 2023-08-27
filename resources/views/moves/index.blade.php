@@ -107,17 +107,21 @@ Path: {{ Request::path() }}
                 {{ $item->user->username }}
                 @endrole
                 </td>
-                <td>{{ $item->type }} DE {{ $item->group->subject->short_name }} ({{ $item->group->full_key }})</td>
+                <td>{{ $item->group->subject->short_name }} ({{ $item->group->subject->key }})</td>
+                <td class="ui center aligned">{{ $item->group->subject->semester }}</td>
+                <td class="ui center aligned">{{ $item->group->name }}</td>
                 <td class="ui center aligned">
                   <small>{{ $item->type }}</small> <i class="ui {{ $item->type == 'ALTA' ? 'blue arrow up' : 'red arrow down' }} icon"></i>
                 </td>
+                @hasanyrole(['Admin','Jefe'])
                 <td class="ui center aligned">
                   @if ($item->is_parallel)
-                  <a class="ui blue circular label">P</a>
+                  <a class="ui blue label">P</a>
                   @else
                   <i class="ui grey minus icon"></i>
                   @endif
                 </td>
+                @endhasanyrole
                 <td class="ui center aligned">
                   @include('shared._move_status', ['status' => $item->status])
                 </td>
