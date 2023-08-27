@@ -53,7 +53,7 @@ class Semester extends Model
 
   public function getHasEndedAttribute()
   {
-    return (Carbon::now('America/Mexico_City') > $this->end_down);
+    return ($this->moves->whereIn('status', ['0', '1'])->count() == 0);
   }
 
   /**
