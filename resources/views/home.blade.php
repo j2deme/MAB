@@ -47,7 +47,6 @@
         <header>
           <h2 class="ui secondary dividing header">Avance</h2>
         </header>
-        @php ($total = $ups + $downs)
         <div class="ui indicating progress">
           <div class="bar">
             <div class="progress"></div>   
@@ -65,11 +64,13 @@
   $(document).ready(function () {
     $('.ui.dropdown').dropdown();
 
+    @hasanyrole(['Jefe','Admin','Coordinador'])
     $('.ui.progress').progress(
       {
-        percent: {{ $attended / $total * 100 }},
+        percent: {{ $attended / ($ups + $downs) * 100 }},
       }
     );
+    @endhasanyrole
   });
 </script>
 @endpush
