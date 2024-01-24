@@ -49,7 +49,7 @@
         </header>
         <div class="ui indicating progress">
           <div class="bar">
-            <div class="progress"></div>   
+            <div class="progress"></div>
           </div>
         </div>
         @endhasanyrole
@@ -59,6 +59,11 @@
 </div>
 @endsection
 
+@php
+$total = $ups + $downs;
+$total = $total == 0 ? 1 : $total;
+@endphp
+
 @push('scripts')
 <script>
   $(document).ready(function () {
@@ -67,7 +72,7 @@
     @hasanyrole(['Jefe','Admin','Coordinador'])
     $('.ui.progress').progress(
       {
-        percent: {{ $attended / ($ups + $downs) * 100 }},
+        percent: {{ $attended / ($total) * 100 }},
       }
     );
     @endhasanyrole
