@@ -8,10 +8,11 @@
       <article class="ui attached segment">
         <header>
           <h2 class="ui primary dividing header">
-          @if (in_array($move->status, ['0','1']))
+            @if (in_array($move->status, ['0','1']))
             Atender solicitud
-          @endif
+            @else
             Modificar respuesta de solicitud
+            @endif
           </h2>
         </header>
 
@@ -38,12 +39,12 @@
                 <td class="ui center aligned">
                   <strong>{{ $move->type }}</strong>&nbsp;
                   @if($move->type == "ALTA")
-                    <i class="ui arrow up blue icon"></i>
+                  <i class="ui arrow up blue icon"></i>
                   @else
-                    <i class="ui arrow down red icon"></i>
+                  <i class="ui arrow down red icon"></i>
                   @endif
                   @if ($move->is_parallel)
-                    <span class="ui blue label">P</span>
+                  <span class="ui blue label">P</span>
                   @endif
                 </td>
                 <td class="ui center aligned">
@@ -76,7 +77,8 @@
                 <span class="right floated">
                   {{ $move->user->username }} <small>({{ $move->user->career->key }})</small>
                 </span>
-                <span class="category"><small>{{ $move->type }}</small> <i class="ui {{ $move->type == 'ALTA' ? 'blue arrow up' : 'red arrow down' }} icon"></i></span>
+                <span class="category"><small>{{ $move->type }}</small> <i
+                    class="ui {{ $move->type == 'ALTA' ? 'blue arrow up' : 'red arrow down' }} icon"></i></span>
               </div>
               <div class="description">
                 <h4>{{ $move->justification['main'] }}</h4>
@@ -86,7 +88,7 @@
             <div class="extra content">
               <div class="left floated">
                 @if ($move->is_parallel)
-                  <a class="ui blue label">PARALELO</a>
+                <a class="ui blue label">PARALELO</a>
                 @endif
               </div>
               <div class="right floated">
@@ -108,15 +110,16 @@
               <select id="answer" name="answer" class="ui search selection dropdown">
                 <option value="">Elija una respuesta predefinida</option>
                 @foreach ($answers as $item)
-                <option value="{{ $item }}"
-                {{ (isset($move->answer['main']) and $move->answer['main'] == $item) ? 'selected' : '' }}
-                >{{ $item }}</option>
+                <option value="{{ $item }}" {{ (isset($move->answer['main']) and $move->answer['main'] == $item) ?
+                  'selected' : '' }}
+                  >{{ $item }}</option>
                 @endforeach
               </select>
             </div>
             <div class="field">
               <label for="extra">Información extra para respuesta (Opcional)</label>
-              <textarea name="extra" id="extra" rows="5" maxlength="250">{{ isset($move->answer['extra']) ? $move->answer['extra'] : null }}</textarea>
+              <textarea name="extra" id="extra" rows="5"
+                maxlength="250">{{ isset($move->answer['extra']) ? $move->answer['extra'] : null }}</textarea>
               <span class="ui chars"></span>
             </div>
           </div>
