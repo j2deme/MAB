@@ -78,9 +78,9 @@ Path: {{ Request::path() }}
                 @if (isset($ups))
                 <th class="ui center aligned one wide"><a href="?sort=group">Grupo</a></th>
                 <th class="ui center aligned two wide"><a href="?sort=type">Tipo</a></th>
-                @hasanyrole(['Admin','Jefe'])
+                {{-- @hasanyrole(['Admin','Jefe']) --}}
                 <th class="ui center aligned one wide">Paralelo</th>
-                @endhasanyrole
+                {{-- @endhasanyrole --}}
                 <th class="ui center aligned two wide"><a href="?sort=status">Estatus</a></th>
                 @else
                 <th class="ui center aligned one wide">Grupo</th>
