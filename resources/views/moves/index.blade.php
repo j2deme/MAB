@@ -14,7 +14,9 @@ Path: {{ Request::path() }}
             @role('Estudiante')
             Mis solicitudes
             @else
-            Solicitudes {{ $subject->short_name or null }}{{ $subject->full_key or null }}{{ $extra or null }}
+            Solicitudes {{ $subject->short_name or null }}{{ $subject->full_key or null }}{{ $extra or null
+            }}<br><small>{{
+              $user->full_name or null}}</small>
             @endrole
           </h2>
         </header>
