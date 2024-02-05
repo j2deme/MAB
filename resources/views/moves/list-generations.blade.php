@@ -51,9 +51,9 @@
             @php ($color = 'black')
             @endif
             <a href="{{ route('moves.byStudent', $move->user->username) }}" class="ui {{ $color }} card">
-              <div class="ui content {{ (!$move->user->is_enrolled) ? "$color inverted" : null }} segment">
+              <div class="ui content {{ (!$move->user->is_enrolled) ? " $color inverted" : null }} segment">
                 @if (!$move->user->is_enrolled)
-                  <i class="ui right floated star icon"></i>
+                <i class="ui right floated star icon"></i>
                 @endif
                 <div class="header">
                   <h5>{{ $move->user->username }}</h5>
