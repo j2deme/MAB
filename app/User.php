@@ -15,7 +15,13 @@ class User extends Authenticatable
    * @var array
    */
   protected $fillable = [
-    'name', 'last_name', 'username', 'email', 'password', 'is_suspended','is_enrolled'
+    'name',
+    'last_name',
+    'username',
+    'email',
+    'password',
+    'is_suspended',
+    'is_enrolled'
   ];
 
   /**
@@ -24,7 +30,8 @@ class User extends Authenticatable
    * @var array
    */
   protected $hidden = [
-    'password', 'remember_token',
+    'password',
+    'remember_token',
   ];
 
   /**
@@ -84,19 +91,19 @@ class User extends Authenticatable
    */
   public function getUpsAttribute()
   {
-    $last_semester = Semester::last();
+    $last_semester = Semester::last()->first();
     return $this->moves()->where('semester_id', $last_semester->id)->where('type', 'ALTA')->count();
   }
 
   public function getDownsAttribute()
   {
-    $last_semester = Semester::last();
+    $last_semester = Semester::last()->first();
     return $this->moves()->where('semester_id', $last_semester->id)->where('type', 'BAJA')->count();
   }
 
   public function getAttendedAttribute()
   {
-    $last_semester = Semester::last();
+    $last_semester = Semester::last()->first();
     return $this->moves()->where('semester_id', $last_semester->id)->whereIn('status', ['2', '3', '4', '5'])->count();
   }
 }
