@@ -101,7 +101,7 @@ class MovesController extends Controller
       'justification' => 'required'
     ]);
 
-    $group = Group::findOrFail([$request->get('group_id')])->first();
+    $group       = Group::findOrFail([$request->get('group_id')])->first();
     $is_parallel = ($group->subject->career->id != Auth::user()->career->id);
     $exists      = Move::where('user_id', Auth::user()->id)
       ->where('semester_id', !is_null($last_semester) ? $last_semester->id : 0)
@@ -386,7 +386,7 @@ class MovesController extends Controller
     $groupedByUser = $result->sortBy('user.username');
 
     $generations = [];
-    $students = [];
+    $students    = [];
     foreach ($groupedByUser as $move) {
       $no_control = $move->user->username;
       if (ctype_alpha($no_control[0])) {
@@ -434,11 +434,11 @@ class MovesController extends Controller
       });
 
       $groupedByUser = $result1->sortBy('user.username');
-      $generations = [];
-      $students = [];
+      $generations   = [];
+      $students      = [];
       foreach ($groupedByUser as $move) {
         $no_control = $move->user->username;
-        $gen = substr($no_control, 0, 2);
+        $gen        = substr($no_control, 0, 2);
         if (!array_key_exists($gen, $generations)) {
           $generations[$gen] = [];
         }
@@ -461,11 +461,11 @@ class MovesController extends Controller
       $result = Move::with('user.career')->where('semester_id', $last_semester->id)->unattendedSwitch()->get();
 
       $groupedByUser = $result->sortBy('user.username');
-      $generations = [];
-      $students = [];
+      $generations   = [];
+      $students      = [];
       foreach ($groupedByUser as $move) {
         $no_control = $move->user->username;
-        $gen = substr($no_control, 0, 2);
+        $gen        = substr($no_control, 0, 2);
         if (!array_key_exists($gen, $generations)) {
           $generations[$gen] = [];
         }
@@ -594,7 +594,7 @@ class MovesController extends Controller
 
     $url = route('home.index');
 
-    $extra = "Finalizadas";
+    $extra  = "Finalizadas";
     $search = true;
 
     return response()->view('moves.index', compact('result', 'url', 'extra', 'search'));

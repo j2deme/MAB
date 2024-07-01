@@ -25,10 +25,14 @@ class GroupController extends Controller
     if (is_null($semester)) {
       $result = [];
     } else {
-      $result = Group::where('semester_id', $semester->id)->orderBy('semester_id', 'desc')->orderBy('subject_id', 'asc')->orderBy('name', 'asc')->paginate();
+      $result = Group::where('semester_id', $semester->id)
+        ->orderBy('semester_id', 'desc')
+        ->orderBy('subject_id', 'asc')
+        ->orderBy('name', 'asc')
+        ->paginate();
     }
 
-    $data['result'] = $result;
+    $data['result']   = $result;
     $data['semester'] = $semester;
     return response()->view('group.index', $data);
   }
@@ -41,7 +45,7 @@ class GroupController extends Controller
   public function create()
   {
     $semesters = Semester::orderBy('id', 'desc')->pluck('long_name', 'id');
-    $subjects = Subject::orderBy('career_id', 'asc')->orderBy('semester', 'asc')->where('is_active', true)->get();
+    $subjects  = Subject::orderBy('career_id', 'asc')->orderBy('semester', 'asc')->where('is_active', true)->get();
 
     return response()->view('group.new', compact('semesters', 'subjects'));
   }
@@ -91,8 +95,8 @@ class GroupController extends Controller
         $grupos[] = explode("\t", trim($fila));
       }
       $syncedRecords = 0;
-      $numRecords = count($grupos);
-      $semester = Semester::whereIsActive(true)->orderBy('key', 'desc')->first();
+      $numRecords    = count($grupos);
+      $semester      = Semester::whereIsActive(true)->orderBy('key', 'desc')->first();
 
       foreach ($grupos as $record) {
         # Verificar si existe la materia
@@ -104,14 +108,13 @@ class GroupController extends Controller
         }
 
         # Verificar si existe el grupo para el periodo, sino crearlo
-        $group = Group::where([
-          'subject_id' => $subject->id,
-          'semester_id' => $semester->id,
-          'name' => trim($record[1]),
-        ])->first();
+        $group = Group::where('subject_id', $subject->id)
+          ->where('semester_id', $semester->id)
+          ->where('name', trim($record[1]))
+          ->first();
 
         if (is_null($group)) {
-          $data = [
+          $data  = [
             'name' => $record[1],
             'is_available' => true,
             'subject_id' => $subject->id,
@@ -146,25 +149,24 @@ class GroupController extends Controller
       Storage::disk('local')->put($filename, File::get($file));
 
       if (Storage::disk('local')->exists($filename)) {
-        $csv = Reader::createFromPath(storage_path("app/$filename"));
-        $columns = ['subject', 'name'];
-        $records = $csv->getRecords($columns);
+        $csv           = Reader::createFromPath(storage_path("app/$filename"));
+        $columns       = ['subject', 'name'];
+        $records       = $csv->getRecords($columns);
         $syncedRecords = 0;
-        $numRecords = 0;
-        $semester = Semester::whereIsActive(true)->orderBy('key', 'desc')->first();
+        $numRecords    = 0;
+        $semester      = Semester::whereIsActive(true)->orderBy('key', 'desc')->first();
 
         foreach ($records as $record) {
           # Verificar si existe el grupo para el periodo, sino crearlo
           $subject = Subject::where('key', trim($record['subject']))->first();
-          $group = Group::where([
-            'subject_id' => $subject->id,
-            'semester_id' => $semester->id,
-            'name' => trim($record['name']),
-          ])->first();
+          $group   = Group::where('subject_id', $subject->id)
+            ->where('semester_id', $semester->id)
+            ->where('name', trim($record['name']))
+            ->first();
           $numRecords++;
 
           if (is_null($group)) {
-            $data = [
+            $data  = [
               'name' => $record['name'],
               'is_available' => true,
               'subject_id' => $subject->id,
@@ -246,7 +248,7 @@ class GroupController extends Controller
    */
   public function toggle($id)
   {
-    $group = Group::findOrFail($id);
+    $group               = Group::findOrFail($id);
     $group->is_available = !($group->is_available);
     $group->save();
 

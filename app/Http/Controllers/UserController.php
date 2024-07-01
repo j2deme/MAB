@@ -26,15 +26,15 @@ class UserController extends Controller
   public function index()
   {
     $result = Role::whereIn('name', ['Admin', 'Jefe', 'Coordinador'])->get();
-    $users = collect([]);
+    $users  = collect([]);
 
     foreach ($result as $role) {
       $users = $users->merge($role->users()->get());
     }
 
-    $data['users'] = $users;
-    $data['title'] = "Superusuarios";
-    $data['total'] = $users->count();
+    $data['users']       = $users;
+    $data['title']       = "Superusuarios";
+    $data['total']       = $users->count();
     $data['no_paginate'] = true;
 
     return response()->view('user.index', $data);
@@ -148,10 +148,10 @@ class UserController extends Controller
    */
   public function edit($id)
   {
-    $user = User::find($id);
-    $roles = Role::pluck('name', 'id');
+    $user        = User::find($id);
+    $roles       = Role::pluck('name', 'id');
     $permissions = Permission::all('name', 'id');
-    $careers = Career::pluck('name', 'id');
+    $careers     = Career::pluck('name', 'id');
 
     return response()->view('user.edit', compact('user', 'roles', 'permissions', 'careers'));
   }
@@ -268,7 +268,7 @@ class UserController extends Controller
   private function syncPermissions(Request $request, $user)
   {
     // Get the submitted roles
-    $roles = $request->get('roles', []);
+    $roles       = $request->get('roles', []);
     $permissions = $request->get('permissions', []);
 
     // Get the roles
@@ -298,7 +298,7 @@ class UserController extends Controller
    */
   public function toggle($id)
   {
-    $user = User::find($id);
+    $user               = User::find($id);
     $user->is_suspended = ($user->is_suspended) ? false : true;
     $user->save();
 
@@ -319,7 +319,7 @@ class UserController extends Controller
         $estudiantes[] = explode("\t", trim($fila));
       }
       $syncedRecords = 0;
-      $numRecords = 0;
+      $numRecords    = 0;
 
       foreach ($estudiantes as $record) {
         # Verificar si existe el estudiante, sino crearlo
@@ -328,7 +328,7 @@ class UserController extends Controller
         $numRecords++;
 
         if (is_null($student)) {
-          $role = Role::where('name', 'Estudiante')->first();
+          $role   = Role::where('name', 'Estudiante')->first();
           $career = Career::where('internal_key', $record[5])->first();
 
           $data = [
@@ -372,11 +372,11 @@ class UserController extends Controller
       Storage::disk('local')->put($filename, File::get($file));
 
       if (Storage::disk('local')->exists($filename)) {
-        $csv = Reader::createFromPath(storage_path("app/$filename"));
-        $columns = ['noControl', 'name', 'lastName1', 'lastName2', 'nip', 'career'];
-        $records = $csv->getRecords($columns);
+        $csv           = Reader::createFromPath(storage_path("app/$filename"));
+        $columns       = ['noControl', 'name', 'lastName1', 'lastName2', 'nip', 'career'];
+        $records       = $csv->getRecords($columns);
         $syncedRecords = 0;
-        $numRecords = 0;
+        $numRecords    = 0;
 
         foreach ($records as $record) {
           # Verificar si existe el estudiante, sino crearlo
@@ -384,7 +384,7 @@ class UserController extends Controller
           $numRecords++;
 
           if (is_null($student)) {
-            $role = Role::where('name', 'Estudiante')->first();
+            $role   = Role::where('name', 'Estudiante')->first();
             $career = Career::where('internal_key', $record['career'])->first();
 
             $data = [
@@ -430,7 +430,7 @@ class UserController extends Controller
       }
 
       $syncedRecords = 0;
-      $numRecords = count($estudiantes);
+      $numRecords    = count($estudiantes);
 
       foreach ($estudiantes as $record) {
         # Busca el estudiante para activarlo
@@ -467,11 +467,11 @@ class UserController extends Controller
       Storage::disk('local')->put($filename, File::get($file));
 
       if (Storage::disk('local')->exists($filename)) {
-        $csv = Reader::createFromPath(storage_path("app/$filename"));
-        $columns = ['noControl'];
-        $records = $csv->getRecords($columns);
+        $csv           = Reader::createFromPath(storage_path("app/$filename"));
+        $columns       = ['noControl'];
+        $records       = $csv->getRecords($columns);
         $syncedRecords = 0;
-        $numRecords = 0;
+        $numRecords    = 0;
 
         foreach ($records as $record) {
           # Busca el estudiante para activarlo
@@ -530,7 +530,7 @@ class UserController extends Controller
 
   public function search(Request $request)
   {
-    $data = [];
+    $data      = [];
     $data['q'] = $request->q;
 
     if (!empty($request->q)) {

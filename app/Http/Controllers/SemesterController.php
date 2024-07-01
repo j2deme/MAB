@@ -94,12 +94,12 @@ class SemesterController extends Controller
     ]);
 
     $semester->short_name = $request->get('short_name');
-    $semester->long_name = $request->get('long_name');
-    $semester->max_ups = $request->get('max_ups');
-    $semester->begin_up = $request->get('begin_up');
-    $semester->end_up = $request->get('end_up');
+    $semester->long_name  = $request->get('long_name');
+    $semester->max_ups    = $request->get('max_ups');
+    $semester->begin_up   = $request->get('begin_up');
+    $semester->end_up     = $request->get('end_up');
     $semester->begin_down = $request->get('begin_down');
-    $semester->end_down = $request->get('end_down');
+    $semester->end_down   = $request->get('end_down');
 
     // Create the semester
     if ($semester->save()) {
