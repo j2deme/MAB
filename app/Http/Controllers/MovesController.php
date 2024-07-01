@@ -23,7 +23,7 @@ class MovesController extends Controller
    */
   public function index($all = null)
   {
-    $last_semester = Semester::last();
+    $last_semester = Semester::last()->first();
     if (Auth::user()->hasRole('Estudiante')) {
       $result = Auth::user()->moves()->where('semester_id', $last_semester->id)->latest()->paginate();
     } elseif (Auth::user()->hasRole('Coordinador')) {
@@ -48,10 +48,10 @@ class MovesController extends Controller
       return redirect()->back();
     }
 
-    $last = Semester::last();
-    $today = Carbon::now('America/Mexico_City');
-    $max_ups = $last->max_ups;
-    $ups_open = ($last->begin_up <= $today and $last->end_up >= $today);
+    $last       = Semester::last()->first();
+    $today      = Carbon::now('America/Mexico_City');
+    $max_ups    = $last->max_ups;
+    $ups_open   = ($last->begin_up <= $today and $last->end_up >= $today);
     $downs_open = ($last->begin_down <= $today and $last->end_down >= $today);
 
     $moves = ($type == 'up') ? Move::where('user_id', Auth::user()->id)
@@ -95,7 +95,7 @@ class MovesController extends Controller
    */
   public function store(Request $request)
   {
-    $last_semester = Semester::last();
+    $last_semester = Semester::last()->first();
     $this->validate($request, [
       'group_id' => 'required',
       'justification' => 'required'
@@ -103,8 +103,8 @@ class MovesController extends Controller
 
     $group = Group::findOrFail([$request->get('group_id')])->first();
     $is_parallel = ($group->subject->career->id != Auth::user()->career->id);
-    $exists = Move::where('user_id', Auth::user()->id)
-      ->where('semester_id', $last_semester->id)
+    $exists      = Move::where('user_id', Auth::user()->id)
+      ->where('semester_id', !is_null($last_semester) ? $last_semester->id : 0)
       ->where('group_id', $request->get('group_id'))
       ->where('type', ($request->get('type') == 'up') ? 'ALTA' : 'BAJA')
       ->count();
@@ -253,9 +253,9 @@ class MovesController extends Controller
 
   public function byCareer($key)
   {
-    $last_semester = Semester::last();
-    $career = Career::where('key', $key)->first();
-    $result = $career->moves()->where('semester_id', $last_semester->id)->unattended()->paginate();
+    $last_semester = Semester::last()->first();
+    $career        = Career::where('key', $key)->first();
+    $result        = $career->moves()->where('semester_id', !is_null($last_semester) ? $last_semester->id : 0)->unattended()->paginate();
     return view('moves.index', compact('result', 'key'));
   }
 
@@ -264,7 +264,7 @@ class MovesController extends Controller
    */
   public function listBySubject()
   {
-    $last_semester = Semester::last();
+    $last_semester = Semester::last()->first();
     if (!is_null(Auth::user()->career)) {
       $result = Move::with('group.subject')->where('semester_id', $last_semester->id);
 
@@ -281,9 +281,9 @@ class MovesController extends Controller
       });
     } else {
       // Jefe / Admin
-      $result = Move::with('group.subject')->where('semester_id', $last_semester->id);
+      $result = Move::with('group.subject')->where('semester_id', !is_null($last_semester) ? $last_semester->id : 0);
 
-      $result = ($last_semester->has_ended) ? $result->attended(true) : $result->unattendedParallel();
+      $result = (!is_null($last_semester) and $last_semester->has_ended) ? $result->attended(true) : $result->unattendedParallel();
       $result = $result->get();
     }
 
@@ -303,9 +303,9 @@ class MovesController extends Controller
    */
   public function bySubject(Request $request, $key, $all = null)
   {
-    $subject = Subject::where('key', $key)->first();
-    $last_semester = Semester::last();
-    $groups = Group::where('semester_id', $last_semester->id)->where('subject_id', $subject->id)->pluck('id');
+    $subject       = Subject::where('key', $key)->first();
+    $last_semester = Semester::last()->first();
+    $groups        = Group::where('semester_id', !is_null($last_semester) ? $last_semester->id : 0)->where('subject_id', $subject->id)->pluck('id');
 
     $result = Move::with('group', 'group.subject', 'user')
       ->where('semester_id', $last_semester->id)
@@ -360,7 +360,7 @@ class MovesController extends Controller
    */
   public function listByStudent()
   {
-    $last_semester = Semester::last();
+    $last_semester = Semester::last()->first();
     if (!is_null(Auth::user()->career)) {
       $result = Move::with('user.career')->where('semester_id', $last_semester->id);
 
@@ -377,9 +377,9 @@ class MovesController extends Controller
       });
     } else {
       // Jefe / Admin
-      $result = Move::with('user.career')->where('semester_id', $last_semester->id);
+      $result = Move::with('user.career')->where('semester_id', !is_null($last_semester) ? $last_semester->id : 0);
 
-      $result = ($last_semester->has_ended) ? $result->attended(true) : $result->unattendedParallel();
+      $result = (!is_null($last_semester) and $last_semester->has_ended) ? $result->attended(true) : $result->unattendedParallel();
       $result = $result->get();
     }
 
@@ -421,9 +421,9 @@ class MovesController extends Controller
    */
   public function listByGroups()
   {
-    $last_semester = Semester::last();
+    $last_semester = Semester::last()->first();
     if (!is_null(Auth::user()->career)) {
-      $result = Move::with('user.career')->where('semester_id', $last_semester->id)->unattendedSwitch()->get();
+      $result  = Move::with('user.career')->where('semester_id', !is_null($last_semester) ? $last_semester->id : 0)->unattendedSwitch()->get();
       $result1 = $result->filter(function ($move, $key) {
         if (Auth::user()->career->key == 'IIA') {
           $IAMB = Career::where('key', 'IAMB')->first();
@@ -494,7 +494,7 @@ class MovesController extends Controller
    */
   public function listPermutas()
   {
-    $last_semester = Semester::last();
+    $last_semester = Semester::last()->first();
     # Buscar  matches en permutas registradas con candidato
     $permutasCandidato = Permuta::with('user')->where('semester_id', $last_semester->id)->where('status', 0)->where('candidate', '<>', '')->get();
     if (count($permutasCandidato) > 0) {
@@ -529,9 +529,9 @@ class MovesController extends Controller
    */
   public function byStudent($key)
   {
-    $user = User::where('username', $key)->first();
-    $last_semester = Semester::last();
-    $result = $user->moves()->where('semester_id', $last_semester->id);
+    $user          = User::where('username', $key)->first();
+    $last_semester = Semester::last()->first();
+    $result        = $user->moves()->where('semester_id', !is_null($last_semester) ? $last_semester->id : 0);
 
     $result = (!is_null(Auth::user()->career)) ? $result->parallel(false) : $result;
     $result = $result->paginate();
@@ -544,13 +544,13 @@ class MovesController extends Controller
 
   public function byTypeRegistered($all = null)
   {
-    $last_semester = Semester::last();
+    $last_semester = Semester::last()->first();
     if (!is_null(Auth::user()->career)) {
       $career = Career::find(Auth::user()->career->id);
-      $result = $career->moves()->where('semester_id', $last_semester->id)->registered();
+      $result = $career->moves()->where('semester_id', !is_null($last_semester) ? $last_semester->id : 0)->registered();
       $result = (!is_null($all)) ? $result->get() : $result->paginate();
     } else {
-      $result = Move::where('semester_id', $last_semester->id)->registered(true);
+      $result = Move::where('semester_id', !is_null($last_semester) ? $last_semester->id : 0)->registered(true);
       $result = (!is_null($all)) ? $result->get() : $result->paginate();
     }
 
@@ -563,12 +563,12 @@ class MovesController extends Controller
 
   public function byTypeRevision()
   {
-    $last_semester = Semester::last();
+    $last_semester = Semester::last()->first();
     if (!is_null(Auth::user()->career)) {
       $career = Career::find(Auth::user()->career->id);
-      $result = $career->moves()->where('semester_id', $last_semester->id)->onRevision()->paginate();
+      $result = $career->moves()->where('semester_id', !is_null($last_semester) ? $last_semester->id : 0)->onRevision()->paginate();
     } else {
-      $result = Move::where('semester_id', $last_semester->id)->onRevision(true)->paginate();
+      $result = Move::where('semester_id', !is_null($last_semester) ? $last_semester->id : 0)->onRevision(true)->paginate();
     }
 
     $url = route('home.index');
@@ -583,10 +583,10 @@ class MovesController extends Controller
     if (!empty($request->search)) {
       $users = User::where('username', 'LIKE', "%$request->search%")->get();
     }
-    $last_semester = Semester::last();
+    $last_semester = Semester::last()->first();
 
-    $result = (!is_null(Auth::user()->career)) ? Auth::user()->career->moves() : Move::where('semester_id', $last_semester->id);
-    $result = $result->where('semester_id', $last_semester->id); // Movimientos del semestre activo
+    $result = (!is_null(Auth::user()->career)) ? Auth::user()->career->moves() : Move::where('semester_id', !is_null($last_semester) ? $last_semester->id : 0);
+    $result = $result->where('semester_id', !is_null($last_semester) ? $last_semester->id : 0); // Movimientos del semestre activo
     $result = (!is_null(Auth::user()->career)) ? $result->attended() : $result->attended(true);
     $result = (!empty($request->search)) ? $result->whereIn('user_id', $users->pluck('id')) : $result;
 
@@ -602,9 +602,9 @@ class MovesController extends Controller
 
   public function switchGroup()
   {
-    $last_semester = Semester::last();
-    $permuta = Permuta::where('user_id', Auth::user()->id)
-      ->where('semester_id', $last_semester->id)
+    $last_semester  = Semester::last()->first();
+    $permuta        = Permuta::where('user_id', Auth::user()->id)
+      ->where('semester_id', !is_null($last_semester) ? $last_semester->id : 0)
       ->first();
     $active_permuta = (is_object($permuta));
 
@@ -613,7 +613,7 @@ class MovesController extends Controller
 
   public function saveSwitchGroup(Request $request)
   {
-    $last_semester = Semester::last();
+    $last_semester = Semester::last()->first();
     $this->validate($request, [
       'base_semester' => 'required',
       'base_group' => 'required',
@@ -621,7 +621,7 @@ class MovesController extends Controller
     ]);
 
     $exists = Permuta::where('user_id', Auth::user()->id)
-      ->where('semester_id', $last_semester->id)
+      ->where('semester_id', !is_null($last_semester) ? $last_semester->id : 0)
       ->count();
 
     $request->merge(['candidate' => trim($request->get('candidate'))]);

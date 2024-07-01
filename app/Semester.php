@@ -22,7 +22,7 @@ class Semester extends Model
    */
   public function scopeLast($query)
   {
-    return $query->where('is_active', true)->first();
+    return $query->where('is_active', true);
   }
 
   /**

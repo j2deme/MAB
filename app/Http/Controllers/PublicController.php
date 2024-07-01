@@ -22,7 +22,7 @@ class PublicController extends Controller
 
   public function test()
   {
-    $semester = Semester::last();
+    $semester = Semester::last()->first();
     # Borrado masivo de usuarios sin carrera (borra Admin y JEFE_DEP)
     /*$users = User::where('career_id', null)->orderBy('username', 'asc')->get();
     foreach ($users as $key => $user) {

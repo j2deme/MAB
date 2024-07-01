@@ -28,7 +28,7 @@ class HomeController extends Controller
    */
   public function index()
   {
-    $last_semester = Semester::last();
+    $last_semester = Semester::last()->first();
     if (is_null(Auth::user()->career)) {
       $data['careers'] = Career::pluck('name', 'id');
       $data['ups'] = $last_semester->moves->where('type', 'ALTA')->count();
