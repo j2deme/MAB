@@ -10,17 +10,17 @@
           <h2 class="ui primary dividing header">{{ (isset($title)) ? $title : "Usuarios" }} ({{ $total }})</h2>
         </header>
         <div class="ui right floated buttons">
-        @role('Admin')
+          @role('Admin')
           <a href="{{ route('users.new') }}" class="ui primary labeled icon button">
             <i class="ui add icon"></i> Añadir usuario
           </a>
           <a href="{{ route('users.upload') }}" class="ui icon button">
             <i class="upload icon"></i>
           </a>
-        @endrole
-        @hasanyrole(['Jefe','Admin'])
-        @include('components.list-all')
-        @endhasanyrole
+          @endrole
+          @hasanyrole(['Jefe','Admin'])
+          @include('components.list-all')
+          @endhasanyrole
         </div>
         <table class="ui celled striped compact table">
           <thead>
@@ -45,7 +45,8 @@
               <td class="ui center aligned">{{ $item->id }}</td>
               <td>{{ $item->full_name }}</td>
               <td class="ui center aligned">
-                <a href="{{ route('auth.logas', ['user' => $item->id]) }}" class="ui icon" data-tooltip="Iniciar como..." data-position="top center">
+                <a href="{{ route('auth.logas', ['user' => $item->id]) }}" class="ui icon"
+                  data-tooltip="Iniciar como..." data-position="top center">
                   <i class="ui key icon"></i>
                 </a>
                 &nbsp;
@@ -93,8 +94,8 @@
           <tfoot class="full-width">
             <tr>
               <th colspan="7">
-                @if (!ends_with(Request::path(),"/all"))
-                  @include('pagination.custom', ['paginator' => $users])
+                @if (!ends_with(Request::path(),"/all") and (isset($no_paginate) and !$no_paginate))
+                @include('pagination.custom', ['paginator' => $users])
                 @endif
               </th>
             </tr>
