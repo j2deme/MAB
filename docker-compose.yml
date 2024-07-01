@@ -1,0 +1,23 @@
+services:
+  web:
+    image: mab:2024
+    build:
+      target: web
+      context: .
+    env_file:
+      - .env
+    ports:
+      - "8181:80"
+    volumes:
+      - .:/var/www/html
+    networks:
+      - app-network
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /var/www/html
+networks:
+  app-network:
+
+
