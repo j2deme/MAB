@@ -15,7 +15,7 @@
     "spatie/laravel-permission": "1.4.0",
     "laracasts/flash": "^3.0",
     "doctrine/inflector": "1.1.0",
-    "league/csv": "^9.6"
+    "league/csv": "^9.5"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
@@ -34,8 +34,7 @@
     }
   },
   "autoload-dev": {
-    "classmap": [
-    ]
+    "classmap": []
   },
   "scripts": {
     "post-root-package-install": [
@@ -54,6 +53,9 @@
     ]
   },
   "config": {
-    "preferred-install": "dist"
+    "preferred-install": "dist",
+    "allow-plugins": {
+      "kylekatarnls/update-helper": true
+    }
   }
 }
