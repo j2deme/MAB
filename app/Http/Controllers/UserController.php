@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Role;
 use App\Semester;
 use App\User;
@@ -12,8 +12,8 @@ use App\Http\Requests;
 use App\Traits\Authorizable;
 use Illuminate\Http\Request;
 use League\Csv\Reader;
-use Storage;
-use File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {

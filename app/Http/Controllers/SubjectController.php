@@ -7,8 +7,8 @@ use App\Subject;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use League\Csv\Reader;
-use Storage;
-use File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class SubjectController extends Controller
 {
