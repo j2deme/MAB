@@ -338,11 +338,11 @@ class Groups20193Seeder extends Seeder
       ['ISIT17', 'C'],
     ];
     foreach ($groups as $group) {
-      $key = $group[0];
-      $name = $group[1];
-      $last = Semester::last();
+      $key     = $group[0];
+      $name    = $group[1];
+      $last    = Semester::last()->first();
       $subject = Subject::where('key', $key)->firstOrFail();
-      $exists = Group::where('semester_id', $last->id)->where('subject_id', $subject->id)->where('name', $name)->count();
+      $exists  = Group::where('semester_id', $last->id)->where('subject_id', $subject->id)->where('name', $name)->count();
       if ($exists == 0) {
         Group::create([
           'name' => $name,

@@ -62,17 +62,17 @@ class DatabaseSeeder extends Seeder
   {
     $faker = Faker\Factory::create();
     // Create users for administration roles
-    $admin = new User();
-    $admin->name = "Administrador";
-    $admin->username = "admin";
-    $admin->email = "jesus.delgado@tecvalles.mx";
-    $admin->password = 'secret';
+    $admin                 = new User();
+    $admin->name           = "Administrador";
+    $admin->username       = "admin";
+    $admin->email          = "jesus.delgado@tecvalles.mx";
+    $admin->password       = 'secret';
     $admin->remember_token = str_random(10);
     $admin->save();
     $admin->assignRole('Admin');
     $this->command->info('Administrador creado');
 
-    foreach (['IGE', 'ISC', 'II', 'ING', 'MIX'] as $key) {
+    foreach (['IGE', 'ISC', 'II', 'ING', 'IAGRO', 'MIX'] as $key) {
       $coord = new User([
         'name' => "Coordinador {$key}",
         'username' => str_slug("Coordinador {$key}", "_"),
@@ -86,11 +86,11 @@ class DatabaseSeeder extends Seeder
     }
     $this->command->info('Coordinadores creados');
 
-    $jefe = new User();
-    $jefe->name = 'Jefe DEP';
-    $jefe->username = 'jefedep';
-    $jefe->email = 'dep@tecvalles.mx';
-    $jefe->password = 'secret';
+    $jefe                 = new User();
+    $jefe->name           = 'Jefe DEP';
+    $jefe->username       = 'jefedep';
+    $jefe->email          = 'dep@tecvalles.mx';
+    $jefe->password       = 'secret';
     $jefe->remember_token = str_random(10);
     $jefe->save();
     $jefe->assignRole('Jefe');
