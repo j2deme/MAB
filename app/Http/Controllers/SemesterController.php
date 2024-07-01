@@ -16,7 +16,7 @@ class SemesterController extends Controller
   public function index()
   {
     $result = Semester::orderBy('created_at', 'desc')->paginate();
-    return view('semester.index', compact('result'));
+    return response()->view('semester.index', compact('result'));
   }
 
   /**
@@ -26,7 +26,7 @@ class SemesterController extends Controller
    */
   public function create()
   {
-    return view('semester.new');
+    return response()->view('semester.new');
   }
 
   /**
@@ -74,7 +74,7 @@ class SemesterController extends Controller
   {
     $semester = Semester::findOrFail($id);
 
-    return view('semester.edit', compact('semester'));
+    return response()->view('semester.edit', compact('semester'));
   }
 
   /**
@@ -131,6 +131,7 @@ class SemesterController extends Controller
     } else {
       flash()->error('Ocurrió un error al eliminar el semestre');
     }
+    return redirect()->back();
   }
 
   /**

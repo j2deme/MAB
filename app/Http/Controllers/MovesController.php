@@ -34,7 +34,7 @@ class MovesController extends Controller
       $result = (!is_null($all)) ? $result->get() : $result->paginate();
     }
 
-    return view('moves.index', compact('result'));
+    return response()->view('moves.index', compact('result'));
   }
 
   /**
@@ -84,7 +84,7 @@ class MovesController extends Controller
         'BAJA TEMPORAL',
       ]
     ];
-    return view('moves.new', compact(['type', 'groups', 'justifications', 'last', 'ups_open', 'downs_open', 'today', 'moves', 'max_ups']));
+    return response()->view('moves.new', compact(['type', 'groups', 'justifications', 'last', 'ups_open', 'downs_open', 'today', 'moves', 'max_ups']));
   }
 
   /**
@@ -146,7 +146,7 @@ class MovesController extends Controller
   public function show($id)
   {
     $move = Move::with(['group', 'group.subject'])->findOrFail([$id])->first();
-    return view('moves.show', compact('move'));
+    return response()->view('moves.show', compact('move'));
   }
 
   /**
@@ -175,7 +175,7 @@ class MovesController extends Controller
       'NO SE AUTORIZAN BAJAS PARA 1ER SEMESTRE',
       'SIN PROBLEMAS',
     ];
-    return view('moves.check', compact('move', 'answers'));
+    return response()->view('moves.check', compact('move', 'answers'));
   }
 
   /**
@@ -209,7 +209,7 @@ class MovesController extends Controller
     }
 
     if ($request->has('url')) {
-      return redirect($request->get('url'));
+      return redirect()->url($request->get('url'));
     } else {
       return redirect()->route('home.index');
     }
@@ -256,7 +256,7 @@ class MovesController extends Controller
     $last_semester = Semester::last()->first();
     $career        = Career::where('key', $key)->first();
     $result        = $career->moves()->where('semester_id', !is_null($last_semester) ? $last_semester->id : 0)->unattended()->paginate();
-    return view('moves.index', compact('result', 'key'));
+    return response()->view('moves.index', compact('result', 'key'));
   }
 
   /**
@@ -295,7 +295,7 @@ class MovesController extends Controller
 
     $subjects = Subject::all()->pluck('short_name', 'key');
 
-    return view('moves.list-semester-subject', compact('groupedBySemester', 'subjects'));
+    return response()->view('moves.list-semester-subject', compact('groupedBySemester', 'subjects'));
   }
 
   /**
@@ -352,7 +352,7 @@ class MovesController extends Controller
     $url = route('moves.listBySubject');
     session(['url' => $url]);
 
-    return view('moves.index', compact('result', 'subject', 'url', 'ups', 'downs'));
+    return response()->view('moves.index', compact('result', 'subject', 'url', 'ups', 'downs'));
   }
 
   /**
@@ -412,7 +412,7 @@ class MovesController extends Controller
     }
     $generations = collect($generations);
 
-    return view('moves.list-generations', compact('generations', 'students'));
+    return response()->view('moves.list-generations', compact('generations', 'students'));
   }
 
   /**
@@ -486,7 +486,7 @@ class MovesController extends Controller
     }
     $title = "Solicitudes de cambio de grupo";
 
-    return view('moves.list-generations', compact('generations', 'students', 'title'));
+    return response()->view('moves.list-generations', compact('generations', 'students', 'title'));
   }
 
   /**
@@ -521,7 +521,7 @@ class MovesController extends Controller
 
     $title = "Solicitudes de cambio de grupo";
 
-    return view('moves.list-permutas', compact('permutas', 'students', 'title'));
+    return response()->view('moves.list-permutas', compact('permutas', 'students', 'title'));
   }
 
   /**
@@ -539,7 +539,7 @@ class MovesController extends Controller
     $url = route('moves.listByStudent');
     session(['url' => $url]);
 
-    return view('moves.index', compact('result', 'user', 'url'));
+    return response()->view('moves.index', compact('result', 'user', 'url'));
   }
 
   public function byTypeRegistered($all = null)
@@ -558,7 +558,7 @@ class MovesController extends Controller
 
     $extra = "Sin Atender";
 
-    return view('moves.index', compact('result', 'url', 'extra'));
+    return response()->view('moves.index', compact('result', 'url', 'extra'));
   }
 
   public function byTypeRevision()
@@ -575,7 +575,7 @@ class MovesController extends Controller
 
     $extra = "En Revisión";
 
-    return view('moves.index', compact('result', 'url', 'extra'));
+    return response()->view('moves.index', compact('result', 'url', 'extra'));
   }
 
   public function byTypeAttended(Request $request, $all = null)
@@ -597,7 +597,7 @@ class MovesController extends Controller
     $extra = "Finalizadas";
     $search = true;
 
-    return view('moves.index', compact('result', 'url', 'extra', 'search'));
+    return response()->view('moves.index', compact('result', 'url', 'extra', 'search'));
   }
 
   public function switchGroup()
@@ -608,7 +608,7 @@ class MovesController extends Controller
       ->first();
     $active_permuta = (is_object($permuta));
 
-    return view('moves.switch-form', compact('permuta', 'active_permuta', 'last_semester'));
+    return response()->view('moves.switch-form', compact('permuta', 'active_permuta', 'last_semester'));
   }
 
   public function saveSwitchGroup(Request $request)

@@ -20,7 +20,7 @@ class SubjectController extends Controller
   public function index()
   {
     $result = Subject::orderBy('career_id')->paginate();
-    return view('subject.index', compact('result'));
+    return response()->view('subject.index', compact('result'));
   }
 
   /**
@@ -32,7 +32,7 @@ class SubjectController extends Controller
   {
     $careers = Career::pluck('name', 'id');
 
-    return view('subject.new', compact('careers'));
+    return response()->view('subject.new', compact('careers'));
   }
 
   /**
@@ -66,8 +66,8 @@ class SubjectController extends Controller
 
   public function upload()
   {
-    #return view('subject.upload'); # View for CSV file
-    return view('subject.load'); # View for TextArea
+    #return response()->view('subject.upload'); # View for CSV file
+    return response()->view('subject.load'); # View for TextArea
   }
 
   public function load(Request $request)

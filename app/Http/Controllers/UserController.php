@@ -37,7 +37,7 @@ class UserController extends Controller
     $data['total'] = $users->count();
     $data['no_paginate'] = true;
 
-    return view('user.index', $data);
+    return response()->view('user.index', $data);
   }
 
   public function listStudents($all = null)
@@ -50,7 +50,7 @@ class UserController extends Controller
     $data['title'] = "Estudiantes";
     $data['total'] = (get_class($students) == "Illuminate\Pagination\LengthAwarePaginator") ? $students->total() : $students->count();
 
-    return view('user.index', $data);
+    return response()->view('user.index', $data);
   }
 
   /**
@@ -61,7 +61,7 @@ class UserController extends Controller
   public function create()
   {
     $roles = Role::pluck('name', 'id');
-    return view('user.new', compact('roles'));
+    return response()->view('user.new', compact('roles'));
   }
 
   /**
@@ -137,7 +137,7 @@ class UserController extends Controller
 
     asort($log);
 
-    return view('user.show', compact('user', 'log', 'moves'));
+    return response()->view('user.show', compact('user', 'log', 'moves'));
   }
 
   /**
@@ -153,7 +153,7 @@ class UserController extends Controller
     $permissions = Permission::all('name', 'id');
     $careers = Career::pluck('name', 'id');
 
-    return view('user.edit', compact('user', 'roles', 'permissions', 'careers'));
+    return response()->view('user.edit', compact('user', 'roles', 'permissions', 'careers'));
   }
 
   /**
@@ -239,8 +239,8 @@ class UserController extends Controller
       } else {
         flash()->error('Ocurrió un error al actualizar el usuario');
       }
-      return redirect()->back();
     }
+    return redirect()->back();
   }
 
   /**
@@ -307,8 +307,8 @@ class UserController extends Controller
 
   public function upload()
   {
-    #return view('user.upload'); # View for CSV file
-    return view('user.load'); # View for TextArea
+    #return response()->view('user.upload'); # View for CSV file
+    return response()->view('user.load'); # View for TextArea
   }
 
   public function load(Request $request)
@@ -417,8 +417,8 @@ class UserController extends Controller
 
   public function uploadActive()
   {
-    # return view('user.activate'); # View for CSV file
-    return view('user.enroll'); # View for TextArea
+    # return response()->view('user.activate'); # View for CSV file
+    return response()->view('user.enroll'); # View for TextArea
   }
 
   public function enroll(Request $request)
@@ -544,6 +544,6 @@ class UserController extends Controller
       $data['users'] = $users;
     }
 
-    return view('user.search', $data);
+    return response()->view('user.search', $data);
   }
 }

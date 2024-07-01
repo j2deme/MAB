@@ -60,7 +60,7 @@ class PermutasController extends Controller
   public function edit($id)
   {
     $permuta = Permuta::find($id);
-    return view('permuta.edit', compact('permuta'));
+    return response()->view('permuta.edit', compact('permuta'));
   }
 
   /**

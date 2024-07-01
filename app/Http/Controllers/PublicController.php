@@ -17,7 +17,7 @@ class PublicController extends Controller
     if (!is_null(Auth::user())) {
       return redirect()->route('home.index');
     }
-    return view('index');
+    return response()->view('index');
   }
 
   public function test()

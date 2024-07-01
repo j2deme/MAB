@@ -23,7 +23,7 @@ class RoleController extends Controller
     $permissions = Permission::all();
     $user = Auth::user();
 
-    return view('role.index', compact('roles', 'permissions', 'user'));
+    return response()->view('role.index', compact('roles', 'permissions', 'user'));
   }
 
   /**

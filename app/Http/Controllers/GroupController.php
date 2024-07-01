@@ -30,7 +30,7 @@ class GroupController extends Controller
 
     $data['result'] = $result;
     $data['semester'] = $semester;
-    return view('group.index', $data);
+    return response()->view('group.index', $data);
   }
 
   /**
@@ -43,7 +43,7 @@ class GroupController extends Controller
     $semesters = Semester::orderBy('id', 'desc')->pluck('long_name', 'id');
     $subjects = Subject::orderBy('career_id', 'asc')->orderBy('semester', 'asc')->where('is_active', true)->get();
 
-    return view('group.new', compact('semesters', 'subjects'));
+    return response()->view('group.new', compact('semesters', 'subjects'));
   }
 
   /**
@@ -79,8 +79,8 @@ class GroupController extends Controller
   public function upload()
   {
     $data['semester'] = Semester::whereIsActive(true)->orderBy('key', 'desc')->first();
-    # return view('group.upload', $data); # View for CSV
-    return view('group.load', $data); # View for TextArea
+    # return response()->view('group.upload', $data); # View for CSV
+    return response()->view('group.load', $data); # View for TextArea
   }
 
   public function load(Request $request)
