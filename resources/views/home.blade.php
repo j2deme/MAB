@@ -35,8 +35,12 @@
                 <div class="label">Atendidas</div>
               </div>
               @hasanyrole(['Jefe','Admin'])
+              @php
+              $semester = App\Semester::last()->first();
+              $num_groups = (!is_null($semester)) ? $semester->groups->count() : 0;
+              @endphp
               <div class="ui statistic">
-                <div class="value">{{ App\Semester::last()->groups->count() }}</div>
+                <div class="value">{{ $num_groups }}</div>
                 <div class="blue label">Grupos</div>
               </div>
               @endhasanyrole

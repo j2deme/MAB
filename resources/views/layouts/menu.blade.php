@@ -80,8 +80,11 @@
 @end
 <div class="right menu">
   @auth
+  @php
+  $semester = App\Semester::last()->first();
+  @endphp
   <div class="item">
-    <strong>{{ App\Semester::last()->short_name }}</strong>
+    <strong>{{ $semester->short_name or 'Sin periodo' }}</strong>
   </div>
   <div class="ui simple dropdown item">
     @hasrole('Estudiante')
