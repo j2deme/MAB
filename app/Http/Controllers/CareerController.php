@@ -97,8 +97,16 @@ class CareerController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  // public function destroy($id)
-  // {
-  //   //
-  // }
+  public function destroy($id)
+  {
+    $career = Career::findOrFail($id);
+
+    if ($career->delete()) {
+      flash('La carrera ha sido eliminada');
+    } else {
+      flash()->error('Ocurrió un error al eliminar la carrera');
+    }
+
+    return redirect()->route('careers.index');
+  }
 }
