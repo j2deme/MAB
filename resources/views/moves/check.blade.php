@@ -33,7 +33,7 @@
                   <strong>{{ $move->user->username }}</strong><br>
                   {{ $move->user->full_name }}
                 </td>
-                <td class="ui center aligned">{{ $move->user->career->key }}</td>
+                <td class="ui center aligned">{{ $move->user->career->acronym }}</td>
                 <td class="ui center aligned">{{ $move->group->subject->short_name }}
                   ({{ $move->group->full_key }})</td>
                 <td class="ui center aligned">
@@ -75,7 +75,7 @@
               <div class="header">{{ $move->group->subject->short_name }} ({{ $move->group->full_key }})</div>
               <div class="meta">
                 <span class="right floated">
-                  {{ $move->user->username }} <small>({{ $move->user->career->key }})</small>
+                  {{ $move->user->username }} <small>({{ $move->user->career->acronym }})</small>
                 </span>
                 <span class="category"><small>{{ $move->type }}</small> <i
                     class="ui {{ $move->type == 'ALTA' ? 'blue arrow up' : 'red arrow down' }} icon"></i></span>

@@ -272,7 +272,7 @@ class MovesController extends Controller
       $result = $result->get();
 
       $result = $result->filter(function ($move, $key) {
-        if (Auth::user()->career->key == 'IIA') {
+        if (Auth::user()->career->acronym == 'IIA') {
           $IAMB = Career::where('key', 'IAMB')->first();
           return (in_array($move->group->subject->career->id, [Auth::user()->career->id, $IAMB->id]));
         } else {
@@ -368,7 +368,7 @@ class MovesController extends Controller
       $result = $result->get();
 
       $result = $result->filter(function ($move, $key) {
-        if (Auth::user()->career->key == 'IIA') {
+        if (Auth::user()->career->acronym == 'IIA') {
           $IAMB = Career::where('key', 'IAMB')->first();
           return (in_array($move->user->career->id, [Auth::user()->career->id, $IAMB->id]));
         } else {
@@ -425,7 +425,7 @@ class MovesController extends Controller
     if (!is_null(Auth::user()->career)) {
       $result  = Move::with('user.career')->where('semester_id', !is_null($last_semester) ? $last_semester->id : 0)->unattendedSwitch()->get();
       $result1 = $result->filter(function ($move, $key) {
-        if (Auth::user()->career->key == 'IIA') {
+        if (Auth::user()->career->acronym == 'IIA') {
           $IAMB = Career::where('key', 'IAMB')->first();
           return (in_array($move->user->career->id, [Auth::user()->career->id, $IAMB->id]));
         } else {

@@ -30,19 +30,19 @@
                 @hasanyrole(['Coordinador','Jefe','Admin'])
                 <td class="ui center aligned">{{ $move->user->username }}</td>
                 <td class="ui center aligned">{{ $move->user->full_name }}</td>
-                <td class="ui center aligned">{{ $move->user->career->key }}</td>
+                <td class="ui center aligned">{{ $move->user->career->acronym }}</td>
                 @endhasanyrole
                 <td class="ui center aligned">{{ $move->group->subject->short_name }}
                   ({{ $move->group->full_key }})</td>
                 <td class="ui center aligned">
                   <strong>{{ $move->type }}</strong>&nbsp;
                   @if($move->type == "ALTA")
-                    <i class="ui arrow up blue icon"></i>
+                  <i class="ui arrow up blue icon"></i>
                   @else
-                    <i class="ui arrow down red icon"></i>
+                  <i class="ui arrow down red icon"></i>
                   @endif
                   @if ($move->is_parallel)
-                    <span class="ui blue label">P</span>
+                  <span class="ui blue label">P</span>
                   @endif
                 </td>
                 <td class="ui center aligned">
@@ -91,7 +91,8 @@
                 <span class="right floated">
                   {{ $move->user->username }}
                 </span>
-                <span class="category"><small>{{ $move->type }}</small> <i class="ui {{ $move->type == 'ALTA' ? 'blue arrow up' : 'red arrow down' }} icon"></i></span>
+                <span class="category"><small>{{ $move->type }}</small> <i
+                    class="ui {{ $move->type == 'ALTA' ? 'blue arrow up' : 'red arrow down' }} icon"></i></span>
               </div>
               <div class="description">
                 <h4>{{ $move->justification['main'] }}</h4>
@@ -101,7 +102,7 @@
             <div class="extra content">
               <div class="left floated">
                 @if ($move->is_parallel)
-                  <a class="ui blue label">PARALELO</a>
+                <a class="ui blue label">PARALELO</a>
                 @endif
               </div>
               <div class="right floated">

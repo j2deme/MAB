@@ -31,7 +31,7 @@
             @forelse ($result as $item)
             <tr>
               <td class="ui center aligned">{{ $item->internal_key }}</td>
-              <td class="ui center aligned">{{ $item->key }}</td>
+              <td class="ui center aligned">{{ $item->acronym }}</td>
               <td>
                 <a href="{{ route('careers.show', $item) }}">{{ $item->name }}</a>
               </td>

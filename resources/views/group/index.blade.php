@@ -8,7 +8,8 @@
       <article class="ui attached segment">
         <header>
           <h2 class="ui primary dividing header">Grupos</h2>
-          <div class="sub header">{{ (!is_null($semester)) ? "Semestre ".$semester->short_name : "Sin semestre activo" }}</div>
+          <div class="sub header">{{ (!is_null($semester)) ? "Semestre ".$semester->short_name : "Sin semestre activo"
+            }}</div>
         </header>
         @can('add_groups')
         <div class="ui right floated buttons">
@@ -43,7 +44,7 @@
               <td>
                 <a href="{{ route('groups.show', $item) }}">{{ $item->subject->long_name }}</a>
               </td>
-              <td class="ui center aligned">{{ $item->subject->career->key }}</td>
+              <td class="ui center aligned">{{ $item->subject->career->acronym }}</td>
               <td class="ui center aligned">{{ $item->subject->semester }}</td>
               <td class="ui center aligned">
                 <a href="{{ route('groups.toggle', $item) }}">
@@ -67,9 +68,9 @@
                   <div class="ui icon header">
                     <i class="ui shapes icon"></i>
                     @if(!is_null($semester))
-                      No existen grupos registrados
+                    No existen grupos registrados
                     @else
-                      Es necesario activar un semestre para cargar grupos
+                    Es necesario activar un semestre para cargar grupos
                     @endif
                   </div>
                   @role('Admin')

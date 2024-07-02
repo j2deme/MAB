@@ -1,7 +1,6 @@
 <p>Puedes solicitar un máximo de {{ $max_ups }} movimientos de alta.</p>
 <div class="ui five stackable cards">
-  @for ($i = 0; $i < max($max_ups, count($moves)); $i++)
-  <div class="ui fluid card">
+  @for ($i = 0; $i < max($max_ups, count($moves)); $i++) <div class="ui fluid card">
     @if (isset($moves[$i]))
     <div class="content">
       <div class="header">
@@ -10,7 +9,7 @@
       <div class="meta">
         <div class="right floated">
           @if ($moves[$i]->is_parallel)
-            <span class="ui blue small label">P</span>
+          <span class="ui blue small label">P</span>
           @endif
         </div>
       </div>
@@ -37,26 +36,25 @@
       </div>
     </div>
     @endif
-  </div>
-  @endfor
+</div>
+@endfor
 </div>
 <br>
-@if (count($moves) < $max_ups)
-<form action="{{ route('moves.save') }}" class="ui form {{ (!$ups_open) ? 'closed' : null }}" method="POST"
-  id="moveForm">
+@if (count($moves) < $max_ups) <form action="{{ route('moves.save') }}"
+  class="ui form {{ (!$ups_open) ? 'closed' : null }}" method="POST" id="moveForm">
   @csrf
   <input type="hidden" id="type" name="type" value="{{ $type }}">
   @php
   function careerLabel($career){
-    $career = str_replace('-MIX', ' MIXTA', strtoupper($career));
-    $career = str_replace('IIA', ' ING. IND. ALIMENTARIAS', $career);
-    $career = str_replace('II', ' ING. INDUSTRIAL', $career);
-    $career = str_replace('IGE', ' ING. GESTIÓN EMPRESARIAL', $career);
-    $career = str_replace('ISC', ' ING. SISTEMAS COMPUTACIONALES', $career);
-    $career = str_replace('IAMB', ' ING. AMBIENTAL', $career);
-    $career = str_replace('IAGRO', ' ING. EN AGRONOMÍA', $career);
+  $career = str_replace('-MIX', ' MIXTA', strtoupper($career));
+  $career = str_replace('IIA', ' ING. IND. ALIMENTARIAS', $career);
+  $career = str_replace('II', ' ING. INDUSTRIAL', $career);
+  $career = str_replace('IGE', ' ING. GESTIÓN EMPRESARIAL', $career);
+  $career = str_replace('ISC', ' ING. SISTEMAS COMPUTACIONALES', $career);
+  $career = str_replace('IAMB', ' ING. AMBIENTAL', $career);
+  $career = str_replace('IAGRO', ' ING. EN AGRONOMÍA', $career);
 
-    return $career;
+  return $career;
   }
   @endphp
   <div class="field">
@@ -65,7 +63,8 @@
     <select id="group_id" name="group_id" class="ui search selection dropdown">
       <option value="">---</option>
       @foreach ($groups as $item)
-      <option value="{{ $item->id }}">{{ $item->subject->long_name }} ({{ $item->key }} - {{ careerLabel($item->subject->career->key) }})</option>
+      <option value="{{ $item->id }}">{{ $item->subject->long_name }} ({{ $item->key }} - {{
+        careerLabel($item->subject->career->acronym) }})</option>
       @endforeach
     </select>
   </div>
@@ -106,7 +105,7 @@
       </a>
     </div>
   </div>
-</form>
-@else
-@include('components.back', ['route' => route('moves.index')])
-@endif
+  </form>
+  @else
+  @include('components.back', ['route' => route('moves.index')])
+  @endif

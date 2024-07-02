@@ -54,7 +54,7 @@
               </td>
               <td class="ui center aligned">{{ (isset($item->roles[0])) ? $item->roles[0]->name : 'NA' }}</td>
               <td class="ui center aligned">
-                {{ (!is_null($item->career)) ? $item->career->key : '-'}}</td>
+                {{ (!is_null($item->career)) ? $item->career->acronym : '-'}}</td>
               <td class="ui center aligned">
                 <a href="{{ route('users.toggle', $item->id) }}">
                   <i class="ui {{ $item->is_suspended ? 'red toggle off' : 'green toggle on' }} icon"></i>

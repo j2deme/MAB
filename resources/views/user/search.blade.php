@@ -47,14 +47,15 @@
             <tr>
               <td>{{ $item->full_name }}</td>
               <td class="ui center aligned">
-                <a href="{{ route('auth.logas', ['user' => $item->id]) }}" class="ui icon" data-tooltip="Iniciar como..." data-position="top center">
+                <a href="{{ route('auth.logas', ['user' => $item->id]) }}" class="ui icon"
+                  data-tooltip="Iniciar como..." data-position="top center">
                   <i class="ui key icon"></i>
                 </a>
                 &nbsp;
                 <a href="{{ route('users.show', $item) }}">{{ $item->username }}</a>
               </td>
               <td class="ui center aligned">
-                {{ (!is_null($item->career)) ? $item->career->key : '-'}}</td>
+                {{ (!is_null($item->career)) ? $item->career->acronym : '-'}}</td>
               <td class="ui center aligned">
                 <a href="{{ route('users.toggle', $item->id) }}">
                   <i class="ui {{ $item->is_suspended ? 'red toggle off' : 'green toggle on' }} icon"></i>
@@ -76,9 +77,9 @@
           </tbody>
         </table>
         @else
-          @if (!empty($q))
-          <h3>Sin resultados</h3>
-          @endif
+        @if (!empty($q))
+        <h3>Sin resultados</h3>
+        @endif
         @endif
 
         @include('components.back', ['route' => route('users.index')])

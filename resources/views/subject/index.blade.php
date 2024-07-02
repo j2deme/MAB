@@ -42,7 +42,8 @@
               <td>
                 <a href="{{ route('subjects.show', $item) }}">{{ $item->long_name }}</a>
               </td>
-              <td class="ui center aligned">{{ is_object($item->career) ?$item->career->key : 'Sin carrera asignada' }}</td>
+              <td class="ui center aligned">{{ is_object($item->career) ?$item->career->acronym : 'Sin carrera asignada'
+                }}</td>
               <td class="ui center aligned">{{ $item->semester }}</td>
               <td class="ui center aligned">{{ $item->satca }}</td>
               <td class="ui center aligned">

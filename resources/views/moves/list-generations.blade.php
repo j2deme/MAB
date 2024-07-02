@@ -35,17 +35,17 @@
           </header>
           <div class="ui six doubling cards">
             @foreach ($generation as $key => $move)
-            @if(starts_with($move->user->career->key, 'ISC'))
+            @if(starts_with($move->user->career->acronym, 'ISC'))
             @php ($color = 'blue')
-            @elseif(starts_with($move->user->career->key, 'IGE'))
+            @elseif(starts_with($move->user->career->acronym, 'IGE'))
             @php ($color = 'teal')
-            @elseif(starts_with($move->user->career->key, 'IIA'))
+            @elseif(starts_with($move->user->career->acronym, 'IIA'))
             @php ($color = 'green')
-            @elseif(starts_with($move->user->career->key, 'IAMB'))
+            @elseif(starts_with($move->user->career->acronym, 'IAMB'))
             @php ($color = 'olive')
-            @elseif(starts_with($move->user->career->key, 'II'))
+            @elseif(starts_with($move->user->career->acronym, 'II'))
             @php ($color = 'red')
-            @elseif(starts_with($move->user->career->key, 'IAGRO'))
+            @elseif(starts_with($move->user->career->acronym, 'IAGRO'))
             @php ($color = 'orange')
             @else
             @php ($color = 'black')
