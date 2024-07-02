@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Career extends Model
 {
-  protected $fillable = ['key', 'name', 'internal_key'];
+  protected $fillable = ['acronym', 'name', 'internal_key'];
 
   /**
    * CASTING
