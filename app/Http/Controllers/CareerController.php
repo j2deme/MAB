@@ -24,10 +24,10 @@ class CareerController extends Controller
    *
    * @return \Illuminate\Http\Response
    */
-  // public function create()
-  // {
-  //   //
-  // }
+  public function create()
+  {
+    return response()->view('career.new');
+  }
 
   /**
    * Store a newly created resource in storage.
@@ -35,10 +35,27 @@ class CareerController extends Controller
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
-  // public function store(Request $request)
-  // {
-  //   //
-  // }
+  public function store(Request $request)
+  {
+    $this->validate($request, [
+      'acronym' => 'bail|required|min:3|unique:careers',
+      'name' => 'bail|required|unique:careers',
+      'internal_key' => 'bail|required|integer|unique:careers'
+    ]);
+
+    $career               = new Career;
+    $career->acronym      = $request->input('acronym');
+    $career->name         = $request->input('name');
+    $career->internal_key = $request->input('internal_key');
+
+    if ($career->save()) {
+      flash('La carrera ha sido creada');
+    } else {
+      flash()->error('Ocurrió un error al crear la carrera');
+    }
+
+    return redirect()->route('careers.index');
+  }
 
   /**
    * Display the specified resource.
