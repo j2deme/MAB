@@ -29,6 +29,7 @@ class HomeController extends Controller
   public function index()
   {
     $last_semester = Semester::last()->first();
+    // Estadísticas del rol de administrador
     if (is_null(Auth::user()->career)) {
       $data['careers'] = Career::pluck('name', 'id');
       if (is_null($last_semester)) {
