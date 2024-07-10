@@ -74,10 +74,11 @@ class CareerController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  // public function edit($id)
-  // {
-  //   //
-  // }
+  public function edit($id)
+  {
+    $career = Career::findOrFail($id);
+    return response()->view('career.edit', compact('career'));
+  }
 
   /**
    * Update the specified resource in storage.
@@ -86,10 +87,27 @@ class CareerController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  // public function update(Request $request, $id)
-  // {
-  //   //
-  // }
+  public function update(Request $request, $id)
+  {
+    $this->validate($request, [
+      'acronym' => 'bail|required|min:3|unique:careers,acronym,' . $id,
+      'name' => 'bail|required|unique:careers,name,' . $id,
+      'internal_key' => 'bail|required|integer|unique:careers,internal_key,' . $id
+    ]);
+
+    $career               = Career::findOrFail($id);
+    $career->acronym      = $request->input('acronym');
+    $career->name         = $request->input('name');
+    $career->internal_key = $request->input('internal_key');
+
+    if ($career->save()) {
+      flash('La carrera ha sido actualizada');
+    } else {
+      flash()->error('Ocurrió un error al actualizar la carrera');
+    }
+
+    return redirect()->route('careers.index');
+  }
 
   /**
    * Remove the specified resource from storage.
