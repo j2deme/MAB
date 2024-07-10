@@ -30,3 +30,4 @@ Homestead.json
 !.vscode/extensions.json
 
 tests/*
+.idea/
