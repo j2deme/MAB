@@ -47,7 +47,7 @@ return [
   'connections' => [
     'mysql' => [
       'driver' => 'mysql',
-      'host' => env('DB_HOST', '167.114.218.96'),
+      'host' => env('DB_HOST', 'localhost'),
       'port' => env('DB_PORT', '3306'),
       'database' => env('DB_DATABASE', 'forge'),
       'username' => env('DB_USERNAME', 'forge'),
@@ -66,18 +66,6 @@ return [
         'NO_ENGINE_SUBSTITUTION',
       ]
     ],
-
-    'sybase' => [
-      'driver' => 'sqlsrv',
-      'host' => env('DB_HOST_2', 'localhost'),
-      'port' => env('DB_PORT_2', '1433'),
-      'database' => env('DB_DATABASE_2', 'forge'),
-      'username' => env('DB_USERNAME_2', 'forge'),
-      'password' => env('DB_PASSWORD_2', ''),
-      'charset' => 'utf8',
-      'prefix' => '',
-    ],
-
   ],
 
   /*
